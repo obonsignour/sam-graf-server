@@ -1,6 +1,5 @@
-from platform import node
 from textwrap import dedent
-from typing import Callable, List, LiteralString, Tuple, Union, cast
+from typing import LiteralString, Union, cast
 from flask import jsonify
 from neo4j import GraphDatabase, RoutingControl
 from neo4j.graph import Node, Relationship, Path
