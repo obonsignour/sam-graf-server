@@ -3,7 +3,6 @@ from typing import LiteralString, Union, cast
 from flask import jsonify
 from neo4j import GraphDatabase, RoutingControl
 from neo4j.graph import Node, Relationship, Path
-
 from ogma_types import OgmaEdge, OgmaNode
 
 NodeOrRel = Union[Node, Relationship]
@@ -32,9 +31,11 @@ class NeoQuery:
         for record in records:
             for item in record:
                 if type(item) == Path:
-                    print('We have a path', item, item.relationships)
-                    # Raise a 5xx error here
-                    raise Exception("Internal Server Error: the query returned a path. This is not supported.")
+                    for node in item.nodes:
+                        self.__add_node(node)
+                    for relationship in item.relationships:
+                        self.__add_edge(relationship)
+                    # raise Exception("Internal Server Error: the query returned a path. This is not supported.")
                 if type(item) == Node:
                     self.__add_node(item)
                 if issubclass(type(item), Relationship):
