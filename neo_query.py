@@ -1,22 +1,20 @@
 from textwrap import dedent
-from typing import LiteralString, Union, cast
-from flask import jsonify
-from neo4j import GraphDatabase, RoutingControl
-from neo4j.graph import Node, Relationship, Path
-from ogma_types import OgmaEdge, OgmaNode
+from typing import List, LiteralString, Union, cast
+from flask import Response, jsonify
+from neo4j import GraphDatabase, Record, Result, ResultSummary, RoutingControl
+from neo4j.graph import Node, Relationship, Path, Graph
+from ogma_types import OgmaEdge, OgmaGraph, OgmaNode
 
 NodeOrRel = Union[Node, Relationship]
 
 
 class NeoQuery:
+    """A class for executing queries on a Neo4j database."""
+
     def __init__(self, uri, auth, database):
         self.__URI = uri
         self.__AUTH = auth
         self.__DATABASE = database
-        self.__nodes = []
-        self.__node_ids = []
-        self.__edges = []
-        self.__edge_ids = []
 
     def __sanitize_query(self, query: str) -> LiteralString:
         return cast(LiteralString, dedent(query).strip())
@@ -25,49 +23,54 @@ class NeoQuery:
         sanitized_query = self.__sanitize_query(query)
         with GraphDatabase.driver(self.__URI, auth=self.__AUTH) as driver:
             driver.verify_connectivity()
-        records, summary, _ = driver.execute_query(sanitized_query, limit=limit, database_=self.__DATABASE, routing_=RoutingControl.READ,)
+            records, summary = driver.execute_query(sanitized_query, limit=limit, database_=self.__DATABASE,
+                                                    routing_=RoutingControl.READ, result_transformer_=self.__transform_result)
 
-        graph_data = {}
-        for record in records:
-            for item in record:
-                if type(item) == Path:
-                    for node in item.nodes:
-                        self.__add_node(node)
-                    for relationship in item.relationships:
-                        self.__add_edge(relationship)
-                    # raise Exception("Internal Server Error: the query returned a path. This is not supported.")
-                if type(item) == Node:
-                    self.__add_node(item)
-                if issubclass(type(item), Relationship):
-                    self.__add_edge(cast(Relationship, item))
+            print("Query `{query}` returned {records_count} records in {time} ms.".format(
+                query=summary.query, records_count=len(records),
+                time=summary.result_available_after
+            ))
+            return jsonify(records)
 
-        print(len(self.__nodes), ' ', len(self.__edges))
-        print(len(self.__nodes), ' ', len(self.__edges))
+    def __transform_result(self, result: Result) -> tuple[Union[dict, list], ResultSummary]:
+        """A custom transformer. Transforms the result of a query into a graph or a list."""
+        record = result.peek()
+        if record == None:
+            return [], result.consume()
+        elif self.__is_a_graph(record):
+            return self.__get_graph(result)
+        else:
+            return self.__get_list(result)
 
-        graph_data["nodes"] = self.__nodes
-        graph_data["edges"] = self.__edges
-        return jsonify(graph_data)
+    def __is_a_graph(self, record: Record) -> bool:
+        item = record[0]
+        return (type(item) == Path or type(item) == Node or type(item) == Relationship)
 
-    def __add_node(self, node: Node):
-        if node.id not in self.__node_ids:
-            self.__nodes.append(self.__extract_node(node).to_dict())
-            self.__node_ids.append(node.id)
+    def __get_list(self, result: Result) -> tuple[list, ResultSummary]:
+        data: List = []
+        for record in result:
+            __record_row = {}
+            for key in record.keys():
+                __record_row[key] = record[key]
+                data.append(__record_row)
+        return data, result.consume()
 
-    def __add_edge(self, edge: Relationship):
-        if edge.id not in self.__edge_ids:
-            self.__edges.append(self.__extract_edge(edge).to_dict())
-            self.__edge_ids.append(edge.id)
+    def __get_graph(self, result: Result) -> tuple[dict, ResultSummary]:
+        graph = result.graph()
+        nodes: set[OgmaNode] = set()
+        edges: set[OgmaEdge] = set()
 
-    def __extract_node(self, item: Node) -> OgmaNode:
-        return OgmaNode(item.id, self.__extract_data(item))
+        for node in graph.nodes:
+            nodes.add(self.__get_ogma_node(node))
+        for relationship in graph.relationships:
+            edges.add(self.__get_ogma_edge(relationship))
+        summary = result.consume()
+        return OgmaGraph(list(nodes), list(edges)).to_dict(), summary
 
-    def __extract_edge(self, item: Relationship) -> OgmaEdge:
+    def __get_ogma_node(self, item: Node):
+        return OgmaNode(item.id, {key: item[key] for key in item.keys()})
+
+    def __get_ogma_edge(self, item: Relationship):
         source = cast(Node, item.start_node).id
         target = cast(Node, item.end_node).id
-        return OgmaEdge(item.id, source, target, self.__extract_data(item))
-
-    def __extract_data(self, item: NodeOrRel) -> dict:
-        data = {}
-        for key in item.keys():
-            data[key] = item[key]
-        return data
+        return OgmaEdge(item.id, source, target, {key: item[key] for key in item.keys()})
