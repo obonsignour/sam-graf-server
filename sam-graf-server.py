@@ -4,7 +4,8 @@ from neo_query import NeoQuery
 
 from flask import Flask, request
 
-URI = "neo4j://localhost:7687"
+#URI = "neo4j://localhost:7687"
+URI = "bolt://172.24.144.1:7687"
 AUTH = ("neo4j", "imaging")
 DATABASE = "neo4j"
 
@@ -62,7 +63,7 @@ def get_graph(app_name, graph_type, graph_name):
 # Name of the attributes for each nodes in Ne4j : 
 # community_level_{level}_{model}_{graph_type}_{graph_name}
 
-@app.route('/<app_name>/<model>/<graph_type>/<graph_name>/Level/<level_number>', methods=['GET'])
+@app.route('/<app_name>//Graph/<graph_type>/<graph_name>/<model>/Level/<level_number>', methods=['GET'])
 def get_level(app_name, level_number, model, graph_type, graph_name):
     my_query = NeoQuery(URI, AUTH, DATABASE)
     level_label = f"community_level_{level_number}_{model}_{graph_type}_{graph_name}"
