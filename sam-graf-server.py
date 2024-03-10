@@ -5,7 +5,7 @@ from neo_query import NeoQuery
 from flask import Flask, Response, request
 
 # URI = "neo4j://localhost:7687"
-URI = "bolt://172.24.144.1:7687"
+URI = "bolt://localhost:7687"
 AUTH = ("neo4j", "imaging")
 DATABASE = "neo4j"
 
@@ -37,29 +37,32 @@ def get_objects(app_name):
         return my_query.execute_query(query)
 
 
-@app.route('/Applications/<app_name>/Graphs/<graph_type>/<graph_name>', methods=['GET'])
-def get_graph(app_name, graph_type, graph_name):
-    my_query = NeoQuery(URI, AUTH, DATABASE)
-    if graph_type == "DataGraph":
-        relationships = "IS_IN_DATAGRAPH"
-    elif graph_type == "Transaction":
-        relationships = "IS_IN_TRANSACTION"
-    else:
-        print("generate_cypher_query is build for DataGraph or Transaction")
-        return Response("generate_cypher_query is build for DataGraph or Transaction", status=400, mimetype='application/json')
-
-    cypher_query = (
+def __graphs_query(app_name: str, graph_type: str, relationship_type: str, graph_name: str) -> str:
+    return (
         f"CALL cast.linkTypes([\"CALL_IN_TRAN\"]) yield linkTypes\n"
         f"WITH linkTypes + [\"STARTS_WITH\", \"ENDS_WITH\"] AS updatedLinkTypes\n"
-        f"MATCH (d:{graph_type}:{app_name})<-[:{relationships}]-(n)\n"
+        f"MATCH (d:{graph_type}:{app_name})<-[:{relationship_type}]-(n)\n"
         f"WITH collect(id(n)) AS nodeIds,updatedLinkTypes\n"
-        f"MATCH p=(d:{graph_type}:{app_name} {{Name: '{graph_name}'}})<-[:{relationships}]-(n:{app_name})<-[r]-(m:{app_name})-[:{relationships}]->(d)\n"
+        f"MATCH p=(d:{graph_type}:{app_name} {{Name: '{graph_name}'}})<-[:{relationship_type}]-(n:{app_name})<-[r]-(m:{app_name})-[:{relationship_type}]->(d)\n"
         f"WHERE (n:Object OR n:SubObject)\n"
         f"AND (m:Object OR m:SubObject)\n"
         f"AND id(n) IN nodeIds AND id(m) IN nodeIds\n"
         f"AND type(r) IN updatedLinkTypes\n"
         "RETURN DISTINCT n, r, m"
     )
+
+
+@app.route('/Applications/<app_name>/Transactions/<graph_name>', methods=['GET'])
+def get_transaction(app_name, graph_name):
+    my_query = NeoQuery(URI, AUTH, DATABASE)
+    cypher_query = __graphs_query(app_name, "Transaction", "IS_IN_TRANSACTION", graph_name)
+    return my_query.execute_query(cypher_query)
+
+
+@app.route('/Applications/<app_name>/DataGraphs/<graph_name>', methods=['GET'])
+def get_datagraph(app_name, graph_name):
+    my_query = NeoQuery(URI, AUTH, DATABASE)
+    cypher_query = __graphs_query(app_name, "DataGraph", "IS_IN_DATAGRAPH", graph_name)
     return my_query.execute_query(cypher_query)
 
 # Name of the attributes for each nodes in Ne4j :
