@@ -1,9 +1,7 @@
-import logging
 from textwrap import dedent
 from typing import List, LiteralString, Union, cast
-from flask import Response, app, jsonify
 from neo4j import GraphDatabase, Record, Result, ResultSummary, RoutingControl
-from neo4j.graph import Node, Relationship, Path, Graph
+from neo4j.graph import Node, Relationship, Path
 from ogma_types import OgmaEdge, OgmaGraph, OgmaNode
 
 NodeOrRel = Union[Node, Relationship]

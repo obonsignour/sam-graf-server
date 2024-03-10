@@ -1,5 +1,4 @@
 import logging
-from webbrowser import get
 from neo_query import NeoQuery
 
 from flask import Flask, Response, request
