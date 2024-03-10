@@ -4,7 +4,8 @@ from neo_query import NeoQuery
 
 from flask import Flask, Response, request
 
-URI = "neo4j://localhost:7687"
+# URI = "neo4j://localhost:7687"
+URI = "bolt://172.24.144.1:7687"
 AUTH = ("neo4j", "imaging")
 DATABASE = "neo4j"
 
