@@ -1,6 +1,7 @@
+import logging
 from textwrap import dedent
 from typing import List, LiteralString, Union, cast
-from flask import Response, jsonify
+from flask import Response, app, jsonify
 from neo4j import GraphDatabase, Record, Result, ResultSummary, RoutingControl
 from neo4j.graph import Node, Relationship, Path, Graph
 from ogma_types import OgmaEdge, OgmaGraph, OgmaNode
@@ -30,7 +31,8 @@ class NeoQuery:
                 query=summary.query, records_count=len(records),
                 time=summary.result_available_after
             ))
-            return jsonify(records)
+            # no need toj sonify the response as flask is doing it for us in the view function that has called this method
+            return (records)
 
     def __transform_result(self, result: Result) -> tuple[Union[dict, list], ResultSummary]:
         """A custom transformer. Transforms the result of a query into a graph or a list."""
