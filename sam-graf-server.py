@@ -1,15 +1,24 @@
 import logging
+from colorama import Fore, Style, Back
+import os
 from neo_query import NeoQuery
 
 from flask import Flask, Response, request
 
-# URI = "neo4j://localhost:7687"
-URI = "bolt://localhost:7687"
-AUTH = ("neo4j", "imaging")
-DATABASE = "neo4j"
 
 app = Flask(__name__)
 __version__ = "1.0.0-alpha.2"
+
+URI = os.environ.get("NEO4J_URI")
+# URI = "bolt://172.24.144.1:7687"
+AUTH = ("neo4j", "imaging")
+DATABASE = "neo4j"
+
+msg = f"""
+Running Sam-Graf-Server version {__version__} with URI: {URI}.
+Use .env file to configure it
+"""
+print(Fore.BLACK + Back.WHITE + msg + Style.RESET_ALL)
 
 
 @app.route('/Applications', methods=['GET'])
