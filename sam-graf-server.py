@@ -78,14 +78,3 @@ def get_level(app_name, level_number, model, graph_type, graph_name):
     # limit = int(request.args.get("limit", 100))
     # return my_query.execute_query(query, limit)
     return my_query.execute_query(cypher_query)
-
-
-def main():
-    log_format = ' %(asctime)-15s \t%(levelname)s\tMODULMSG ; Body\t%(message)s'
-    # logging.basicConfig(filename='sam-graf-server.log', encoding='utf-8', level=logging.DEBUG, format=log_format)
-    app.logger.info("Sam Graf Server " + __version__)
-    app.run(debug=True)
-
-
-if __name__ == '__main__':
-    main()
