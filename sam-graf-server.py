@@ -29,6 +29,22 @@ def get_applications():
     return my_query.execute_query(query)
 
 
+@app.route('/Applications/<app_name>/DataGraphs', methods=['GET'])
+def get_datagraphs(app_name):
+    logging.info("Getting applications")
+    my_query = NeoQuery(URI, AUTH, DATABASE)
+    query = f"MATCH (a:DataGraph:{app_name}) RETURN a.Name AS graphName ORDER BY graphName"
+    return my_query.execute_query(query)
+
+
+@app.route('/Applications/<app_name>/Transactions', methods=['GET'])
+def get_transactions(app_name):
+    logging.info("Getting applications")
+    my_query = NeoQuery(URI, AUTH, DATABASE)
+    query = f"MATCH (a:Transaction:{app_name}) RETURN a.Name AS graphName ORDER BY graphName"
+    return my_query.execute_query(query)
+
+
 @app.route('/Applications/<app_name>/Objects', methods=['GET', 'POST'])
 def get_objects(app_name):
     logging.info("Getting objects for " + app_name)
@@ -72,9 +88,9 @@ def get_datagraph(app_name, graph_name):
     cypher_query = __graphs_query(app_name, "DataGraph", "IS_IN_DATAGRAPH", graph_name)
     return my_query.execute_query(cypher_query)
 
+
 # Name of the attributes for each nodes in Ne4j :
 # community_level_{level}_{model}_{graph_type}_{graph_name}
-
 
 @app.route('/Applications/<app_name>/<model>/<graph_type>/<graph_name>/Level/<level_number>', methods=['GET'])
 def get_level(app_name, level_number, model, graph_type, graph_name):
