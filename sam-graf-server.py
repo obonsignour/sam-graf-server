@@ -41,7 +41,6 @@ def get_objects(app_name):
         query = query + " LIMIT $limit"
         return my_query.execute_query(query, limit)
     else:
-        query = query + " LIMIT 50"
         return my_query.execute_query(query)
 
 
