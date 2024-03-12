@@ -33,7 +33,8 @@ def get_applications():
 def get_datagraphs(app_name):
     logging.info("Getting Datagraphs")
     my_query = NeoQuery(URI, AUTH, DATABASE)
-    query = f"MATCH (a:DataGraph:{app_name}) RETURN elementId(a) AS id, a.Name AS name ORDER BY name"
+    #query = f"MATCH (a:DataGraph:{app_name}) RETURN elementId(a) AS id, a.Name AS name ORDER BY name"
+    query = f"MATCH (a:DataGraph:{app_name}) RETURN ID(a) AS id, a.Name AS name ORDER BY name"
     return my_query.execute_query(query)
 
 
@@ -41,7 +42,7 @@ def get_datagraphs(app_name):
 def get_transactions(app_name):
     logging.info("Getting Transactions")
     my_query = NeoQuery(URI, AUTH, DATABASE)
-    query = f"MATCH (a:Transaction:{app_name}) RETURN elementId(a) AS id, a.Name AS name ORDER BY name"
+    query = f"MATCH (a:Transaction:{app_name}) RETURN ID(a) AS id, a.Name AS name ORDER BY name"
     return my_query.execute_query(query)
 
 
@@ -60,14 +61,15 @@ def get_objects(app_name):
         return my_query.execute_query(query)
 
 
-def __graphs_query(app_name: str, graph_type: str, relationship_type: str, element_id: str) -> str:
+def __graphs_query(app_name: str, graph_type: str, relationship_type: str, element_id: int) -> str:
     return (
         f"CALL cast.linkTypes([\"CALL_IN_TRAN\"]) yield linkTypes\n"
         f"WITH linkTypes + [\"STARTS_WITH\", \"ENDS_WITH\"] AS updatedLinkTypes\n"
         f"MATCH (d:{graph_type}:{app_name})<-[:{relationship_type}]-(n)\n"
         f"WITH collect(id(n)) AS nodeIds,updatedLinkTypes\n"
         f"MATCH p=(d:{graph_type}:{app_name})<-[:{relationship_type}]-(n:{app_name})<-[r]-(m:{app_name})-[:{relationship_type}]->(d)\n"
-        f"WHERE elementId(d) = '{element_id}'\n"
+        #f"WHERE elementId(d) = '{element_id}'\n"
+        f"WHERE ID(d) = {element_id}\n"
         f"AND (n:Object OR n:SubObject)\n"
         f"AND (m:Object OR m:SubObject)\n"
         f"AND id(n) IN nodeIds AND id(m) IN nodeIds\n"
