@@ -3,14 +3,14 @@ from typing import Any, List
 
 
 class OgmaNode():
-    def __init__(self, id: int, data: Any):
+    def __init__(self, id: int, labels: List[str], properties: Any):
         self.__id: int = id
-        self.__data = data
+        self.__data = {'labels': labels, 'properties': properties}
 
     def to_dict(self) -> dict[str, Any]:
         return {
             'id': self.__id,
-            'data': self.__data
+            'data': self.__data,
         }
 
 

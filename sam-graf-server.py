@@ -62,20 +62,15 @@ def get_objects(app_name):
 
 
 def __graphs_query(app_name: str, graph_type: str, relationship_type: str, element_id: int) -> str:
-    return (
-        f"CALL cast.linkTypes([\"CALL_IN_TRAN\"]) yield linkTypes\n"
-        f"WITH linkTypes + [\"STARTS_WITH\", \"ENDS_WITH\"] AS updatedLinkTypes\n"
-        f"MATCH (d:{graph_type}:{app_name})<-[:{relationship_type}]-(n)\n"
-        f"WITH collect(id(n)) AS nodeIds,updatedLinkTypes\n"
-        f"MATCH p=(d:{graph_type}:{app_name})<-[:{relationship_type}]-(n:{app_name})<-[r]-(m:{app_name})-[:{relationship_type}]->(d)\n"
-        # f"WHERE elementId(d) = '{element_id}'\n"
-        f"WHERE id(d) = {element_id}\n"
-        f"AND (n:Object OR n:SubObject)\n"
-        f"AND (m:Object OR m:SubObject)\n"
-        f"AND id(n) IN nodeIds AND id(m) IN nodeIds\n"
-        f"AND type(r) IN updatedLinkTypes\n"
-        "RETURN DISTINCT n, r, m"
-    )
+    return (f"""
+        CALL cast.linkTypes([\"CALL_IN_TRAN\"]) yield linkTypes
+        MATCH p = (d:{graph_type}:{app_name})<-[:{relationship_type}]-(n:{app_name})<-[r]-(m:{app_name})-[:{relationship_type}]->(d)
+        WHERE id(d) = {element_id}
+        AND (n:Object OR n:SubObject)
+        AND (m:Object OR m:SubObject)
+        AND type(r) IN linkTypes
+        RETURN DISTINCT p"""
+            )
 
 
 @app.route('/Applications/<app_name>/Transactions/<element_id>', methods=['GET'])

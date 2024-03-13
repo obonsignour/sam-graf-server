@@ -68,7 +68,9 @@ class NeoQuery:
         return OgmaGraph(list(nodes), list(edges)).to_dict(), summary
 
     def __get_ogma_node(self, item: Node):
-        return OgmaNode(item.id, {key: item[key] for key in item.keys()})
+        labels = list(item.labels)
+        properties = {key: item[key] for key in item.keys()}
+        return OgmaNode(item.id, labels, properties)
 
     def __get_ogma_edge(self, item: Relationship):
         source = cast(Node, item.start_node).id
