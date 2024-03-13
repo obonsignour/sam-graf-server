@@ -63,13 +63,25 @@ def get_objects(app_name):
 
 def __graphs_query(app_name: str, graph_type: str, relationship_type: str, element_id: int) -> str:
     return (f"""
-        CALL cast.linkTypes([\"CALL_IN_TRAN\"]) yield linkTypes
-        MATCH p = (d:{graph_type}:{app_name})<-[:{relationship_type}]-(n:{app_name})<-[r]-(m:{app_name})-[:{relationship_type}]->(d)
+        MATCH p = (d:{graph_type}:{app_name})<-[i1:{relationship_type}]-(n:{app_name})
         WHERE id(d) = {element_id}
         AND (n:Object OR n:SubObject)
+        WITH n, apoc.map.setLists(properties(n), ['Louvain', 'Leiden'], [i1.Louvain, i1.Leiden]) AS propsCompleted
+        WITH apoc.create.vNode(labels(n), propsCompleted) AS n1
+        WITH collect(n1) AS vNodes, collect(apoc.any.property(n1, "AipId")) AS aipIds
+        CALL cast.linkTypes([\"CALL_IN_TRAN\"]) yield linkTypes
+        WITH vNodes, aipIds, linkTypes
+        MATCH (n:{app_name})<-[r]-(m:{app_name})
+        WHERE (n:Object OR n:SubObject)
         AND (m:Object OR m:SubObject)
+        AND n.AipId IN aipIds
+        AND m.AipId IN aipIds
         AND type(r) IN linkTypes
-        RETURN DISTINCT p"""
+        WITH n, m, r, vNodes
+        WITH [n1 IN vNodes WHERE apoc.any.property(n1, "AipId")=n.AipId | n1][0] AS n1,  [m1 IN vNodes WHERE apoc.any.property(m1, "AipId")=m.AipId | m1][0] AS m1, r
+        WITH n1, m1, apoc.create.vRelationship(n1, type(r), properties(r), m1) AS r1
+        RETURN n1, m1, r1
+        """
             )
 
 
