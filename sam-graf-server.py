@@ -34,7 +34,7 @@ def get_datagraphs(app_name):
     logging.info("Getting Datagraphs")
     my_query = NeoQuery(URI, AUTH, DATABASE)
     # query = f"MATCH (a:DataGraph:{app_name}) RETURN elementId(a) AS id, a.Name AS name ORDER BY name"
-    query = f"MATCH (a:DataGraph:{app_name}) RETURN ID(a) AS id, a.Name AS name ORDER BY name"
+    query = f"MATCH (a:DataGraph:{app_name}) RETURN id(a) AS id, a.Name AS name ORDER BY name"
     return my_query.execute_query(query)
 
 
@@ -42,7 +42,7 @@ def get_datagraphs(app_name):
 def get_transactions(app_name):
     logging.info("Getting Transactions")
     my_query = NeoQuery(URI, AUTH, DATABASE)
-    query = f"MATCH (a:Transaction:{app_name}) RETURN ID(a) AS id, a.Name AS name ORDER BY name"
+    query = f"MATCH (a:Transaction:{app_name}) RETURN id(a) AS id, a.Name AS name ORDER BY name"
     return my_query.execute_query(query)
 
 

@@ -52,7 +52,7 @@ class NeoQuery:
             __record_row = {}
             for key in record.keys():
                 __record_row[key] = record[key]
-                data.append(__record_row)
+            data.append(__record_row)
         return data, result.consume()
 
     def __get_graph(self, result: Result) -> tuple[dict, ResultSummary]:
