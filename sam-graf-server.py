@@ -112,3 +112,18 @@ def get_level(app_name, level_number, model, graph_type, graph_name):
     # limit = int(request.args.get("limit", 100))
     # return my_query.execute_query(query, limit)
     return my_query.execute_query(cypher_query)
+
+# APIs for the search
+
+
+@app.route('/Applications/<app_name>/Concepts', methods=['GET'])
+def get_concepts(app_name):
+    my_query = NeoQuery(URI, AUTH, DATABASE)
+    cypher_query = f"""
+        MATCH (n:{app_name}) WHERE (n:Object OR n:SubObject)
+        WITH collect(DISTINCT n.InternalType) AS types
+        MATCH (i:InternalType) WHERE i.Name IN types
+        RETURN DISTINCT i.Concept AS name, count(i) AS count ORDER BY name """
+    # limit = int(request.args.get("limit", 100))
+    # return my_query.execute_query(query, limit)
+    return my_query.execute_query(cypher_query)
