@@ -13,6 +13,17 @@ class OgmaNode():
             'data': self.__data,
         }
 
+    def add_properties(self, properties: Any):
+        for key in properties:
+            self.__data['properties'][key] = properties[key]
+        # self.__data['properties'][key] = value
+        # print(f"Added property {key} with value {properties[key]}")
+
+    def keep_only(self, keys: List[str]):
+        for key in self.__data['properties'].copy():
+            if key not in keys:
+                del self.__data['properties'][key]
+
 
 class OgmaEdge():
     def __init__(self, id: int, source: int, target: int, data: dict[str, Any]):
