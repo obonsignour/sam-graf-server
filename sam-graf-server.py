@@ -102,16 +102,16 @@ def get_datagraph(app_name, element_id):
 # Name of the attributes for each nodes in Ne4j :
 # community_level_{level}_{model}_{graph_type}_{graph_name}
 
-@app.route('/Applications/<app_name>/<model>/<graph_type>/<graph_name>/Level/<level_number>', methods=['GET'])
-def get_level(app_name, level_number, model, graph_type, graph_name):
-    my_query = NeoQuery(URI, AUTH, DATABASE)
-    level_label = f"community_level_{level_number}_{model}_{graph_type}_{graph_name}"
-    cypher_query = """
-        MATCH p=(l1:""" + level_label + """:""" + app_name + """)-[r]->(l2:""" + level_label + """:""" + app_name + """)
-        RETURN p """
-    # limit = int(request.args.get("limit", 100))
-    # return my_query.execute_query(query, limit)
-    return my_query.execute_query(cypher_query)
+#@app.route('/Applications/<app_name>/<model>/<graph_type>/<graph_name>/Level/<level_number>', methods=['GET'])
+#def get_level(app_name, level_number, model, graph_type, graph_name):
+#    my_query = NeoQuery(URI, AUTH, DATABASE)
+#    level_label = f"community_level_{level_number}_{model}_{graph_type}_{graph_name}"
+#    cypher_query = """
+#        MATCH p=(l1:""" + level_label + """:""" + app_name + """)-[r]->(l2:""" + level_label + """:""" + app_name + """)
+#        RETURN p """
+#    # limit = int(request.args.get("limit", 100))
+#    # return my_query.execute_query(query, limit)
+#    return my_query.execute_query(cypher_query)
 
 # APIs for the search
 
@@ -127,3 +127,33 @@ def get_concepts(app_name):
     # limit = int(request.args.get("limit", 100))
     # return my_query.execute_query(query, limit)
     return my_query.execute_query(cypher_query)
+
+def __linkTypes_query(app_name: str, graph_type: str, relationship_type: str, element_id: int) -> str:
+    query = f"""
+        CALL cast.linkTypes(["CALL_IN_TRAN"]) yield linkTypes
+        WITH linkTypes + [] AS updatedLinkTypes //"EXEC", "RELYON"
+        MATCH (d:{graph_type}:{app_name})<-[:{relationship_type}]-(n)
+        WITH collect(id(n)) AS nodeIds,updatedLinkTypes
+        MATCH p=(d:{graph_type}:{app_name})<-[:{relationship_type}]-(n:{app_name})<-[r]-(m:{app_name})-[:{relationship_type}]->(d)
+        WHERE ID(d) = {element_id}
+        AND (n:Object OR n:SubObject)
+        AND (m:Object OR m:SubObject)
+        AND id(n) IN nodeIds AND id(m) IN nodeIds
+        AND type(r) IN updatedLinkTypes
+        RETURN DISTINCT type(r) AS relationType ORDER BY relationType
+        """
+    return query
+
+@app.route('/Applications/<app_name>/Transactions/<element_id>/LinkTypes', methods=['GET'])
+def get_linkTypes_transaction(app_name, element_id):
+    my_query = NeoQuery(URI, AUTH, DATABASE)
+    cypher_query = __linkTypes_query(app_name, "Transaction", "IS_IN_TRANSACTION", element_id)
+    return my_query.execute_query(cypher_query)
+
+
+@app.route('/Applications/<app_name>/DataGraphs/<element_id>/LinkTypes', methods=['GET'])
+def get_linkTypes_datagraph(app_name, element_id):
+    my_query = NeoQuery(URI, AUTH, DATABASE)
+    cypher_query = __linkTypes_query(app_name, "DataGraph", "IS_IN_DATAGRAPH", element_id)
+    return my_query.execute_query(cypher_query)
+
