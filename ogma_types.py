@@ -15,11 +15,11 @@ class OgmaNode():
 
 
 class OgmaEdge():
-    def __init__(self, id: int, source: int, target: int, data: dict[str, Any]):
+    def __init__(self, id: int, source: int, target: int, type: str, data: dict[str, Any]):
         self.__id = id
         self.__source = source
         self.__target = target
-        self.__data = data
+        self.__data = {**{'type': type}, **data}
 
     def to_dict(self) -> dict[str, Any]:
         return {
