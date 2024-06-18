@@ -75,4 +75,4 @@ class NeoQuery:
     def __get_ogma_edge(self, item: Relationship):
         source = cast(Node, item.start_node).id
         target = cast(Node, item.end_node).id
-        return OgmaEdge(item.id, source, target, {key: item[key] for key in item.keys()})
+        return OgmaEdge(item.id, source, target, item.type, {key: item[key] for key in item.keys()})
