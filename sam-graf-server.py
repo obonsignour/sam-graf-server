@@ -2,8 +2,10 @@ import logging
 from colorama import Fore, Style, Back
 import os
 from neo_query import NeoQuery
-
-from flask import Flask, Response, request
+import subprocess
+import paramiko
+import json
+from flask import Flask, Response, request, jsonify
 
 
 app = Flask(__name__)
@@ -157,3 +159,97 @@ def get_linkTypes_datagraph(app_name, element_id):
     cypher_query = __linkTypes_query(app_name, "DataGraph", "IS_IN_DATAGRAPH", element_id)
     return my_query.execute_query(cypher_query)
 
+
+# To store the data received from the POST request
+stored_data = {}
+
+@app.route('/Applications/<app_name>/<graph_types>/<element_id>/LinkTypes/Selected', methods=['POST', 'GET'])
+def get_selected_linkTypes(app_name, graph_types, element_id):
+    if graph_types == "DataGraphs":
+        graph_type = "DataGraph"
+    elif graph_types == "Transactions":
+        graph_type = "Transaction"
+    
+    if request.method == 'POST':
+        data = request.json
+        if not data:
+            return jsonify({"error": "No data provided"}), 400
+        stored_data[(app_name, graph_type, element_id)] = data
+        print(f"Received data for {app_name} {graph_type} {element_id}: {data}")
+        
+        # Call submit_items function
+        return submit_items(app_name, graph_type, element_id, data)
+    
+    elif request.method == 'GET':
+        data = stored_data.get((app_name, graph_type, element_id), {})
+        sample_data = {
+            "app_name": app_name,
+            "graph_type": graph_type,
+            "element_id": element_id,
+            "data": data
+        }
+        return jsonify(sample_data), 200
+    
+    # Default return statement to ensure a Response object is always returned
+    return jsonify({"error": "Invalid request method"}), 400
+
+def submit_items(app_name, graph_type, element_id, data):
+    print("I'm in submit_items")
+    # No need to call request.get_json() here because data is already passed as an argument
+    app_name = data.get('app_name')
+    element_id = data.get('element_id')
+    graph_type = data.get('graph_type')
+    relation_types = data.get('data', {}).get('relationTypesSelected', [])
+
+    # Trigger the script execution
+    result = run_script(app_name, element_id, graph_type, relation_types)
+    return jsonify({'status': 'success', 'result': result})
+
+def run_script(app_name, element_id, graph_types, relation_types):
+    print("I'm in run_script")
+    if graph_types == "DataGraphs":
+        graph_type = "DataGraph"
+    elif graph_types == "Transactions":
+        graph_type = "Transaction"
+    else:
+        graph_type = ""
+    try:
+        # VM credentials
+        hostname = '192.16.20.137'
+        port = 22
+        username = 'smm'
+        password = 'Global$1234'
+        
+        # Construct the command to run the script on the VM
+        relation_types_str = ' '.join(relation_types)
+        command = (
+            f"source /path/to/myenv/bin/activate && "
+            f"python /home/smm/PhD/Grouping/CommunityDetection/OnFly/Leiden_onFly2.py {app_name} {element_id} {graph_type} {relation_types_str}"
+        )
+        
+        # Establish SSH connection
+        ssh = paramiko.SSHClient()
+        ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        ssh.connect(hostname, port, username, password)
+
+        print("connection établie" )
+
+        # Execute the command
+        stdin, stdout, stderr = ssh.exec_command(command)
+        
+        # Capture the output and error
+        output = stdout.read().decode('utf-8')
+        error = stderr.read().decode('utf-8')
+
+        # Close the connection
+        ssh.close()
+        
+        if error:
+            return f"Error: {error}"
+        
+        print( f"ouput:  {output}")
+        return output
+    
+    except Exception as e:
+        print(e)
+        return str(e)
