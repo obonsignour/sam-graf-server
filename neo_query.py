@@ -20,6 +20,7 @@ class NeoQuery:
 
     def execute_query(self, query: str, limit: int = 100):
         sanitized_query = self.__sanitize_query(query)
+        print('URI: ', self.__URI)
         with GraphDatabase.driver(self.__URI, auth=self.__AUTH) as driver:
             driver.verify_connectivity()
             records, summary = driver.execute_query(sanitized_query, limit=limit, database_=self.__DATABASE,
