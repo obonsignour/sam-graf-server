@@ -165,25 +165,30 @@ def compute_algo_with_link_types(algo):
     _graph_id = data['graphId']
     _link_types = data['linkTypes']
     print(f"Computing Leiden with {data}")
-    start_time = time.time()
-    _task_id = threading.get_ident()
     thread = threading.Thread(target=Leiden_on_one_graph, args=(_app_name, _graph_id, _graph_type, _link_types))
     thread.start()
+    _task_id = thread.ident
     print(f"Thread {thread} started for task {_task_id}")
-    # Leiden_on_one_graph(_app_name, _graph_id, _graph_type, _link_types)
-    end_time = time.time()
-    elapsed_time = end_time - start_time
-    print(f"Execution time for the Leiden Algorithm on the {_app_name} application: {elapsed_time} seconds")
-    # Call submit_items function
-    # return submit_items(app_name, graph_type, graph_id, data)
     return jsonify({"message": "Algo computing started", "application": _app_name, "taskId": _task_id}), 202
 
 
+@app.route('/Algos/Tasks/<task_id>', methods=['GET'])
 def get_task_status(task_id):
     nb_tasks_running = threading.active_count()
+    tasks = threading.enumerate()
+    for task in tasks:
+        if str(task.ident) == task_id:
+            print(f"Task {task_id} is still running")
+            return jsonify({"message": "Task is still running", "taskId": task_id}), 202
+    return jsonify({"message": "Task has been completed", "taskId": task_id}), 200
 
-    return jsonify({"message": "Task status", "taskId": task_id}), 200
 
+@app.route('/Algos/Threads', methods=['GET'])
+def get_threads():
+    nb_tasks_running = threading.active_count()
+    tasks = threading.enumerate()
+    tasks_info = [{"id": task.ident, "name": task.name} for task in tasks]
+    return jsonify({"message": "List of running tasks", "nbTasks": nb_tasks_running, "tasks": tasks_info}), 200
 # END CLEAN CODE TO KEEP
 
 
