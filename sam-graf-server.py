@@ -40,6 +40,93 @@ def get_applications():
     return my_query.execute_query(query)
 
 
+def __graphs_query(app_name: str, graph_type: str, graph_id: int) -> str:
+    _relationship_type = "IS_IN_" + graph_type.upper()
+    return (f"""
+        MATCH p = (d:{graph_type}:{app_name})<-[i1:{_relationship_type}]-(n:{app_name})
+        WHERE id(d) = {graph_id}
+        AND (n:Object OR n:SubObject)
+        WITH n, apoc.map.setLists(properties(n), ['UndirectedLouvain', 'DirectedLouvain', 'Leiden'], [i1.UndirectedLouvain, i1.DirectedLouvain, i1.Leiden]) AS propsCompleted
+        WITH apoc.create.vNode(labels(n), propsCompleted) AS n1
+        WITH collect(n1) AS vNodes, collect(apoc.any.property(n1, "AipId")) AS aipIds
+        CALL cast.linkTypes([\"CALL_IN_TRAN\"]) yield linkTypes
+        WITH vNodes, aipIds, linkTypes
+        MATCH (n:{app_name})<-[r]-(m:{app_name})
+        WHERE (n:Object OR n:SubObject)
+        AND (m:Object OR m:SubObject)
+        AND n.AipId IN aipIds
+        AND m.AipId IN aipIds
+        AND type(r) IN linkTypes
+        WITH n, m, r, vNodes
+        WITH [n1 IN vNodes WHERE apoc.any.property(n1, "AipId")=n.AipId | n1][0] AS n1,  [m1 IN vNodes WHERE apoc.any.property(m1, "AipId")=m.AipId | m1][0] AS m1, r
+        WITH n1, m1, apoc.create.vRelationship(n1, type(r), properties(r), m1) AS r1
+        RETURN n1, m1, r1
+        """
+            )
+
+
+@app.route('/Applications/<app_name>/Graphs/<graph_type>/<graph_id>', methods=['GET'])
+def get_graph(app_name, graph_type, graph_id):
+    my_query = NeoQuery(URI, AUTH, DATABASE)
+    cypher_query = __graphs_query(app_name, graph_type, graph_id)
+    return my_query.execute_query(cypher_query)
+
+
+@app.route('/Algos/<algo>/Compute', methods=['POST'])
+def compute_algo_with_link_types(algo):
+    try:
+        data = request.json
+        if not data:
+            return jsonify({"error": "No data provided"}), 400
+    except Exception as e:
+        return jsonify({"error": "No data or data isn't a json" + str(e)}), 500
+
+    _app_name = data['appName']
+    _graph_type = data['graphType']
+    _graph_id = data['graphId']
+    _link_types = data['linkTypes']
+    print(f"Computing Leiden with {data}")
+    thread = threading.Thread(target=Leiden_on_one_graph, args=(_app_name, _graph_id, _graph_type, _link_types))
+    thread.start()
+    _task_id = thread.ident
+    print(f"Thread {thread} started for task {_task_id}")
+    return jsonify({"message": "Algo computing started", "application": _app_name, "taskId": _task_id}), 202
+
+
+@app.route('/Algos/Tasks/<task_id>', methods=['GET'])
+def get_task_status(task_id):
+    nb_tasks_running = threading.active_count()
+    tasks = threading.enumerate()
+    for task in tasks:
+        if str(task.ident) == task_id:
+            print(f"Task {task_id} is still running")
+            return jsonify({"message": "Task is still running", "taskId": task_id}), 202
+    print(f"Task {task_id} has been completed")
+    return jsonify({"message": "Task has been completed", "taskId": task_id}), 200
+
+
+@app.route('/Algos/Threads', methods=['GET'])
+def get_threads():
+    nb_tasks_running = threading.active_count()
+    tasks = threading.enumerate()
+    tasks_info = [{"id": task.ident, "name": task.name} for task in tasks]
+    return jsonify({"message": "List of running tasks", "nbTasks": nb_tasks_running, "tasks": tasks_info}), 200
+
+
+@app.route('/Applications/<app_name>/Graphs/<graph_type>', methods=['GET'])
+def get_graphs(app_name, graph_type):
+    logging.info("Getting Graphs")
+    my_query = NeoQuery(URI, AUTH, DATABASE)
+    # query = f"MATCH (a:DataGraph:{app_name}) RETURN elementId(a) AS id, a.Name AS name ORDER BY name"
+    query = f"MATCH (a:{graph_type}:{app_name}) RETURN id(a) AS id, a.Name AS name ORDER BY name"
+    return my_query.execute_query(query)
+
+
+# ========================================================================================================================================
+# ========================================================================================================================================
+# Previous version of the APIs
+
+
 @app.route('/Applications/<app_name>/DataGraphs', methods=['GET'])
 def get_datagraphs(app_name):
     logging.info("Getting Datagraphs")
@@ -115,82 +202,6 @@ def get_concepts(app_name):
     # limit = int(request.args.get("limit", 100))
     # return my_query.execute_query(query, limit)
     return my_query.execute_query(cypher_query)
-
-# CLEAN CODE TO KEEP
-
-
-def __graphs_query(app_name: str, graph_type: str, graph_id: int) -> str:
-    _relationship_type = "IS_IN_" + graph_type.upper()
-    return (f"""
-        MATCH p = (d:{graph_type}:{app_name})<-[i1:{_relationship_type}]-(n:{app_name})
-        WHERE id(d) = {graph_id}
-        AND (n:Object OR n:SubObject)
-        WITH n, apoc.map.setLists(properties(n), ['UndirectedLouvain', 'DirectedLouvain', 'Leiden'], [i1.UndirectedLouvain, i1.DirectedLouvain, i1.Leiden]) AS propsCompleted
-        WITH apoc.create.vNode(labels(n), propsCompleted) AS n1
-        WITH collect(n1) AS vNodes, collect(apoc.any.property(n1, "AipId")) AS aipIds
-        CALL cast.linkTypes([\"CALL_IN_TRAN\"]) yield linkTypes
-        WITH vNodes, aipIds, linkTypes
-        MATCH (n:{app_name})<-[r]-(m:{app_name})
-        WHERE (n:Object OR n:SubObject)
-        AND (m:Object OR m:SubObject)
-        AND n.AipId IN aipIds
-        AND m.AipId IN aipIds
-        AND type(r) IN linkTypes
-        WITH n, m, r, vNodes
-        WITH [n1 IN vNodes WHERE apoc.any.property(n1, "AipId")=n.AipId | n1][0] AS n1,  [m1 IN vNodes WHERE apoc.any.property(m1, "AipId")=m.AipId | m1][0] AS m1, r
-        WITH n1, m1, apoc.create.vRelationship(n1, type(r), properties(r), m1) AS r1
-        RETURN n1, m1, r1
-        """
-            )
-
-
-@app.route('/Applications/<app_name>/Graphs/<graph_type>/<graph_id>', methods=['GET'])
-def get_graph(app_name, graph_type, graph_id):
-    my_query = NeoQuery(URI, AUTH, DATABASE)
-    cypher_query = __graphs_query(app_name, graph_type, graph_id)
-    return my_query.execute_query(cypher_query)
-
-
-@app.route('/Algos/<algo>/Compute', methods=['POST'])
-def compute_algo_with_link_types(algo):
-    try:
-        data = request.json
-        if not data:
-            return jsonify({"error": "No data provided"}), 400
-    except Exception as e:
-        return jsonify({"error": "No data or data isn't a json" + str(e)}), 500
-
-    _app_name = data['appName']
-    _graph_type = data['graphType']
-    _graph_id = data['graphId']
-    _link_types = data['linkTypes']
-    print(f"Computing Leiden with {data}")
-    thread = threading.Thread(target=Leiden_on_one_graph, args=(_app_name, _graph_id, _graph_type, _link_types))
-    thread.start()
-    _task_id = thread.ident
-    print(f"Thread {thread} started for task {_task_id}")
-    return jsonify({"message": "Algo computing started", "application": _app_name, "taskId": _task_id}), 202
-
-
-@app.route('/Algos/Tasks/<task_id>', methods=['GET'])
-def get_task_status(task_id):
-    nb_tasks_running = threading.active_count()
-    tasks = threading.enumerate()
-    for task in tasks:
-        if str(task.ident) == task_id:
-            print(f"Task {task_id} is still running")
-            return jsonify({"message": "Task is still running", "taskId": task_id}), 202
-    print(f"Task {task_id} has been completed")
-    return jsonify({"message": "Task has been completed", "taskId": task_id}), 200
-
-
-@app.route('/Algos/Threads', methods=['GET'])
-def get_threads():
-    nb_tasks_running = threading.active_count()
-    tasks = threading.enumerate()
-    tasks_info = [{"id": task.ident, "name": task.name} for task in tasks]
-    return jsonify({"message": "List of running tasks", "nbTasks": nb_tasks_running, "tasks": tasks_info}), 200
-# END CLEAN CODE TO KEEP
 
 
 def __linkTypes_query(app_name: str, graph_type: str, relationship_type: str, element_id: int) -> str:
