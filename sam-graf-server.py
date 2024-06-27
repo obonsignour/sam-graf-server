@@ -180,6 +180,7 @@ def get_task_status(task_id):
         if str(task.ident) == task_id:
             print(f"Task {task_id} is still running")
             return jsonify({"message": "Task is still running", "taskId": task_id}), 202
+    print(f"Task {task_id} has been completed")
     return jsonify({"message": "Task has been completed", "taskId": task_id}), 200
 
 
