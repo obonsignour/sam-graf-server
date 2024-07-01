@@ -5,6 +5,9 @@ from colorama import Fore, Style, Back
 import os
 
 from AlgoToTest.Leiden_onFly2 import Leiden_on_one_graph
+from AlgoToTest.ULouvain_onFly2 import Undirected_Louvain_on_one_graph
+from AlgoToTest.DLouvain_onFly2 import Directed_Louvain_on_one_graph
+from AlgoToTest.SLPA_onFly2 import SLPA_on_one_graph
 from neo_query import NeoQuery
 import subprocess
 import paramiko
@@ -31,6 +34,13 @@ Use .env file to configure it
 """
 print(Fore.BLACK + Back.WHITE + msg + Style.RESET_ALL)
 
+# Define the mapping dictionary
+algo_mapping = {
+    'Leiden': Leiden_on_one_graph,
+    'UndirectedLouvain': Undirected_Louvain_on_one_graph,
+    'DirectedLouvain': Directed_Louvain_on_one_graph,
+    'SLPA': SLPA_on_one_graph
+}
 
 @app.route('/Applications', methods=['GET'])
 def get_applications():
@@ -79,18 +89,24 @@ def compute_algo_with_link_types(algo):
         if not data:
             return jsonify({"error": "No data provided"}), 400
     except Exception as e:
-        return jsonify({"error": "No data or data isn't a json" + str(e)}), 500
+        return jsonify({"error": "No data or data isn't a json: " + str(e)}), 500
 
     _app_name = data['appName']
     _graph_type = data['graphType']
     _graph_id = data['graphId']
     _link_types = data['linkTypes']
-    print(f"Computing Leiden with {data}")
-    thread = threading.Thread(target=Leiden_on_one_graph, args=(_app_name, _graph_id, _graph_type, _link_types))
+
+    # Retrieve the function from the dictionary
+    algo_function = algo_mapping.get(algo)
+    if not algo_function:
+        return jsonify({"error": f"Algorithm {algo} is not supported"}), 400
+
+    print(f"Computing {algo} with {data}")
+    thread = threading.Thread(target=algo_function, args=(_app_name, _graph_id, _graph_type, _link_types))
     thread.start()
     _task_id = thread.ident
     print(f"Thread {thread} started for task {_task_id}")
-    return jsonify({"message": "Algo computing started", "application": _app_name, "taskId": _task_id}), 202
+    return jsonify({"message": f"Algo {algo} ocomputing started", "application": _app_name, "taskId": _task_id}), 202
 
 
 @app.route('/Algos/Tasks/<task_id>', methods=['GET'])
