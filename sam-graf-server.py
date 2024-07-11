@@ -56,7 +56,7 @@ def __graphs_query(app_name: str, graph_type: str, graph_id: int) -> str:
         MATCH p = (d:{graph_type}:{app_name})<-[i1:{_relationship_type}]-(n:{app_name})
         WHERE id(d) = {graph_id}
         AND (n:Object OR n:SubObject)
-        WITH n, apoc.map.setLists(properties(n), ['UndirectedLouvain', 'DirectedLouvain', 'Leiden'], [i1.UndirectedLouvain, i1.DirectedLouvain, i1.Leiden]) AS propsCompleted
+        WITH n, apoc.map.setLists(properties(n), ['UndirectedLouvain', 'DirectedLouvain', 'Leiden', 'SLPA'], [i1.UndirectedLouvain, i1.DirectedLouvain, i1.Leiden, i1.SLPA]) AS propsCompleted
         WITH apoc.create.vNode(labels(n), propsCompleted) AS n1
         WITH collect(n1) AS vNodes, collect(apoc.any.property(n1, "AipId")) AS aipIds
         CALL cast.linkTypes([\"CALL_IN_TRAN\"]) yield linkTypes
@@ -71,6 +71,28 @@ def __graphs_query(app_name: str, graph_type: str, graph_id: int) -> str:
         WITH [n1 IN vNodes WHERE apoc.any.property(n1, "AipId")=n.AipId | n1][0] AS n1,  [m1 IN vNodes WHERE apoc.any.property(m1, "AipId")=m.AipId | m1][0] AS m1, r
         WITH n1, m1, apoc.create.vRelationship(n1, type(r), properties(r), m1) AS r1
         RETURN n1, m1, r1
+        """
+            )
+
+def __appgraph_query(app_name: str) -> str:
+    return (f"""
+        MATCH p = (d:Model:{app_name})<-[i1:IS_IN_MODEL]-(n:{app_name})
+        WHERE (n:Object OR n:SubObject)
+        WITH n, apoc.map.setLists(properties(n), ['UndirectedLouvain', 'DirectedLouvain', 'Leiden', 'SLPA'], [i1.UndirectedLouvain, i1.DirectedLouvain, i1.Leiden, i1.SLPA]) AS propsCompleted
+        WITH apoc.create.vNode(labels(n), propsCompleted) AS n1
+        WITH collect(n1) AS vNodes, collect(apoc.any.property(n1, "AipId")) AS aipIds
+        CALL cast.linkTypes([\"CALL_IN_TRAN\"]) yield linkTypes
+        WITH vNodes, aipIds, linkTypes
+        MATCH (n:{app_name})<-[r]-(m:{app_name})
+        WHERE (n:Object OR n:SubObject)
+        AND (m:Object OR m:SubObject)
+        AND n.AipId IN aipIds
+        AND m.AipId IN aipIds
+        AND type(r) IN linkTypes
+        WITH n, m, r, vNodes
+        WITH [n1 IN vNodes WHERE apoc.any.property(n1, "AipId")=n.AipId | n1][0] AS n1,  [m1 IN vNodes WHERE apoc.any.property(m1, "AipId")=m.AipId | m1][0] AS m1, r
+        WITH n1, m1, apoc.create.vRelationship(n1, type(r), properties(r), m1) AS r1
+        RETURN n1, m1, r1 limit 10
         """
             )
 
@@ -189,6 +211,13 @@ def get_datagraph(app_name, element_id):
     print('URI: ', URI)
     return my_query.execute_query(cypher_query)
 
+@app.route('/Applications/<app_name>/ApplicationGraph', methods=['GET'])
+def get_appgraph(app_name):
+    my_query = NeoQuery(URI, AUTH, DATABASE)
+    cypher_query = __appgraph_query(app_name)
+    print('URI: ', URI)
+    return my_query.execute_query(cypher_query)
+
 
 # Name of the attributes for each nodes in Ne4j :
 # community_level_{level}_{model}_{graph_type}_{graph_name}
@@ -220,7 +249,7 @@ def get_concepts(app_name):
     return my_query.execute_query(cypher_query)
 
 
-def __linkTypes_query(app_name: str, graph_type: str, relationship_type: str, element_id: int) -> str:
+def __linkTypes_query_graphs(app_name: str, graph_type: str, relationship_type: str, element_id: int) -> str:
     query = f"""
         CALL cast.linkTypes(["CALL_IN_TRAN"]) yield linkTypes
         WITH linkTypes + [] AS updatedLinkTypes //"EXEC", "RELYON"
@@ -236,18 +265,36 @@ def __linkTypes_query(app_name: str, graph_type: str, relationship_type: str, el
         """
     return query
 
+def __linkTypes_query_appgraph(app_name: str) -> str:
+    query = f"""
+        CALL cast.linkTypes(['CALL_IN_TRAN']) yield linkTypes
+        WITH linkTypes + [] AS updatedLinkTypes
+        MATCH p=(n:{app_name})<-[r]-(m:{app_name})
+        WHERE (n:Object OR n:SubObject)
+        AND (m:Object OR m:SubObject)
+        AND type(r) IN updatedLinkTypes
+        RETURN DISTINCT type(r) AS relationType ORDER BY relationType
+        """
+    return query
+
 
 @app.route('/Applications/<app_name>/Transactions/<element_id>/LinkTypes', methods=['GET'])
 def get_linkTypes_transaction(app_name, element_id):
     my_query = NeoQuery(URI, AUTH, DATABASE)
-    cypher_query = __linkTypes_query(app_name, "Transaction", "IS_IN_TRANSACTION", element_id)
+    cypher_query = __linkTypes_query_graphs(app_name, "Transaction", "IS_IN_TRANSACTION", element_id)
     return my_query.execute_query(cypher_query)
 
 
 @app.route('/Applications/<app_name>/DataGraphs/<element_id>/LinkTypes', methods=['GET'])
 def get_linkTypes_datagraph(app_name, element_id):
     my_query = NeoQuery(URI, AUTH, DATABASE)
-    cypher_query = __linkTypes_query(app_name, "DataGraph", "IS_IN_DATAGRAPH", element_id)
+    cypher_query = __linkTypes_query_graphs(app_name, "DataGraph", "IS_IN_DATAGRAPH", element_id)
+    return my_query.execute_query(cypher_query)
+
+@app.route('/Applications/<app_name>/ApplicationGraph/LinkTypes', methods=['GET'])
+def get_linkTypes_appgraph(app_name):
+    my_query = NeoQuery(URI, AUTH, DATABASE)
+    cypher_query = __linkTypes_query_appgraph(app_name)
     return my_query.execute_query(cypher_query)
 
 
