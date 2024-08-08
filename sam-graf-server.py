@@ -14,6 +14,8 @@ import paramiko
 import json
 from flask import Flask, Response, request, jsonify
 
+from query_texts import __graphs_query
+
 
 app = Flask(__name__)
 __version__ = "1.0.0-alpha.2"
@@ -34,13 +36,6 @@ Use .env file to configure it
 """
 print(Fore.BLACK + Back.WHITE + msg + Style.RESET_ALL)
 
-# Define the mapping dictionary
-algo_mapping = {
-    'Leiden': Leiden_on_one_graph,
-    'UndirectedLouvain': Undirected_Louvain_on_one_graph,
-    'DirectedLouvain': Directed_Louvain_on_one_graph,
-    'SLPA': SLPA_on_one_graph
-}
 
 @app.route('/Applications', methods=['GET'])
 def get_applications():
@@ -50,58 +45,34 @@ def get_applications():
     return my_query.execute_query(query)
 
 
-def __graphs_query(app_name: str, graph_type: str, graph_id: int) -> str:
-    _relationship_type = "IS_IN_" + graph_type.upper()
-    return (f"""
-        MATCH p = (d:{graph_type}:{app_name})<-[i1:{_relationship_type}]-(n:{app_name})
-        WHERE id(d) = {graph_id}
-        AND (n:Object OR n:SubObject)
-        WITH n, apoc.map.setLists(properties(n), ['UndirectedLouvain', 'DirectedLouvain', 'Leiden', 'SLPA'], [i1.UndirectedLouvain, i1.DirectedLouvain, i1.Leiden, i1.SLPA]) AS propsCompleted
-        WITH apoc.create.vNode(labels(n), propsCompleted) AS n1
-        WITH collect(n1) AS vNodes, collect(apoc.any.property(n1, "AipId")) AS aipIds
-        CALL cast.linkTypes([\"CALL_IN_TRAN\"]) yield linkTypes
-        WITH vNodes, aipIds, linkTypes
-        MATCH (n:{app_name})<-[r]-(m:{app_name})
-        WHERE (n:Object OR n:SubObject)
-        AND (m:Object OR m:SubObject)
-        AND n.AipId IN aipIds
-        AND m.AipId IN aipIds
-        AND type(r) IN linkTypes
-        WITH n, m, r, vNodes
-        WITH [n1 IN vNodes WHERE apoc.any.property(n1, "AipId")=n.AipId | n1][0] AS n1,  [m1 IN vNodes WHERE apoc.any.property(m1, "AipId")=m.AipId | m1][0] AS m1, r
-        WITH n1, m1, apoc.create.vRelationship(n1, type(r), properties(r), m1) AS r1
-        RETURN n1, m1, r1
-        """
-            )
-
-def __appgraph_query(app_name: str) -> str:
-    return (f"""
-        MATCH p = (d:Model:{app_name})<-[i1:IS_IN_MODEL]-(n:{app_name})
-        WHERE (n:Object OR n:SubObject)
-        WITH n, apoc.map.setLists(properties(n), ['UndirectedLouvain', 'DirectedLouvain', 'Leiden', 'SLPA'], [i1.UndirectedLouvain, i1.DirectedLouvain, i1.Leiden, i1.SLPA]) AS propsCompleted
-        WITH apoc.create.vNode(labels(n), propsCompleted) AS n1
-        WITH collect(n1) AS vNodes, collect(apoc.any.property(n1, "AipId")) AS aipIds
-        CALL cast.linkTypes([\"CALL_IN_TRAN\"]) yield linkTypes
-        WITH vNodes, aipIds, linkTypes
-        MATCH (n:{app_name})<-[r]-(m:{app_name})
-        WHERE (n:Object OR n:SubObject)
-        AND (m:Object OR m:SubObject)
-        AND n.AipId IN aipIds
-        AND m.AipId IN aipIds
-        AND type(r) IN linkTypes
-        WITH n, m, r, vNodes
-        WITH [n1 IN vNodes WHERE apoc.any.property(n1, "AipId")=n.AipId | n1][0] AS n1,  [m1 IN vNodes WHERE apoc.any.property(m1, "AipId")=m.AipId | m1][0] AS m1, r
-        WITH n1, m1, apoc.create.vRelationship(n1, type(r), properties(r), m1) AS r1
-        RETURN n1, m1, r1 limit 10
-        """
-            )
-
-
-@app.route('/Applications/<app_name>/Graphs/<graph_type>/<graph_id>', methods=['GET'])
-def get_graph(app_name, graph_type, graph_id):
+@app.route('/Applications/<app_name>/<graphs>', methods=['GET'])
+def get_graphs(app_name, graphs):
+    logging.info("Getting Graphs")
     my_query = NeoQuery(URI, AUTH, DATABASE)
-    cypher_query = __graphs_query(app_name, graph_type, graph_id)
+    _graphType = graphs[:-1]
+    # query = f"MATCH (a:DataGraph:{app_name}) RETURN elementId(a) AS id, a.Name AS name ORDER BY name"
+    query = f"MATCH (a:{_graphType}:{app_name}) RETURN id(a) AS id, a.Name AS name ORDER BY name"
+    return my_query.execute_query(query)
+
+
+@app.route('/Applications/<app_name>/<graphs>/<graph_id>', methods=['GET'])
+def get_graph(app_name, graphs, graph_id):
+    my_query = NeoQuery(URI, AUTH, DATABASE)
+    _graphType = graphs[:-1]
+    cypher_query = __graphs_query(app_name, _graphType, graph_id)
     return my_query.execute_query(cypher_query)
+
+
+# ========================================================================================================================================
+# Algo APIs
+# ========================================================================================================================================
+# Define the mapping dictionary
+algo_mapping = {
+    'Leiden': Leiden_on_one_graph,
+    'UndirectedLouvain': Undirected_Louvain_on_one_graph,
+    'DirectedLouvain': Directed_Louvain_on_one_graph,
+    'SLPA': SLPA_on_one_graph
+}
 
 
 @app.route('/Algos/<algo>/Compute', methods=['POST'])
@@ -114,7 +85,7 @@ def compute_algo_with_link_types(algo):
         return jsonify({"error": "No data or data isn't a json: " + str(e)}), 500
 
     _app_name = data['appName']
-    _graph_type = data['graphType']
+    _graph_type = data['graphType'][:-1]
     _graph_id = data['graphId']
     _link_types = data['linkTypes']
 
@@ -151,37 +122,9 @@ def get_threads():
     return jsonify({"message": "List of running tasks", "nbTasks": nb_tasks_running, "tasks": tasks_info}), 200
 
 
-@app.route('/Applications/<app_name>/Graphs/<graph_type>', methods=['GET'])
-def get_graphs(app_name, graph_type):
-    logging.info("Getting Graphs")
-    my_query = NeoQuery(URI, AUTH, DATABASE)
-    # query = f"MATCH (a:DataGraph:{app_name}) RETURN elementId(a) AS id, a.Name AS name ORDER BY name"
-    query = f"MATCH (a:{graph_type}:{app_name}) RETURN id(a) AS id, a.Name AS name ORDER BY name"
-    return my_query.execute_query(query)
-
-
 # ========================================================================================================================================
 # ========================================================================================================================================
 # Previous version of the APIs
-
-
-@app.route('/Applications/<app_name>/DataGraphs', methods=['GET'])
-def get_datagraphs(app_name):
-    logging.info("Getting Datagraphs")
-    my_query = NeoQuery(URI, AUTH, DATABASE)
-    # query = f"MATCH (a:DataGraph:{app_name}) RETURN elementId(a) AS id, a.Name AS name ORDER BY name"
-    query = f"MATCH (a:DataGraph:{app_name}) RETURN id(a) AS id, a.Name AS name ORDER BY name"
-    return my_query.execute_query(query)
-
-
-@app.route('/Applications/<app_name>/Transactions', methods=['GET'])
-def get_transactions(app_name):
-    logging.info("Getting Transactions")
-    my_query = NeoQuery(URI, AUTH, DATABASE)
-    query = f"MATCH (a:Transaction:{app_name}) RETURN id(a) AS id, a.Name AS name ORDER BY name"
-    return my_query.execute_query(query)
-
-
 @app.route('/Applications/<app_name>/Objects', methods=['GET', 'POST'])
 def get_objects(app_name):
     logging.info("Getting objects for " + app_name)
@@ -196,20 +139,6 @@ def get_objects(app_name):
     else:
         return my_query.execute_query(query)
 
-
-@app.route('/Applications/<app_name>/Transactions/<element_id>', methods=['GET'])
-def get_transaction(app_name, element_id):
-    my_query = NeoQuery(URI, AUTH, DATABASE)
-    cypher_query = __graphs_query(app_name, "Transaction", element_id)
-    return my_query.execute_query(cypher_query)
-
-
-@app.route('/Applications/<app_name>/DataGraphs/<element_id>', methods=['GET'])
-def get_datagraph(app_name, element_id):
-    my_query = NeoQuery(URI, AUTH, DATABASE)
-    cypher_query = __graphs_query(app_name, "DataGraph", element_id)
-    print('URI: ', URI)
-    return my_query.execute_query(cypher_query)
 
 @app.route('/Applications/<app_name>/ApplicationGraph', methods=['GET'])
 def get_appgraph(app_name):
@@ -265,6 +194,7 @@ def __linkTypes_query_graphs(app_name: str, graph_type: str, relationship_type: 
         """
     return query
 
+
 def __linkTypes_query_appgraph(app_name: str) -> str:
     query = f"""
         CALL cast.linkTypes(['CALL_IN_TRAN']) yield linkTypes
@@ -290,6 +220,7 @@ def get_linkTypes_datagraph(app_name, element_id):
     my_query = NeoQuery(URI, AUTH, DATABASE)
     cypher_query = __linkTypes_query_graphs(app_name, "DataGraph", "IS_IN_DATAGRAPH", element_id)
     return my_query.execute_query(cypher_query)
+
 
 @app.route('/Applications/<app_name>/ApplicationGraph/LinkTypes', methods=['GET'])
 def get_linkTypes_appgraph(app_name):
