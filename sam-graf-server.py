@@ -6,6 +6,7 @@ import os
 
 from AlgoToTest.Leiden_onFly2 import Leiden_on_one_graph
 from AlgoToTest.ULouvain_onFly2 import Undirected_Louvain_on_one_graph
+from AlgoToTest.ULouvain_onFlyAppGraph import Undirected_Louvain_on_one_app
 from AlgoToTest.DLouvain_onFly2 import Directed_Louvain_on_one_graph
 from AlgoToTest.SLPA_onFly2 import SLPA_on_one_graph
 from neo_query import NeoQuery
@@ -14,7 +15,7 @@ import paramiko
 import json
 from flask import Flask, Response, request, jsonify
 
-from query_texts import __graphs_query
+from query_texts import graphs_query, appgraph_query
 
 
 app = Flask(__name__)
@@ -45,6 +46,27 @@ def get_applications():
     return my_query.execute_query(query)
 
 
+@app.route('/Applications/<app_name>/Concepts', methods=['GET'])
+def get_concepts(app_name):
+    my_query = NeoQuery(URI, AUTH, DATABASE)
+    cypher_query = f"""
+        MATCH (n:{app_name}) WHERE (n:Object OR n:SubObject)
+        WITH collect(DISTINCT n.InternalType) AS types
+        MATCH (i:InternalType) WHERE i.Name IN types
+        RETURN DISTINCT i.Concept AS name, count(i) AS count ORDER BY name """
+    # limit = int(request.args.get("limit", 100))
+    # return my_query.execute_query(query, limit)
+    return my_query.execute_query(cypher_query)
+
+
+@app.route('/Applications/<app_name>', methods=['GET'])
+def get_appgraph(app_name):
+    my_query = NeoQuery(URI, AUTH, DATABASE)
+    cypher_query = appgraph_query(app_name)
+    print('URI: ', URI)
+    return my_query.execute_query(cypher_query)
+
+
 @app.route('/Applications/<app_name>/<graphs>', methods=['GET'])
 def get_graphs(app_name, graphs):
     logging.info("Getting Graphs")
@@ -59,20 +81,28 @@ def get_graphs(app_name, graphs):
 def get_graph(app_name, graphs, graph_id):
     my_query = NeoQuery(URI, AUTH, DATABASE)
     _graphType = graphs[:-1]
-    cypher_query = __graphs_query(app_name, _graphType, graph_id)
+    cypher_query = graphs_query(app_name, _graphType, graph_id)
     return my_query.execute_query(cypher_query)
 
 
 # ========================================================================================================================================
 # Algo APIs
 # ========================================================================================================================================
-# Define the mapping dictionary
-algo_mapping = {
-    'Leiden': Leiden_on_one_graph,
-    'UndirectedLouvain': Undirected_Louvain_on_one_graph,
-    'DirectedLouvain': Directed_Louvain_on_one_graph,
-    'SLPA': SLPA_on_one_graph
-}
+def _get_function_name(algorithm, graph_type):
+    # Define the mapping dictionary
+    algo_function_prefixes = {
+        'Leiden': "Leiden",
+        'UndirectedLouvain': "Undirected_Louvain",
+        'DirectedLouvain': "Directed_Louvain",
+        'SLPA': "SLPA",
+    }
+    if graph_type == "Application":
+        scope = "_on_one_app"
+    else:
+        scope = "_on_one_graph"
+
+    function_name = f"{algo_function_prefixes[algorithm]}{scope}"
+    return function_name
 
 
 @app.route('/Algos/<algo>/Compute', methods=['POST'])
@@ -85,21 +115,28 @@ def compute_algo_with_link_types(algo):
         return jsonify({"error": "No data or data isn't a json: " + str(e)}), 500
 
     _app_name = data['appName']
-    _graph_type = data['graphType'][:-1]
+    _graph_type = data['graphType']
     _graph_id = data['graphId']
     _link_types = data['linkTypes']
 
     # Retrieve the function from the dictionary
-    algo_function = algo_mapping.get(algo)
-    if not algo_function:
+    # algo_function = algo_function_prefixes.get(algo)
+    algo_function_name = _get_function_name(algo, _graph_type)
+    print(f"Algo function: {algo_function_name}")
+
+    if not globals()[algo_function_name]:
         return jsonify({"error": f"Algorithm {algo} is not supported"}), 400
 
     print(f"Computing {algo} with {data}")
-    thread = threading.Thread(target=algo_function, args=(_app_name, _graph_id, _graph_type, _link_types))
+    if (_graph_type == "Application"):
+        print(f"Running {algo} on {_app_name} application")
+        thread = threading.Thread(target=globals()[algo_function_name], args=(_app_name, _link_types))
+    else:
+        thread = threading.Thread(target=globals()[algo_function_name], args=(_app_name, _graph_id, _graph_type, _link_types))
     thread.start()
     _task_id = thread.ident
     print(f"Thread {thread} started for task {_task_id}")
-    return jsonify({"message": f"Algo {algo} ocomputing started", "application": _app_name, "taskId": _task_id}), 202
+    return jsonify({"message": f"Algo {algo} computing started", "application": _app_name, "taskId": _task_id}), 202
 
 
 @app.route('/Algos/Tasks/<task_id>', methods=['GET'])
@@ -138,44 +175,6 @@ def get_objects(app_name):
         return my_query.execute_query(query, limit)
     else:
         return my_query.execute_query(query)
-
-
-@app.route('/Applications/<app_name>/ApplicationGraph', methods=['GET'])
-def get_appgraph(app_name):
-    my_query = NeoQuery(URI, AUTH, DATABASE)
-    cypher_query = __appgraph_query(app_name)
-    print('URI: ', URI)
-    return my_query.execute_query(cypher_query)
-
-
-# Name of the attributes for each nodes in Ne4j :
-# community_level_{level}_{model}_{graph_type}_{graph_name}
-
-# @app.route('/Applications/<app_name>/<model>/<graph_type>/<graph_name>/Level/<level_number>', methods=['GET'])
-# def get_level(app_name, level_number, model, graph_type, graph_name):
-#    my_query = NeoQuery(URI, AUTH, DATABASE)
-#    level_label = f"community_level_{level_number}_{model}_{graph_type}_{graph_name}"
-#    cypher_query = """
-#        MATCH p=(l1:""" + level_label + """:""" + app_name + """)-[r]->(l2:""" + level_label + """:""" + app_name + """)
-#        RETURN p """
-#    # limit = int(request.args.get("limit", 100))
-#    # return my_query.execute_query(query, limit)
-#    return my_query.execute_query(cypher_query)
-
-# APIs for the search
-
-
-@app.route('/Applications/<app_name>/Concepts', methods=['GET'])
-def get_concepts(app_name):
-    my_query = NeoQuery(URI, AUTH, DATABASE)
-    cypher_query = f"""
-        MATCH (n:{app_name}) WHERE (n:Object OR n:SubObject)
-        WITH collect(DISTINCT n.InternalType) AS types
-        MATCH (i:InternalType) WHERE i.Name IN types
-        RETURN DISTINCT i.Concept AS name, count(i) AS count ORDER BY name """
-    # limit = int(request.args.get("limit", 100))
-    # return my_query.execute_query(query, limit)
-    return my_query.execute_query(cypher_query)
 
 
 def __linkTypes_query_graphs(app_name: str, graph_type: str, relationship_type: str, element_id: int) -> str:

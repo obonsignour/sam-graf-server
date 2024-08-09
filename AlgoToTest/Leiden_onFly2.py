@@ -10,6 +10,8 @@ from AlgoToTest.neo4j_connector_igraph import Neo4jGraph
 import os
 from dotenv import load_dotenv
 
+from query_texts import generate_cypher_query
+
 start_time = time.time()
 
 # Link to OpenAI
@@ -246,53 +248,13 @@ def nodes_of_interest(G, application, graph_type, graph_id):
         print("nodes_of_interest is built for DataGraph or Transaction")
 
 
-def generate_cypher_query(application, graph_type, graph_id, linkTypes="all"):
-    if graph_type == "DataGraph":
-        relationship_type = "IS_IN_DATAGRAPH"
-    elif graph_type == "Transaction":
-        relationship_type = "IS_IN_TRANSACTION"
-    else:
-        return print("generate_cypher_query is build for DataGraph or Transaction")
-    if linkTypes == "all":
-        cypher_query = (f"""
-            CALL cast.linkTypes(['CALL_IN_TRAN']) yield linkTypes
-            WITH linkTypes + [] AS updatedLinkTypes
-            MATCH (d:{graph_type}:{application})<-[:{relationship_type}]-(n)
-            WITH collect(id(n)) AS nodeIds,updatedLinkTypes
-            MATCH p=(d:{graph_type}:{application})<-[:{relationship_type}]-(n:{application})<-[r]-(m:{application})-[:{relationship_type}]->(d)
-            WHERE ID(d) = {graph_id}
-            AND (n:Object OR n:SubObject)
-            AND (m:Object OR m:SubObject)
-            AND id(n) IN nodeIds AND id(m) IN nodeIds
-            AND type(r) IN updatedLinkTypes
-            RETURN DISTINCT n, r, m
-            """
-                        )
-    else:
-        cypher_query = (f"""
-            WITH {linkTypes} as linkTypes
-            WITH linkTypes + [] AS updatedLinkTypes
-            MATCH (d:{graph_type}:{application})<-[:{relationship_type}]-(n)
-            WITH collect(id(n)) AS nodeIds,updatedLinkTypes
-            MATCH p=(d:{graph_type}:{application})<-[:{relationship_type}]-(n:{application})<-[r]-(m:{application})-[:{relationship_type}]->(d)
-            WHERE ID(d) = {graph_id}
-            AND (n:Object OR n:SubObject)
-            AND (m:Object OR m:SubObject)
-            AND id(n) IN nodeIds AND id(m) IN nodeIds
-            AND type(r) IN updatedLinkTypes
-            RETURN DISTINCT n, r, m
-            """
-                        )
-    return cypher_query
-
-
 def update_neo4j_graph(updated_graph, new_attributes_name, application, graph_id, graph_type, model, linkTypes):
     if graph_type == "DataGraph":
         relationship_type = "IS_IN_DATAGRAPH"
     elif graph_type == "Transaction":
         relationship_type = "IS_IN_TRANSACTION"
     else:
-        return print("generate_cypher_query is build for DataGraph or Transaction")
+        return print("update_neo4j_graph is build for DataGraph or Transaction")
 
     # Connect to Neo4j
     driver = GraphDatabase.driver(URI, auth=(user, password), database=database_name)
@@ -434,7 +396,7 @@ def get_relations_types_graphs(application, graph_type, graph_id):
     elif graph_type == "Transaction":
         relationship_type = "IS_IN_TRANSACTION"
     else:
-        return print("generate_cypher_query is build for DataGraph or Transaction")
+        return print("get_relations_types_graphs is build for DataGraph or Transaction")
     # Connect to Neo4j
     driver = GraphDatabase.driver(URI, auth=(user, password), database=database_name)
     # Build the Cypher query

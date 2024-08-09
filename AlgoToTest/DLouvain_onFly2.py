@@ -8,6 +8,8 @@ import AlgoToTest.community_louvain_directed as com
 import os
 from dotenv import load_dotenv
 
+from query_texts import generate_cypher_query
+
 start_time = time.time()
 
 load_dotenv()
@@ -23,9 +25,11 @@ except KeyError:
     exit(1)
 
 # Name of the properties used in the similarity function
-properties_of_interest = ['Type', 'Level', 'External', 'Method'] #, 'Hidden'
+properties_of_interest = ['Type', 'Level', 'External', 'Method']  # , 'Hidden'
 
 # A similarity function based on node properties
+
+
 def similarity(node1, node2, properties_of_interest):
     similarity_sum = 0
     for prop in properties_of_interest:
@@ -38,15 +42,19 @@ def similarity(node1, node2, properties_of_interest):
     return overall_similarity
 
 # Add edges with weights based on similarity
+
+
 def add_semantic_as_weight(G):
     for u, v in G.edges():
         weight = similarity(G.nodes(data=True)[u], G.nodes(data=True)[v], properties_of_interest)
         G[u][v]['weight'] = weight
 
 # Fonction pour générer un nom de communauté à partir d'une liste de termes
+
+
 def generate_community_name(terms):
-    #prompt = f"Generate a name for the community based on the following terms:\n{', '.join(terms)}"
-    #prompt = f"Generate and return only one concise and meaningful name without symbols and of maximum 30 characters, grouping the following terms:\n{', '.join(terms)}"
+    # prompt = f"Generate a name for the community based on the following terms:\n{', '.join(terms)}"
+    # prompt = f"Generate and return only one concise and meaningful name without symbols and of maximum 30 characters, grouping the following terms:\n{', '.join(terms)}"
     prompt = f"""
     CONTEXT: Identification of functional processes based on coding objetcs names.
     TASK: Generate a meaningful group of word summurazing the list of input words.
@@ -61,7 +69,7 @@ def generate_community_name(terms):
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages=[
-            #{"role": "system", "content": "You are a helpful assis tant."},
+            # {"role": "system", "content": "You are a helpful assis tant."},
             {"role": "user", "content": prompt},
         ],
         max_tokens=5,
@@ -69,8 +77,9 @@ def generate_community_name(terms):
     )
     return response.choices[0].message["content"].strip()
 
+
 def communitiesNames(G, dendrogram):
-    #print("length dendro : ", len(dendrogram))
+    # print("length dendro : ", len(dendrogram))
     # Initialize a list to store community names for each level
     CommunitiesNames = {}
     # Iterate through each level of the dendrogram
@@ -90,17 +99,19 @@ def communitiesNames(G, dendrogram):
         # Append the dictionary of community names for the current level to the main list
         CommunitiesNames[level] = level_community_names
 
-    # CommunitiesNames[level][community_id] give the name of the community community_id 
-    #at level level.
-    return CommunitiesNames 
+    # CommunitiesNames[level][community_id] give the name of the community community_id
+    # at level level.
+    return CommunitiesNames
+
 
 def add_community_attributes(G, dendrogram, model, graph_type, graph_id, communitiesNames):
     # Add community attributes to nodes for each level in the dendrogram
-    for level in range(len(dendrogram) ):
-        #communities_at_level = community.partition_at_level(dendrogram, level)
+    for level in range(len(dendrogram)):
+        # communities_at_level = community.partition_at_level(dendrogram, level)
         communities_at_level = com.partition_at_level(dendrogram, len(dendrogram)-1 - level)
         for node, community_id in communities_at_level.items():
             G.nodes[node][f'community_level_{level}_{model}_{graph_type}_{graph_id}'] = communitiesNames[level][community_id]
+
 
 def get_graph_name(application, graph_id):
     # Connect to Neo4j
@@ -111,7 +122,7 @@ def get_graph_name(application, graph_id):
         where ID(n) = {graph_id}
         RETURN n.Name AS nodeName
         """
-    )
+             )
     # Execute the Cypher query
     with driver.session() as session:
         result = session.run(query)
@@ -122,9 +133,10 @@ def get_graph_name(application, graph_id):
     driver.close()
     return node_name
 
+
 def nodes_of_interest(G, application, graph_type, graph_id):
     if graph_type == "DataGraph":
-        table_name =  get_graph_name(application, graph_id)
+        table_name = get_graph_name(application, graph_id)
         start_nodes = [node for node in G.nodes if G.nodes[node].get('DgStartPoint') == "start"]
         start_nodes = [node for node in start_nodes if G.nodes[node].get('Name') == table_name]
         end_nodes = [node for node in G.nodes if G.nodes[node].get('DgEndPoint') == "end"]
@@ -140,55 +152,17 @@ def nodes_of_interest(G, application, graph_type, graph_id):
         start_nodes = [node for node in start_nodes if G.nodes[node].get('Name') == entry_name]
         end_nodes = [node for node in G.nodes if G.nodes[node].get('EndPoint') == "end"]
         return start_nodes, end_nodes
-    else :
+    else:
         return print("nodes_of_interest is build for DataGraph or Transaction")
 
-def generate_cypher_query(application, graph_type, graph_id, linkTypes=["all"]):
-    if graph_type == "DataGraph":
-        relationship_type = "IS_IN_DATAGRAPH"
-    elif graph_type == "Transaction":
-        relationship_type = "IS_IN_TRANSACTION"
-    else :
-        return print("generate_cypher_query is build for DataGraph or Transaction")
-    if linkTypes == ["all"]:
-        cypher_query = (f"""
-            CALL cast.linkTypes(['CALL_IN_TRAN']) yield linkTypes
-            WITH linkTypes + [] AS updatedLinkTypes
-            MATCH (d:{graph_type}:{application})<-[:{relationship_type}]-(n)
-            WITH collect(id(n)) AS nodeIds,updatedLinkTypes
-            MATCH p=(d:{graph_type}:{application})<-[:{relationship_type}]-(n:{application})<-[r]-(m:{application})-[:{relationship_type}]->(d)
-            WHERE ID(d) = {graph_id}
-            AND (n:Object OR n:SubObject)
-            AND (m:Object OR m:SubObject)
-            AND id(n) IN nodeIds AND id(m) IN nodeIds
-            AND type(r) IN updatedLinkTypes
-            RETURN DISTINCT n, r, m
-            """
-        )
-    else : 
-        cypher_query = (f"""
-            WITH {linkTypes} as linkTypes
-            WITH linkTypes + [] AS updatedLinkTypes
-            MATCH (d:{graph_type}:{application})<-[:{relationship_type}]-(n)
-            WITH collect(id(n)) AS nodeIds,updatedLinkTypes
-            MATCH p=(d:{graph_type}:{application})<-[:{relationship_type}]-(n:{application})<-[r]-(m:{application})-[:{relationship_type}]->(d)
-            WHERE ID(d) = {graph_id}
-            AND (n:Object OR n:SubObject)
-            AND (m:Object OR m:SubObject)
-            AND id(n) IN nodeIds AND id(m) IN nodeIds
-            AND type(r) IN updatedLinkTypes
-            RETURN DISTINCT n, r, m
-            """
-        )
-    return cypher_query
 
 def update_neo4j_graph(G, new_attributes_name, application, graph_id, graph_type, model, linkTypes):
     if graph_type == "DataGraph":
         relationship_type = "IS_IN_DATAGRAPH"
     elif graph_type == "Transaction":
         relationship_type = "IS_IN_TRANSACTION"
-    else :
-        return print("generate_cypher_query is build for DataGraph or Transaction")
+    else:
+        return print("update_neo4j_graph is build for DataGraph or Transaction")
 
     # Connect to Neo4j
     driver = GraphDatabase.driver(URI, auth=(user, password), database=database_name)
@@ -198,7 +172,7 @@ def update_neo4j_graph(G, new_attributes_name, application, graph_id, graph_type
     for item in linkTypes:
         newNodeName += item
 
-    # First query to create a new Model node, link it to all the IS_IN_DATAGRAPH nodes whith a new links IS_IN_MODEL 
+    # First query to create a new Model node, link it to all the IS_IN_DATAGRAPH nodes whith a new links IS_IN_MODEL
     # and store the concern link types as a property of the new node.
     if linkTypes == ["all"]:
         cypher_query = (f"""
@@ -218,8 +192,8 @@ def update_neo4j_graph(G, new_attributes_name, application, graph_id, graph_type
             MERGE (new)<-[:IS_IN_MODEL]-(n)
             MERGE (new)<-[:IS_IN_MODEL]-(m)
             """
-        )
-    else :
+                        )
+    else:
         cypher_query = (f"""
             //CALL cast.linkTypes(['CALL_IN_TRAN']) yield linkTypes
             WITH {linkTypes} as linkTypes
@@ -238,10 +212,10 @@ def update_neo4j_graph(G, new_attributes_name, application, graph_id, graph_type
             MERGE (new)<-[:IS_IN_MODEL]-(n)
             MERGE (new)<-[:IS_IN_MODEL]-(m)
             """
-        )
+                        )
 
     with driver.session() as session:
-                session.run(cypher_query)
+        session.run(cypher_query)
 
     # Second query to store the infomation about community membership as property of the new link IS_IN_MODEL between the new node Model and nodes.
     # Iterate through nodes in the graph
@@ -254,9 +228,9 @@ def update_neo4j_graph(G, new_attributes_name, application, graph_id, graph_type
                 MATCH p2 = (new)<-[r:IS_IN_MODEL]-(m:{application})
                 WHERE ID(m) = {node_id}
                 SET r.Community = [{', '.join([f"'{data.get(attr)}'" for attr in new_attributes_name])}]
-                """    
-                )
-        
+                """
+                     )
+
             # Execute the Cypher query
             with driver.session() as session:
                 session.run(query)
@@ -293,23 +267,24 @@ def Directed_Louvain_on_one_graph(application, graph_id, graph_type, linkTypes=[
 
     # Identify nodes of interest (start and end points) to exclude from the induced subgraph
     start_nodes, end_nodes = nodes_of_interest(G, application, graph_type, graph_id)
-    #exclude_indices = set(start_nodes + end_nodes)
+    # exclude_indices = set(start_nodes + end_nodes)
 
     # Perform community detection using Directed Louvain method
-    dendrogram = com.generate_dendrogram(G.subgraph(set(G.nodes) - set(start_nodes + end_nodes)), random_state=42, weight='weight') #, random_state=42
-    #partition = community.partition_at_level(dendrogram, len(dendrogram) - 1)
+    dendrogram = com.generate_dendrogram(G.subgraph(set(G.nodes) - set(start_nodes + end_nodes)), random_state=42, weight='weight')  # , random_state=42
+    # partition = community.partition_at_level(dendrogram, len(dendrogram) - 1)
 
     # Compute the communities names for each level
     communities_names = communitiesNames(G, dendrogram)
 
     # Add attributes to the graph G
     add_community_attributes(G, dendrogram, model, graph_type, graph_id, communities_names)
-    
+
     # Create a list with the new attributes
     new_attributes_name = [f'community_level_{level}_{model}_{graph_type}_{graph_id}' for level in range(len(dendrogram))]
 
     # Update back to neo4j the new attributes to the link property after creating the new Model node
     update_neo4j_graph(G, new_attributes_name, application, graph_id, graph_type, model, linkTypes)
+
 
 def get_all_graphs(graph_type, application):
     # Connect to Neo4j
@@ -327,14 +302,15 @@ def get_all_graphs(graph_type, application):
     driver.close()
     return node_ids
 
+
 def get_relations_types_graphs(application, graph_type, graph_id):
 
     if graph_type == "DataGraph":
         relationship_type = "IS_IN_DATAGRAPH"
     elif graph_type == "Transaction":
         relationship_type = "IS_IN_TRANSACTION"
-    else :
-        return print("generate_cypher_query is build for DataGraph or Transaction")
+    else:
+        return print("get_relations_types_graphs is build for DataGraph or Transaction")
     # Connect to Neo4j
     driver = GraphDatabase.driver(URI, auth=(user, password), database=database_name)
     # Build the Cypher query
@@ -351,7 +327,7 @@ def get_relations_types_graphs(application, graph_type, graph_id):
             AND type(r) IN updatedLinkTypes
             RETURN DISTINCT type(r) as relationsTypes
             """
-    )
+             )
     # Execute the Cypher query
     with driver.session() as session:
         result = session.run(query)
@@ -359,6 +335,7 @@ def get_relations_types_graphs(application, graph_type, graph_id):
     # Close the Neo4j driver
     driver.close()
     return relations_types
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Run Leiden community detection on Neo4j graph")
