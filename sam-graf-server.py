@@ -15,11 +15,11 @@ import paramiko
 import json
 from flask import Flask, Response, request, jsonify
 
-from query_texts import graphs_query, appgraph_query
+from query_texts import get_callgraph_query, callgraph_query, appgraph_query, modelgraph_query
 
 
 app = Flask(__name__)
-__version__ = "1.0.0-alpha.2"
+__version__ = "0.1.0"
 
 try:
     URI = os.environ.get("NEO4J_URI")
@@ -67,21 +67,50 @@ def get_appgraph(app_name):
     return my_query.execute_query(cypher_query)
 
 
-@app.route('/Applications/<app_name>/<graphs>', methods=['GET'])
-def get_graphs(app_name, graphs):
-    logging.info("Getting Graphs")
+@app.route('/Applications/<app_name>/Transactions', methods=['GET'])
+def get_transactions(app_name):
+    logging.info("Getting tranasctions")
     my_query = NeoQuery(URI, AUTH, DATABASE)
-    _graphType = graphs[:-1]
-    # query = f"MATCH (a:DataGraph:{app_name}) RETURN elementId(a) AS id, a.Name AS name ORDER BY name"
-    query = f"MATCH (a:{_graphType}:{app_name}) RETURN id(a) AS id, a.Name AS name ORDER BY name"
+    query = get_callgraph_query(app_name, 'Transaction')
     return my_query.execute_query(query)
 
 
-@app.route('/Applications/<app_name>/<graphs>/<graph_id>', methods=['GET'])
-def get_graph(app_name, graphs, graph_id):
+@app.route('/Applications/<app_name>/DataGraphs', methods=['GET'])
+def get_datagraphs(app_name):
+    logging.info("Getting DataGraphs")
     my_query = NeoQuery(URI, AUTH, DATABASE)
-    _graphType = graphs[:-1]
-    cypher_query = graphs_query(app_name, _graphType, graph_id)
+    query = get_callgraph_query(app_name, 'DataGraph')
+    return my_query.execute_query(query)
+
+
+@app.route('/Applications/<app_name>/Models', methods=['GET'])
+def get_models(app_name):
+    logging.info("Getting Models")
+    my_query = NeoQuery(URI, AUTH, DATABASE)
+    query = f"MATCH (a:Model:{app_name}) RETURN a.name AS modelName, a.LinkTypes AS linkTypes ORDER BY modelName"
+    return my_query.execute_query(query)
+
+
+def _get_a_callgraph(app_name, callgraph_type, callgraph_id):
+    my_query = NeoQuery(URI, AUTH, DATABASE)
+    cypher_query = callgraph_query(app_name, callgraph_type, callgraph_id)
+    return my_query.execute_query(cypher_query)
+
+
+@app.route('/Applications/<app_name>/Transactions/<graph_id>', methods=['GET'])
+def get_a_transaction(app_name, graphs, graph_id):
+    return _get_a_callgraph(app_name, 'Transaction', graph_id)
+
+
+@app.route('/Applications/<app_name>/DataGraphs/<graph_id>', methods=['GET'])
+def get_a_datagraph(app_name, graphs, graph_id):
+    return _get_a_callgraph(app_name, 'DataGraph', graph_id)
+
+
+@app.route('/Applications/<app_name>/Models/<model_name>', methods=['GET'])
+def get_a_model(app_name, model_name):
+    my_query = NeoQuery(URI, AUTH, DATABASE)
+    cypher_query = modelgraph_query(app_name, model_name)
     return my_query.execute_query(cypher_query)
 
 
