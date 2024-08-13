@@ -37,6 +37,13 @@ print(Fore.BLACK + Back.WHITE + msg + Style.RESET_ALL)
 
 @app.route('/Applications', methods=['GET'])
 def get_applications():
+    """
+    GET /Applications
+    Fetches a list of all applications from the Neo4j database.
+
+    Returns:
+        JSON: A list of application names.
+    """
     logging.info("Getting applications")
     my_query = NeoQuery(URI, AUTH, DATABASE)
     query = "MATCH (a:Application) RETURN a.Name AS appName ORDER BY appName"
@@ -45,6 +52,17 @@ def get_applications():
 
 @app.route('/Applications/<app_name>/Concepts', methods=['GET'])
 def get_concepts(app_name):
+    """
+    GET /Applications/<app_name>/Concepts
+    Fetches concepts related to the specified application from the Neo4j database. 
+    Concepts are categories to define the type of object
+
+    Args:
+        app_name (str): The name of the application. Case sensitive.
+
+    Returns:
+        JSON: A list of concepts and their counts.
+    """
     my_query = NeoQuery(URI, AUTH, DATABASE)
     cypher_query = f"""
         MATCH (n:{app_name}) WHERE (n:Object OR n:SubObject)
@@ -58,6 +76,16 @@ def get_concepts(app_name):
 
 @app.route('/Applications/<app_name>', methods=['GET'])
 def get_appgraph(app_name):
+    """
+    GET /Applications/<app_name>
+    Fetches the application graph for the specified application from the Neo4j database.
+
+    Args:
+        app_name (str): The name of the application. Case sensitive.
+
+    Returns:
+        JSON: The application graph.
+    """
     my_query = NeoQuery(URI, AUTH, DATABASE)
     cypher_query = appgraph_query(app_name)
     print('URI: ', URI)
@@ -66,6 +94,16 @@ def get_appgraph(app_name):
 
 @app.route('/Applications/<app_name>/Transactions', methods=['GET'])
 def get_transactions(app_name):
+    """
+    GET /Applications/<app_name>/Transactions
+    Fetches transactions related to the specified application from the Neo4j database.
+
+    Args:
+        app_name (str): The name of the application. Case sensitive.
+
+    Returns:
+        JSON: A list of transactions. (id and name of the transactions, ordered by name).
+    """
     logging.info("Getting tranasctions")
     my_query = NeoQuery(URI, AUTH, DATABASE)
     query = get_callgraph_query(app_name, 'Transaction')
@@ -74,6 +112,16 @@ def get_transactions(app_name):
 
 @app.route('/Applications/<app_name>/DataGraphs', methods=['GET'])
 def get_datagraphs(app_name):
+    """
+    GET /Applications/<app_name>/DataGraphs
+    Fetches data graphs related to the specified application from the Neo4j database.
+
+    Args:
+        app_name (str): The name of the application. Case sensitive.
+
+    Returns:
+        JSON: A list of data graphs (id and name of the datagraphs, ordered by name).
+    """
     logging.info("Getting DataGraphs")
     my_query = NeoQuery(URI, AUTH, DATABASE)
     query = get_callgraph_query(app_name, 'DataGraph')
@@ -82,6 +130,16 @@ def get_datagraphs(app_name):
 
 @app.route('/Applications/<app_name>/Models', methods=['GET'])
 def get_models(app_name):
+    """
+    GET /Applications/<app_name>/Models
+    Fetches models related to the specified application from the Neo4j database.
+
+    Args:
+        app_name (str): The name of the application. Case sensitive.
+
+    Returns:
+        JSON: A list of models and their link types ordered by model name.
+    """
     logging.info("Getting Models")
     my_query = NeoQuery(URI, AUTH, DATABASE)
     query = f"MATCH (a:Model:{app_name}) RETURN a.name AS modelName, a.LinkTypes AS linkTypes ORDER BY modelName"
@@ -89,23 +147,67 @@ def get_models(app_name):
 
 
 def _get_a_callgraph(app_name, callgraph_type, callgraph_id):
+    """
+    Fetches a specific call graph for the specified application from the Neo4j database.
+
+    Args:
+        app_name (str): The name of the application. Case sensitive.
+        callgraph_type (str): The type of the call graph.
+        callgraph_id (str): The ID of the call graph.
+
+    Returns:
+        JSON: The specified call graph.
+    """
     my_query = NeoQuery(URI, AUTH, DATABASE)
     cypher_query = callgraph_query(app_name, callgraph_type, callgraph_id)
     return my_query.execute_query(cypher_query)
 
 
 @app.route('/Applications/<app_name>/Transactions/<graph_id>', methods=['GET'])
-def get_a_transaction(app_name, graphs, graph_id):
+def get_a_transaction(app_name, graph_id):
+    """
+    GET /Applications/<app_name>/Transactions/<graph_id>
+    Fetches a specific transaction for the specified application from the Neo4j database.
+
+    Args:
+        app_name (str): The name of the application. Case sensitive.
+        graph_id (str): The ID of the transaction graph.
+
+    Returns:
+        JSON: The specified transaction graph.
+    """
     return _get_a_callgraph(app_name, 'Transaction', graph_id)
 
 
 @app.route('/Applications/<app_name>/DataGraphs/<graph_id>', methods=['GET'])
-def get_a_datagraph(app_name, graphs, graph_id):
+def get_a_datagraph(app_name, graph_id):
+    """
+    GET /Applications/<app_name>/Transactions/<graph_id>
+    Fetches a specific transaction for the specified application from the Neo4j database.
+
+    Args:
+        app_name (str): The name of the application. Case sensitive.
+        graph_id (str): The ID of the transaction graph.
+
+    Returns:
+        JSON: The specified transaction graph.
+    """
     return _get_a_callgraph(app_name, 'DataGraph', graph_id)
 
 
 @app.route('/Applications/<app_name>/Models/<model_name>', methods=['GET'])
 def get_a_model(app_name, model_name):
+    """
+    GET /Applications/<app_name>/Models/<model_name>
+    Fetches an instance of model: the graph resulting from the computation of a similarity model for a given graph.
+
+    Args:
+        app_name (str): The name of the application. Case sensitive.
+        model_name (str): The name of the instance of the model.
+
+    Returns:
+        JSON: The specified graph.
+    """
     my_query = NeoQuery(URI, AUTH, DATABASE)
     cypher_query = modelgraph_query(app_name, model_name)
     return my_query.execute_query(cypher_query)
