@@ -161,7 +161,6 @@ python-dateutil==2.9.0
 python-dotenv==1.0.1
 python-igraph==0.11.5
 python-Levenshtein==0.25.1
-python-louvain==0.16
 pytz==2024.1
 PyYAML==6.0.1
 pyzmq==26.0.3
@@ -226,3 +225,4 @@ wordcloud==1.9.3
 wrapt==1.16.0
 yarg==0.1.9
 yarl==1.9.4
+python-louvain==0.16
