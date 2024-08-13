@@ -1,6 +1,5 @@
 import logging
 import threading
-import time
 from colorama import Fore, Style, Back
 import os
 
@@ -11,9 +10,7 @@ from AlgoToTest.DLouvain_onFly2 import Directed_Louvain_on_one_graph
 from AlgoToTest.SLPA_onFly2 import SLPA_on_one_graph
 from neo_query import NeoQuery
 import subprocess
-import paramiko
-import json
-from flask import Flask, Response, request, jsonify
+from flask import Flask, request, jsonify
 
 from query_texts import get_callgraph_query, callgraph_query, appgraph_query, modelgraph_query
 
