@@ -3,11 +3,24 @@ import threading
 from colorama import Fore, Style, Back
 import os
 
+"""
 from AlgoToTest.Leiden_onFly2 import Leiden_on_one_graph
 from AlgoToTest.ULouvain_onFly2 import Undirected_Louvain_on_one_graph
 from AlgoToTest.ULouvain_onFlyAppGraph import Undirected_Louvain_on_one_app
 from AlgoToTest.DLouvain_onFly2 import Directed_Louvain_on_one_graph
 from AlgoToTest.SLPA_onFly2 import SLPA_on_one_graph
+"""
+
+# import for call graph
+from Algorithms.DGTransac.Leiden import Leiden_Call_Graph
+from Algorithms.DGTransac.DLouvainV2 import Directed_Louvain_Call_Graph
+from Algorithms.DGTransac.ULouvainV2 import Undirected_Louvain_Call_Graph
+
+# import for app graph
+from Algorithms.FullApp.LeidenApp import Leiden_App_Graph
+from Algorithms.FullApp.DLouvainApp import Directed_Louvain_App_Graph
+from Algorithms.FullApp.ULouvainApp import Undirected_Louvain_App_Graph
+
 from neo_query import NeoQuery
 import subprocess
 from flask import Flask, request, jsonify
@@ -225,9 +238,9 @@ def _get_function_name(algorithm, graph_type):
         'SLPA': "SLPA",
     }
     if graph_type == "Application":
-        scope = "_on_one_app"
+        scope = "_App_Graph"
     else:
-        scope = "_on_one_graph"
+        scope = "_Call_Graph"
 
     function_name = f"{algo_function_prefixes[algorithm]}{scope}"
     return function_name

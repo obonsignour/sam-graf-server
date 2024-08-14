@@ -7,8 +7,8 @@ import openai
 import argparse
 import concurrent.futures
 
-from AlgoToTest.neo4j_connector_nxD import Neo4jGraph
-import AlgoToTest.community_louvain_directed as community
+from Algorithms.toImport.neo4j_connector_nxD import Neo4jGraph
+import Algorithms.toImport.community_louvain_directed as community
 import os
 from dotenv import load_dotenv
 
@@ -258,7 +258,7 @@ def add_community_attributes(graph, community_list, model, communitiesNames):
 
 def get_graph_name(application, graph_id):
     # Connect to Neo4j
-    driver = GraphDatabase.driver(uri, auth=(user, password), database=database_name)
+    driver = GraphDatabase.driver(URI, auth=(user, password), database=database_name)
     # Build the Cypher query
     query = (f"""
         match (n:{application})
@@ -324,7 +324,7 @@ def generate_cypher_query(application, linkTypes):
 
 def update_neo4j_graph(G, new_attributes_name, application, model, linkTypes):
     # Connect to Neo4j
-    driver = GraphDatabase.driver(uri, auth=(user, password), database=database_name)
+    driver = GraphDatabase.driver(URI, auth=(user, password), database=database_name)
 
     # New node name. ex: LeidenUSESELECT
     newNodeName = f"{model}App"
@@ -390,7 +390,7 @@ def update_neo4j_graph(G, new_attributes_name, application, model, linkTypes):
     print(f"The new attributes (community by level) have been loaded to the neo4j {application} graph.")
 
 
-def Directed_Louvain_on_one_graph(application, linkTypes=["all"]):
+def Directed_Louvain_App_Graph(application, linkTypes=["all"]):
     model = "DirectedLouvain"
 
     linkTypes = sorted(linkTypes)
@@ -398,7 +398,7 @@ def Directed_Louvain_on_one_graph(application, linkTypes=["all"]):
     start_time_loading_graph = time.time()
 
     # Crée une instance de la classe Neo4jGraph
-    neo4j_graph = Neo4jGraph(uri, user, password, database=database_name)
+    neo4j_graph = Neo4jGraph(URI, user, password, database=database_name)
 
     # Cypher query to retrieve the graph
     cypher_query = generate_cypher_query(application, linkTypes)
@@ -506,7 +506,7 @@ if __name__ == "__main__":
     start_time = time.time()
 
     # Call Leiden_on_one_graph with parsed arguments
-    Directed_Louvain_on_one_graph(application, linkTypes)
+    Directed_Louvain_App_Graph(application, linkTypes)
 
     end_time = time.time()
     elapsed_time = end_time - start_time

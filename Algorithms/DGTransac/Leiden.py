@@ -7,7 +7,7 @@ import openai
 import argparse
 import concurrent.futures
 
-from AlgoToTest.neo4j_connector_igraph import Neo4jGraph
+from Algorithms.toImport.neo4j_connector_igraph import Neo4jGraph
 import os
 from dotenv import load_dotenv
 
@@ -270,7 +270,7 @@ def add_community_attributes(graph, community_list, model, graph_type, graph_id,
 
 def get_graph_name(application, graph_id):
     # Connect to Neo4j
-    driver = GraphDatabase.driver(uri, auth=(user, password), database=database_name)
+    driver = GraphDatabase.driver(URI, auth=(user, password), database=database_name)
     # Build the Cypher query
     query = (f"""
         match (n:{application})
@@ -384,7 +384,7 @@ def update_neo4j_graph(G, new_attributes_name, application, graph_id, graph_type
         return print("generate_cypher_query is build for DataGraph or Transaction")
 
     # Connect to Neo4j
-    driver = GraphDatabase.driver(uri, auth=(user, password), database=database_name)
+    driver = GraphDatabase.driver(URI, auth=(user, password), database=database_name)
 
     # New node name. ex: LeidenUSESELECT
     newNodeName = f"{model}"
@@ -462,7 +462,7 @@ def update_neo4j_graph(G, new_attributes_name, application, graph_id, graph_type
     print(f"The new attributes (community by level) have been loaded to the neo4j {graph_type} graph {graph_id}.")
 
 
-def Leiden_on_one_graph(application, graph_id, graph_type, linkTypes=["all"]):
+def Leiden_Call_Graph(application, graph_id, graph_type, linkTypes=["all"]):
     model = "Leiden"
 
     linkTypes = sorted(linkTypes)
@@ -470,7 +470,7 @@ def Leiden_on_one_graph(application, graph_id, graph_type, linkTypes=["all"]):
     start_time_loading_graph = time.time()
 
     # Crée une instance de la classe Neo4jGraph
-    neo4j_graph = Neo4jGraph(uri, user, password, database=database_name)
+    neo4j_graph = Neo4jGraph(URI, user, password, database=database_name)
 
     # Cypher query to retrieve the graph
     cypher_query = generate_cypher_query(application, graph_type, graph_id, linkTypes)
@@ -584,8 +584,7 @@ if __name__ == "__main__":
 
     start_time = time.time()
 
-    # Call Leiden_on_one_graph with parsed arguments
-    Leiden_on_one_graph(application, graph_id, graph_type, linkTypes)
+    Leiden_Call_Graph(application, graph_id, graph_type, linkTypes)
 
     end_time = time.time()
     elapsed_time = end_time - start_time
