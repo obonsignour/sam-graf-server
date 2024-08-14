@@ -25,7 +25,7 @@ from neo_query import NeoQuery
 import subprocess
 from flask import Flask, request, jsonify
 
-from query_texts import get_callgraph_query, callgraph_query, appgraph_query, modelgraph_query
+from query_texts import get_appgraph_query, get_callgraph_query, callgraph_query, modelgraph_query
 
 
 app = Flask(__name__)
@@ -88,7 +88,7 @@ def get_concepts(app_name):
 
 
 @app.route('/Applications/<app_name>', methods=['GET'])
-def get_appgraph(app_name):
+def get_an_application(app_name):
     """
     GET /Applications/<app_name>
     Fetches the application graph for the specified application from the Neo4j database.
@@ -100,7 +100,7 @@ def get_appgraph(app_name):
         JSON: The application graph.
     """
     my_query = NeoQuery(URI, AUTH, DATABASE)
-    cypher_query = appgraph_query(app_name)
+    cypher_query = get_appgraph_query(app_name)
     print('URI: ', URI)
     return my_query.execute_query(cypher_query)
 
@@ -155,7 +155,9 @@ def get_models(app_name):
     """
     logging.info("Getting Models")
     my_query = NeoQuery(URI, AUTH, DATABASE)
-    query = f"MATCH (a:Model:{app_name}) RETURN a.name AS modelName, a.LinkTypes AS linkTypes ORDER BY modelName"
+    query = f"""MATCH (m:Model:{app_name}) 
+    OPTIONAL MATCH (m)-[:RELATES_TO]->(g:graph)
+    RETURN m.name AS modelName, m.LinkTypes AS linkTypes, g.Name AS relatedGraph, [lbl IN labels(g) WHERE lbl <> \"{app_name}\" | lbl] AS typGraph ORDER BY modelName"""
     return my_query.execute_query(query)
 
 
