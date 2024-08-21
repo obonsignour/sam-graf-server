@@ -309,32 +309,6 @@ def nodes_of_interest(G, application, graph_type, graph_id):
     else:
         print("nodes_of_interest is built for DataGraph or Transaction")
 
-def generate_cypher_query(application, linkTypes):
-    if linkTypes == ["all"]:
-        cypher_query = (f"""
-            CALL cast.linkTypes(['CALL_IN_TRAN']) yield linkTypes
-            WITH linkTypes + ['SEMANTIC_SIM'] AS updatedLinkTypes
-            MATCH p=(n:{application})<-[r]-(m:{application})
-            WHERE (n:Object OR n:SubObject)
-            AND (m:Object OR m:SubObject)
-            AND type(r) IN updatedLinkTypes
-            RETURN DISTINCT n, r, m
-            """
-        )
-    else : 
-        cypher_query = (f"""
-            WITH {linkTypes} as linkTypes
-            WITH linkTypes + ['SEMANTIC_SIM'] AS updatedLinkTypes
-            MATCH p=(n:{application})<-[r]-(m:{application})
-            WHERE (n:Object OR n:SubObject)
-            AND (m:Object OR m:SubObject)
-            AND type(r) IN updatedLinkTypes
-            RETURN DISTINCT n, r, m
-            """
-        )
-    return cypher_query
-
-
 def generate_cypher_query(application, graph_type, graph_id, linkTypes):
     if graph_type == "DataGraph":
         relationship_type = "IS_IN_DATAGRAPH"
@@ -395,8 +369,8 @@ def update_neo4j_graph(G, new_attributes_name, application, graph_id, graph_type
     # and store the concern link types as a property of the new node.
     if linkTypes == ["all"]:
         cypher_query = (f"""
-            CALL cast.linkTypes(['CALL_IN_TRAN']) yield linkTypes
-            WITH linkTypes + [] AS updatedLinkTypes
+            CALL cast.linkTypes(['CALL_IN_TRAN', 'SEMANTIC']) yield linkTypes
+            WITH linkTypes + [] AS updatedLinkType
             MATCH (d:{graph_type}:{application})<-[:{relationship_type}]-(n)
             WITH collect(id(n)) AS nodeIds,updatedLinkTypes
             MATCH p=(d:{graph_type}:{application})<-[:{relationship_type}]-(n:{application})<-[r]-(m:{application})-[:{relationship_type}]->(d)

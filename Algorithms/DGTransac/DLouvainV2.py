@@ -320,8 +320,8 @@ def generate_cypher_query(application, graph_type, graph_id, linkTypes):
         return print("generate_cypher_query is build for DataGraph or Transaction")
     if linkTypes == ["all"]:
         cypher_query = (f"""
-            CALL cast.linkTypes(['CALL_IN_TRAN']) yield linkTypes
-            WITH linkTypes + ['SEMATIC_SIM'] AS updatedLinkTypes
+            CALL cast.linkTypes(['CALL_IN_TRAN', 'SEMANTIC']) yield linkTypes
+            WITH linkTypes + [] AS updatedLinkTypes
             MATCH (d:{graph_type}:{application})<-[:{relationship_type}]-(n)
             WITH collect(id(n)) AS nodeIds,updatedLinkTypes
             MATCH p=(d:{graph_type}:{application})<-[:{relationship_type}]-(n:{application})<-[r]-(m:{application})-[:{relationship_type}]->(d)
@@ -335,8 +335,9 @@ def generate_cypher_query(application, graph_type, graph_id, linkTypes):
         )
     else : 
         cypher_query = (f"""
-            WITH {linkTypes} as linkTypes
-            WITH linkTypes + ['SEMATIC_SIM'] AS updatedLinkTypes
+            WITH {linkTypes} as linkTypes2
+            CALL cast.linkTypes(['SEMANTIC']) yield linkTypes
+            WITH linkTypes + linkTypes2 + [] AS updatedLinkTypes
             MATCH (d:{graph_type}:{application})<-[:{relationship_type}]-(n)
             WITH collect(id(n)) AS nodeIds,updatedLinkTypes
             MATCH p=(d:{graph_type}:{application})<-[:{relationship_type}]-(n:{application})<-[r]-(m:{application})-[:{relationship_type}]->(d)
@@ -370,8 +371,8 @@ def update_neo4j_graph(G, new_attributes_name, application, graph_id, graph_type
     # and store the concern link types as a property of the new node.
     if linkTypes == ["all"]:
         cypher_query = (f"""
-            CALL cast.linkTypes(['CALL_IN_TRAN']) yield linkTypes
-            WITH linkTypes + ['SEMANTIC_SIM'] AS updatedLinkTypes
+            CALL cast.linkTypes(['CALL_IN_TRAN', 'SEMANTIC']) yield linkTypes
+            WITH linkTypes + [] AS updatedLinkType
             MATCH (d:{graph_type}:{application})<-[:{relationship_type}]-(n)
             WITH collect(id(n)) AS nodeIds,updatedLinkTypes
             MATCH p=(d:{graph_type}:{application})<-[:{relationship_type}]-(n:{application})<-[r]-(m:{application})-[:{relationship_type}]->(d)
@@ -389,9 +390,9 @@ def update_neo4j_graph(G, new_attributes_name, application, graph_id, graph_type
         )
     else :
         cypher_query = (f"""
-            //CALL cast.linkTypes(['CALL_IN_TRAN']) yield linkTypes
-            WITH {linkTypes} as linkTypes
-            WITH linkTypes + ['SEMANTIC_SIM'] AS updatedLinkTypes
+            WITH {linkTypes} as linkTypes2
+            CALL cast.linkTypes(['SEMANTIC']) yield linkTypes
+            WITH linkTypes + linkTypes2 + [] AS updatedLinkTypes
             MATCH (d:{graph_type}:{application})<-[:{relationship_type}]-(n)
             WITH collect(id(n)) AS nodeIds,updatedLinkTypes
             MATCH p=(d:{graph_type}:{application})<-[:{relationship_type}]-(n:{application})<-[r]-(m:{application})-[:{relationship_type}]->(d)

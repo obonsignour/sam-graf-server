@@ -312,8 +312,8 @@ def nodes_of_interest(G, application, graph_type, graph_id):
 def generate_cypher_query(application, linkTypes):
     if linkTypes == ["all"]:
         cypher_query = (f"""
-            CALL cast.linkTypes(['CALL_IN_TRAN']) yield linkTypes
-            WITH linkTypes + ['SEMANTIC_SIM'] AS updatedLinkTypes
+            CALL cast.linkTypes(['CALL_IN_TRAN', 'SEMANTIC']) yield linkTypes
+            WITH linkTypes + [] AS updatedLinkTypes
             MATCH p=(n:{application})<-[r]-(m:{application})
             WHERE (n:Object OR n:SubObject)
             AND (m:Object OR m:SubObject)
@@ -323,8 +323,9 @@ def generate_cypher_query(application, linkTypes):
         )
     else : 
         cypher_query = (f"""
-            WITH {linkTypes} as linkTypes
-            WITH linkTypes + ['SEMANTIC_SIM'] AS updatedLinkTypes
+            WITH {linkTypes} as linkTypes2
+            CALL cast.linkTypes(['SEMANTIC']) yield linkTypes
+            WITH linkTypes + linkTypes2 + [] AS updatedLinkTypes
             MATCH p=(n:{application})<-[r]-(m:{application})
             WHERE (n:Object OR n:SubObject)
             AND (m:Object OR m:SubObject)
@@ -347,8 +348,8 @@ def update_neo4j_graph(G, new_attributes_name, application, model, linkTypes):
     # and store the concern link types as a property of the new node.
     if linkTypes == ["all"]:
         cypher_query = (f"""
-            CALL cast.linkTypes(['CALL_IN_TRAN']) yield linkTypes
-            WITH linkTypes + ['SEMANTIC_SIM'] AS updatedLinkTypes
+            CALL cast.linkTypes(['CALL_IN_TRAN', 'SEMANTIC']) yield linkTypes
+            WITH linkTypes + [] AS updatedLinkType
             MATCH p=(n:{application})<-[r]-(m:{application})
             WHERE (n:Object OR n:SubObject)
             AND (m:Object OR m:SubObject)
@@ -362,9 +363,9 @@ def update_neo4j_graph(G, new_attributes_name, application, model, linkTypes):
         )
     else :
         cypher_query = (f"""
-            //CALL cast.linkTypes(['CALL_IN_TRAN']) yield linkTypes
-            WITH {linkTypes} as linkTypes
-            WITH linkTypes + ['SEMANTIC_SIM'] AS updatedLinkTypes
+            WITH {linkTypes} as linkTypes2
+            CALL cast.linkTypes(['SEMANTIC']) yield linkTypes
+            WITH linkTypes + linkTypes2 + [] AS updatedLinkTypes
             MATCH p=(n:{application})<-[r]-(m:{application})
             WHERE (n:Object OR n:SubObject)
             AND (m:Object OR m:SubObject)
