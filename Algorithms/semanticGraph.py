@@ -1158,7 +1158,7 @@ for app in application_label_dtf["ApplicationLabel"]:
                     
                     # Define edge properties
                     edge_properties = {
-                        'Weight': sim,
+                        'weight': sim,
                         'Name': edge_name,
                         'CommonKeywords': common_keywords,
                     }

@@ -6,7 +6,6 @@ from neo4j import GraphDatabase
 import openai
 import argparse
 import concurrent.futures
-import json
 
 start_time = time.time()
 
@@ -49,6 +48,12 @@ def add_semantic_as_weight(G):
         weight = similarity(G.nodes(data=True)[u], G.nodes(data=True)[v], properties_of_interest)
         G[u][v]['weight'] = weight
 
+# Sets the weight attribute to 1 for all edges in the graph G that do not already have a weight attribute.
+def set_default_weight(G):
+    for u, v, data in G.edges(data=True):
+        if 'weight' not in data:
+            G[u][v]['weight'] = 1
+
 def merge_dicts_with_lists(lst):
     result = {}
     current = 0
@@ -72,7 +77,8 @@ def SLPA_output_format(d):
 
 def slpa_sami(graph):
     # Run the SLPA algorithm to get the partition
-    partition = algorithms.slpa(graph)
+    #partition = algorithms.slpa(graph)
+    partition = algorithms.aslpaw(graph)
     partition = SLPA_output_format(partition.to_node_community_map())
     # Extract the first level of partition
     partition_dict = partition[0]
@@ -349,11 +355,13 @@ def add_community_attributes(graph, community_list, model, graph_type, graph_id,
         for node, community_ids in community_list[level].items():
             # If the community_ids is a list, get the corresponding names for each ID
             community_names = [communitiesNames[level][community_id] for community_id in community_ids]
-            # Store as a list
-            graph.nodes[node][f'community_level_{level}_{model}_{graph_type}_{graph_id}'] = community_names
+            # Join the list into a string with the specified delimiter
+            community_names_str = '$&$'.join(community_names)
+            # Store as a concatenated string
+            graph.nodes[node][f'community_level_{level}_{model}_{graph_type}_{graph_id}'] = community_names_str
 
 
-# A version checking if community_ids is a list (not neccessary here bceause it is always a list)
+# A version checking if community_ids is a list (not neccessary here because it is always a list)
 def add_community_attributes2(graph, community_list, model, graph_type, graph_id, communitiesNames):
     num_levels = len(community_list)
 
@@ -363,7 +371,7 @@ def add_community_attributes2(graph, community_list, model, graph_type, graph_id
                 # If the community_ids is a list, get the corresponding names for each ID
                 community_names = [communitiesNames[level][community_id] for community_id in community_ids]
                 # Store as a list
-                graph.nodes[node][f'community_level_{level}_{model}_{graph_type}_{graph_id}'] = ', '.join(community_names)
+                graph.nodes[node][f'community_level_{level}_{model}_{graph_type}_{graph_id}'] = community_names
             else:
                 # If it's a single community_id, directly assign the corresponding name
                 graph.nodes[node][f'community_level_{level}_{model}_{graph_type}_{graph_id}'] = communitiesNames[level][community_ids]
@@ -371,7 +379,7 @@ def add_community_attributes2(graph, community_list, model, graph_type, graph_id
 
 def get_graph_name(application, graph_id):
     # Connect to Neo4j
-    driver = GraphDatabase.driver(uri, auth=(user, password), database=database_name)
+    driver = GraphDatabase.driver(URI, auth=(user, password), database=database_name)
     # Build the Cypher query
     query = (f"""
         match (n:{application})
@@ -459,7 +467,7 @@ def update_neo4j_graph(G, new_attributes_name, application, graph_id, graph_type
         return print("update_neo4j_graph is build for DataGraph or Transaction")
 
     # Connect to Neo4j
-    driver = GraphDatabase.driver(uri, auth=(user, password), database=database_name)
+    driver = GraphDatabase.driver(URI, auth=(user, password), database=database_name)
 
     # New node name. ex: LeidenUSESELECT
     newNodeName = f"{model}"
@@ -516,15 +524,12 @@ def update_neo4j_graph(G, new_attributes_name, application, graph_id, graph_type
     for node_id, data in G.nodes(data=True):
         if f'community_level_0_{model}_{graph_type}_{graph_id}' in G.nodes[node_id]:
             # Query to update nodes attributes with communities by level
-            # Convert the list of lists to a JSON string
-            community_list_str = json.dumps([data.get(attr) for attr in new_attributes_name])
             query = (f"""
                 MATCH p1=(n:{graph_type}:{application})<-[:RELATES_TO]-(new:Model:{application} {{name: '{newNodeName}'}})
                 WHERE ID(n) = {graph_id}
                 MATCH p2 = (new)<-[r:IS_IN_MODEL]-(m:{application})
                 WHERE ID(m) = {node_id}
-                //SET r.Community = [{', '.join([f"{data.get(attr)}" for attr in new_attributes_name])}]
-                SET r.Community = '{community_list_str}'
+                SET r.Community = [{', '.join([f"'{data.get(attr)}'" for attr in new_attributes_name])}]
                 """    
                 )
         
@@ -536,8 +541,7 @@ def update_neo4j_graph(G, new_attributes_name, application, graph_id, graph_type
     driver.close()
     print(f"The new attributes (community by level) have been loaded to the neo4j {graph_type} graph {graph_id}.")
 
-
-def SLPA_on_one_graph(application, graph_id, graph_type, linkTypes=["all"]):
+def SLPA_Call_Graph(application, graph_id, graph_type, linkTypes=["all"]):
     model = "SLPA"
 
     linkTypes = sorted(linkTypes)
@@ -545,7 +549,7 @@ def SLPA_on_one_graph(application, graph_id, graph_type, linkTypes=["all"]):
     start_time_loading_graph = time.time()
 
     # Crée une instance de la classe Neo4jGraph
-    neo4j_graph = Neo4jGraph(uri, user, password, database=database_name)
+    neo4j_graph = Neo4jGraph(URI, user, password, database=database_name)
 
     # Cypher query to retrieve the graph
     cypher_query = generate_cypher_query(application, graph_type, graph_id, linkTypes)
@@ -568,6 +572,7 @@ def SLPA_on_one_graph(application, graph_id, graph_type, linkTypes=["all"]):
     connected_components = list(nx.weakly_connected_components (G))
     num_components = len(connected_components)
     print(f"The Neo4j graph {graph_id} has {num_components} disconnected parts.")
+
     """
     # Print the number of nodes in each component
     for i, component in enumerate(connected_components, start=1):
@@ -578,8 +583,19 @@ def SLPA_on_one_graph(application, graph_id, graph_type, linkTypes=["all"]):
             print(f"Types of nodes in Component {i}: {node_types}")
             print("")
     """
+    
     end_time_loading_graph = time.time()
     print(f"Graph loading time:  {end_time_loading_graph-start_time_loading_graph}")
+
+    set_default_weight(G)
+    
+    """
+    # Iterate over all edges and print their attributes
+    for u, v, attrs in G.edges(data=True):
+        print(f"Edge from {u} to {v}:")
+        for key, value in attrs.items():
+            print(f"  {key}: {value}")
+    """
 
     start_time_algo = time.time()
 
@@ -590,18 +606,14 @@ def SLPA_on_one_graph(application, graph_id, graph_type, linkTypes=["all"]):
     start_nodes, end_nodes = nodes_of_interest(G, application, graph_type, graph_id)
     #exclude_indices = set(start_nodes + end_nodes)
 
-    # Perform community detection using Directed Louvain method
-    #partition = community.partition_at_level(dendrogram, len(dendrogram) - 1)
-    #dendrogram = community.generate_dendrogram(G, random_state=42, weight='weight') #, random_state=42
+    # Perform community detection using SLPA method
     dendrogram, hierarchy_tree = community_detection_hierarchy(G.subgraph(set(G.nodes) - set(start_nodes + end_nodes)), level=2)
     for i in range(len(dendrogram)):
         print(f"{i} : {len(dendrogram[i])}")
 
     # Print the number of communities by level
     for level, partition in enumerate(dendrogram):
-        #print(type(partition))
         print(f"Level {level}: {len(set(cid for cids in partition.values() for cid in cids))} communities")
-        #print(f"Level {level}: {len(set(partition.values()))} communities")
 
     end_time_algo = time.time()
     print(f"Algo time:  {end_time_algo-start_time_algo}")
@@ -609,8 +621,9 @@ def SLPA_on_one_graph(application, graph_id, graph_type, linkTypes=["all"]):
     start_time_names = time.time()
 
     # Compute the communities names for each level
-    #print(f"dendrogram : {dendrogram}")
     communities_names = communitiesNamesThread(G, dendrogram)
+
+    print(communities_names[0])
     
     for i in range(len(communities_names)):
         print(f"Nb of communities at level {len(communities_names)-1-i} : {len(communities_names[i])}")
@@ -622,7 +635,8 @@ def SLPA_on_one_graph(application, graph_id, graph_type, linkTypes=["all"]):
 
     # Add attributes to the graph G
     add_community_attributes(G, dendrogram, model, graph_type, graph_id, communities_names)
-    
+
+    """    
     # Retrieve the name of the attribute
     for i in range(len(dendrogram)):
         attribute_name = f"community_level_{i}_{model}_{graph_type}_{graph_id}"
@@ -634,7 +648,6 @@ def SLPA_on_one_graph(application, graph_id, graph_type, linkTypes=["all"]):
         print(f"unique_values level {i}: {len(unique_values)}")
         #print(attribute_values)
 
-    """
     # Specify the attribute name for community level 0
     attribute_name = f"community_level_0_{model}_{graph_type}_{graph_id}"
 
@@ -642,8 +655,7 @@ def SLPA_on_one_graph(application, graph_id, graph_type, linkTypes=["all"]):
     for node, attrs in G.nodes(data=True):
         attribute_value = attrs.get(attribute_name, None)
         print(f"Node {node}: {attribute_name} = {attribute_value}")
-    """
-
+    
     node = 5175
     # Iterate through all levels of the dendrogram
     for i in range(len(dendrogram)):
@@ -653,8 +665,8 @@ def SLPA_on_one_graph(application, graph_id, graph_type, linkTypes=["all"]):
         attribute_value = G.nodes[node].get(attribute_name, None)
         
         # Print the attribute for the current level
-        print(f"Node {node}: {attribute_name} = {attribute_value}")
-
+        print(f"Node {node} {G.nodes[node].get('Name', None)}: {attribute_name} = {attribute_value}")
+    """
 
     # Create a list with the new attributes
     new_attributes_name = [f'community_level_{level}_{model}_{graph_type}_{graph_id}' for level in range(len(dendrogram))]
@@ -687,7 +699,7 @@ if __name__ == "__main__":
     start_time = time.time()
 
     # Call Leiden_on_one_graph with parsed arguments
-    SLPA_on_one_graph(application, graph_id, graph_type, linkTypes)
+    SLPA_Call_Graph(application, graph_id, graph_type, linkTypes)
 
     end_time = time.time()
     elapsed_time = end_time - start_time

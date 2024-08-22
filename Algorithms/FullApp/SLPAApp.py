@@ -6,7 +6,6 @@ from neo4j import GraphDatabase
 import openai
 import argparse
 import concurrent.futures
-import json
 
 start_time = time.time()
 
@@ -49,6 +48,12 @@ def add_semantic_as_weight(G):
         weight = similarity(G.nodes(data=True)[u], G.nodes(data=True)[v], properties_of_interest)
         G[u][v]['weight'] = weight
 
+# Sets the weight attribute to 1 for all edges in the graph G that do not already have a weight attribute.
+def set_default_weight(G):
+    for u, v, data in G.edges(data=True):
+        if 'weight' not in data:
+            G[u][v]['weight'] = 1
+
 def merge_dicts_with_lists(lst):
     result = {}
     current = 0
@@ -72,7 +77,8 @@ def SLPA_output_format(d):
 
 def slpa_sami(graph):
     # Run the SLPA algorithm to get the partition
-    partition = algorithms.slpa(graph)
+    #partition = algorithms.slpa(graph)
+    partition = algorithms.aslpaw(graph)
     partition = SLPA_output_format(partition.to_node_community_map())
     # Extract the first level of partition
     partition_dict = partition[0]
@@ -349,11 +355,13 @@ def add_community_attributes(graph, community_list, model, communitiesNames):
         for node, community_ids in community_list[level].items():
             # If the community_ids is a list, get the corresponding names for each ID
             community_names = [communitiesNames[level][community_id] for community_id in community_ids]
-            # Store as a list
-            graph.nodes[node][f'community_level_{level}_{model}'] = community_names
+            # Join the list into a string with the specified delimiter
+            community_names_str = '$&$'.join(community_names)
+            # Store as a concatenated string
+            graph.nodes[node][f'community_level_{level}_{model}'] = community_names_str
 
 
-# A version checking if community_ids is a list (not neccessary here bceause it is always a list)
+# A version checking if community_ids is a list (not neccessary here because it is always a list)
 def add_community_attributes2(graph, community_list, model, communitiesNames):
     num_levels = len(community_list)
 
@@ -363,7 +371,7 @@ def add_community_attributes2(graph, community_list, model, communitiesNames):
                 # If the community_ids is a list, get the corresponding names for each ID
                 community_names = [communitiesNames[level][community_id] for community_id in community_ids]
                 # Store as a list
-                graph.nodes[node][f'community_level_{level}_{model}'] = ', '.join(community_names)
+                graph.nodes[node][f'community_level_{level}_{model}'] = community_names
             else:
                 # If it's a single community_id, directly assign the corresponding name
                 graph.nodes[node][f'community_level_{level}_{model}'] = communitiesNames[level][community_ids]
@@ -396,10 +404,10 @@ def generate_cypher_query(application, linkTypes):
 
 def update_neo4j_graph(G, new_attributes_name, application, model, linkTypes):
     # Connect to Neo4j
-    driver = GraphDatabase.driver(uri, auth=(user, password), database=database_name)
+    driver = GraphDatabase.driver(URI, auth=(user, password), database=database_name)
 
     # New node name. ex: LeidenUSESELECT
-    newNodeName = f"{model}"
+    newNodeName = f"{model}App"
     for item in linkTypes:
         newNodeName += item
 
@@ -445,14 +453,11 @@ def update_neo4j_graph(G, new_attributes_name, application, model, linkTypes):
     for node_id, data in G.nodes(data=True):
         if f'community_level_0_{model}' in G.nodes[node_id]:
             # Query to update nodes attributes with communities by level
-            # Convert the list of lists to a JSON string
-            community_list_str = json.dumps([data.get(attr) for attr in new_attributes_name])
             query = (f"""
                 MATCH (new:Model:{application} {{name: '{newNodeName}'}})
                 MATCH p2 = (new)<-[r:IS_IN_MODEL]-(m:{application})
                 WHERE ID(m) = {node_id}
-                //SET r.Community = [{', '.join([f"{data.get(attr)}" for attr in new_attributes_name])}]
-                SET r.Community = '{community_list_str}'
+                SET r.Community = [{', '.join([f"'{data.get(attr)}'" for attr in new_attributes_name])}]
                 """    
                 )
         
@@ -465,7 +470,7 @@ def update_neo4j_graph(G, new_attributes_name, application, model, linkTypes):
     print(f"The new attributes (community by level) have been loaded to the {application} graph.")
 
 
-def SLPA_App_graph(application, linkTypes=["all"]):
+def SLPA_App_Graph(application, linkTypes=["all"]):
     model = "SLPA"
 
     linkTypes = sorted(linkTypes)
@@ -473,7 +478,7 @@ def SLPA_App_graph(application, linkTypes=["all"]):
     start_time_loading_graph = time.time()
 
     # Crée une instance de la classe Neo4jGraph
-    neo4j_graph = Neo4jGraph(uri, user, password, database=database_name)
+    neo4j_graph = Neo4jGraph(URI, user, password, database=database_name)
 
     # Cypher query to retrieve the graph
     cypher_query = generate_cypher_query(application, linkTypes)
@@ -508,6 +513,8 @@ def SLPA_App_graph(application, linkTypes=["all"]):
     """
     end_time_loading_graph = time.time()
     print(f"Graph loading time:  {end_time_loading_graph-start_time_loading_graph}")
+
+    set_default_weight(G)
 
     start_time_algo = time.time()
 
@@ -602,7 +609,7 @@ if __name__ == "__main__":
     start_time = time.time()
 
     # Call Leiden_on_one_graph with parsed arguments
-    SLPA_App_graph(application, linkTypes)
+    SLPA_App_Graph(application, linkTypes)
 
     end_time = time.time()
     elapsed_time = end_time - start_time

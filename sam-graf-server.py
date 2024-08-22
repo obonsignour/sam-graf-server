@@ -15,11 +15,13 @@ from AlgoToTest.SLPA_onFly2 import SLPA_on_one_graph
 from Algorithms.DGTransac.Leiden import Leiden_Call_Graph
 from Algorithms.DGTransac.DLouvainV2 import Directed_Louvain_Call_Graph
 from Algorithms.DGTransac.ULouvainV2 import Undirected_Louvain_Call_Graph
+from Algorithms.DGTransac.SLPAV2 import SLPA_Call_Graph
 
 # import for app graph
 from Algorithms.FullApp.LeidenApp import Leiden_App_Graph
 from Algorithms.FullApp.DLouvainApp import Directed_Louvain_App_Graph
 from Algorithms.FullApp.ULouvainApp import Undirected_Louvain_App_Graph
+from Algorithms.FullApp.SLPAApp import SLPA_App_Graph
 
 from neo_query import NeoQuery
 import subprocess

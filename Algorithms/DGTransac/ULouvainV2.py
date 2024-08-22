@@ -46,6 +46,12 @@ def add_semantic_as_weight(G):
         weight = similarity(G.nodes(data=True)[u], G.nodes(data=True)[v], properties_of_interest)
         G[u][v]['weight'] = weight
 
+# Sets the weight attribute to 1 for all edges in the graph G that do not already have a weight attribute.
+def set_default_weight(G):
+    for u, v, data in G.edges(data=True):
+        if 'weight' not in data:
+            G[u][v]['weight'] = 1
+
 def merge_dicts(lst):
     result = {}
     current = 0
@@ -63,7 +69,7 @@ def community_detection_hierarchy(graph, level=None):
     hierarchy_tree = {}
 
     # Level 0
-    partition_level_0 = community.best_partition(graph, random_state=42)#, weight='weight')
+    partition_level_0 = community.best_partition(graph, random_state=42, weight='weight')
     result_partitions.append(partition_level_0)
     hierarchy_tree[0] = {community_id: [] for community_id in set(partition_level_0.values())}
     #print(f"Level 0 merged partition: {partition_level_0}")
@@ -477,6 +483,8 @@ def Undirected_Louvain_Call_Graph(application, graph_id, graph_type, linkTypes=[
     """
     end_time_loading_graph = time.time()
     print(f"Graph loading time:  {end_time_loading_graph-start_time_loading_graph}")
+
+    set_default_weight(G)
 
     start_time_algo = time.time()
 

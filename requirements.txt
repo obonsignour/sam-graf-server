@@ -226,3 +226,4 @@ wrapt==1.16.0
 yarg==0.1.9
 yarl==1.9.4
 python-louvain==0.16
+ASLPAw==2.2.0

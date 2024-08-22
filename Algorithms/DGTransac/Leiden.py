@@ -48,6 +48,12 @@ def add_semantic_as_weight(G):
         weight = similarity(G.vs[u], G.vs[v], properties_of_interest)
         edge['weight'] = weight
 
+# Sets the weight attribute to 1 for all edges in the igraph graph G that do not already have a weight attribute.
+def set_default_weight(G):
+    for edge in G.es:
+        if 'weight' not in edge.attributes():
+            edge['weight'] = 1
+
 def convert_leiden_format(leiden_partition):
     new_format_leiden_partition = {}
     for vertex, cluster in enumerate(leiden_partition.membership):
@@ -475,6 +481,8 @@ def Leiden_Call_Graph(application, graph_id, graph_type, linkTypes=["all"]):
     
     end_time_loading_graph = time.time()
     print(f"Graph loading time:  {end_time_loading_graph-start_time_loading_graph}")
+    
+    set_default_weight(G)
     
     start_time_algo = time.time()
 
