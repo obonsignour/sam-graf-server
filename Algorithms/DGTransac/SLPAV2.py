@@ -569,7 +569,7 @@ def SLPA_Call_Graph(application, graph_id, graph_type, linkTypes=["all"]):
     print(f"The Neo4j graph {graph_id} has {G.number_of_nodes()} Object/SubOject nodes.")
 
     # Print the number of disconnected parts (connected components)
-    connected_components = list(nx.weakly_connected_components (G))
+    connected_components = list(nx.weakly_connected_components(G))
     num_components = len(connected_components)
     print(f"The Neo4j graph {graph_id} has {num_components} disconnected parts.")
 
@@ -608,8 +608,6 @@ def SLPA_Call_Graph(application, graph_id, graph_type, linkTypes=["all"]):
 
     # Perform community detection using SLPA method
     dendrogram, hierarchy_tree = community_detection_hierarchy(G.subgraph(set(G.nodes) - set(start_nodes + end_nodes)), level=2)
-    for i in range(len(dendrogram)):
-        print(f"{i} : {len(dendrogram[i])}")
 
     # Print the number of communities by level
     for level, partition in enumerate(dendrogram):

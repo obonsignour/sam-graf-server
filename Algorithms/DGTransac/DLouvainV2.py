@@ -469,7 +469,7 @@ def Directed_Louvain_Call_Graph(application, graph_id, graph_type, linkTypes=["a
     print(f"The Neo4j graph {graph_id} has {G.number_of_nodes()} Object/SubOject nodes.")
 
     # Print the number of disconnected parts (connected components)
-    connected_components = list(nx.connected_components (G))
+    connected_components = list(nx.weakly_connected_components(G))
     num_components = len(connected_components)
     print(f"The Neo4j graph {graph_id} has {num_components} disconnected parts.")
     """

@@ -425,7 +425,7 @@ def Directed_Louvain_App_Graph(application, linkTypes=["all"]):
     print(f"The {application} graph has {G.number_of_nodes()} Object/SubOject nodes.")
 
     # Print the number of disconnected parts (connected components)
-    connected_components = list(nx.connected_components (G))
+    connected_components = list(nx.weakly_connected_components(G))
     num_components = len(connected_components)
     print(f"The graph has {num_components} disconnected parts.")
     """

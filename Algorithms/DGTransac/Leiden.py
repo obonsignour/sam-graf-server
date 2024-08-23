@@ -494,7 +494,7 @@ def Leiden_Call_Graph(application, graph_id, graph_type, linkTypes=["all"]):
     exclude_indices = set(start_nodes + end_nodes)
 
     # Perform community detection
-    result, hierarchy_tree = community_detection_hierarchy(G, level=2)
+    result, hierarchy_tree = community_detection_hierarchy(G.induced_subgraph([v for v in G.vs if v.index not in exclude_indices]), level=2)
 
     # Print the number of communities by level
     for level, partition in enumerate(result):
