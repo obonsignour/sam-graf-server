@@ -25,26 +25,6 @@ except KeyError:
     print("Error: OpenAI API key or Neo4j credentials not found in environment variables.")
     exit(1)
 
-# Name of the properties used in the similarity function
-properties_of_interest = ['Type', 'Level', 'External', 'Method'] #, 'Hidden'
-
-# A similarity function based on node properties
-def similarity(node1, node2, properties_of_interest):
-    similarity_sum = 0
-    for prop in properties_of_interest:
-        if node1[prop] == node2[prop]:
-            similarity_sum += 1
-
-    # Calculate overall similarity
-    overall_similarity = similarity_sum / len(properties_of_interest)
-
-    return overall_similarity
-
-# Add edges with weights based on similarity
-def add_semantic_as_weight(G):
-    for u, v in G.edges():
-        weight = similarity(G.nodes(data=True)[u], G.nodes(data=True)[v], properties_of_interest)
-        G[u][v]['weight'] = weight
 
 # Sets the weight attribute to 1 for all edges in the graph G that do not already have a weight attribute.
 def set_default_weight(G):
@@ -275,46 +255,40 @@ def add_community_attributes(graph, community_list, model, graph_type, graph_id,
         for node, community_id in community_list[level].items():
             graph.nodes[node][f'community_level_{level}_{model}_{graph_type}_{graph_id}'] = communitiesNames[level][community_id]
 
-def get_graph_name(application, graph_id):
-    # Connect to Neo4j
+# Function to get both startNodes and endNodes
+def nodes_of_interest(application, graph_type, graph_id):
+    # Connect to the Neo4j database
     driver = GraphDatabase.driver(URI, auth=(user, password), database=database_name)
-    # Build the Cypher query
-    query = (f"""
-        match (n:{application})
-        where ID(n) = {graph_id}
-        RETURN n.Name AS nodeName
-        """
-    )
-    # Execute the Cypher query
+    
+    end_nodes = []
+    start_nodes = []
+
+    # Dynamically build the query with the application and graph_type variables inserted directly
+    query = f"""
+    MATCH (n:{application})-[:ENDS_WITH]-(d:{graph_type}:{application})
+    WHERE ID(d) = {graph_id}
+    AND (n:Object OR n:SubObject)
+    RETURN DISTINCT ID(n) AS nodeId, 'endNode' AS nodeType
+    UNION
+    MATCH (n:{application})-[:STARTS_WITH]-(d:{graph_type}:{application})
+    WHERE ID(d) = {graph_id}
+    AND (n:Object OR n:SubObject)
+    RETURN DISTINCT ID(n) AS nodeId, 'startNode' AS nodeType
+    """
+    
+    # Execute query and collect results
     with driver.session() as session:
         result = session.run(query)
-        record = result.single()  # Assuming you expect only one result
-    # Extract the node label from the result
-    node_name = record['nodeName'] if record else None
-    # Close the Neo4j driver
-    driver.close()
-    return node_name
+        for record in result:
+            if record["nodeType"] == "endNode":
+                end_nodes.append(record["nodeId"])
+            elif record["nodeType"] == "startNode":
+                start_nodes.append(record["nodeId"])
 
-def nodes_of_interest(G, application, graph_type, graph_id):
-    if graph_type == "DataGraph":
-        table_name =  get_graph_name(application, graph_id)
-        start_nodes = [node for node in G.nodes if G.nodes[node].get('DgStartPoint') == "start"]
-        start_nodes = [node for node in start_nodes if G.nodes[node].get('Name') == table_name]
-        end_nodes = [node for node in G.nodes if G.nodes[node].get('DgEndPoint') == "end"]
-        return start_nodes, end_nodes
-    elif graph_type == "Transaction":
-        entry_name = get_graph_name(application, graph_id)
-        """
-        start_nodes = [edge[1] for edge in G.edges if G.edges[edge].get('type') == "STARTS_WITH"]
-        start_nodes = [node for node in start_nodes if G.nodes[node].get('Name') == entry_name]
-        end_nodes = [edge[1] for edge in G.edges if G.edges[edge].get('type') == "ENDS_WITH"]
-        """
-        start_nodes = [node for node in G.nodes if G.nodes[node].get('StartPoint') == "start"]
-        start_nodes = [node for node in start_nodes if G.nodes[node].get('Name') == entry_name]
-        end_nodes = [node for node in G.nodes if G.nodes[node].get('EndPoint') == "end"]
-        return start_nodes, end_nodes
-    else :
-        return print("nodes_of_interest is build for DataGraph or Transaction")
+    # Close the driver connection
+    driver.close()
+
+    return start_nodes, end_nodes
 
 def generate_cypher_query(application, graph_type, graph_id, linkTypes):
     if graph_type == "DataGraph":
@@ -488,17 +462,14 @@ def Undirected_Louvain_Call_Graph(application, graph_id, graph_type, linkTypes=[
 
     start_time_algo = time.time()
 
-    # Adding semantic through weight on edges based on similarity
-    #add_semantic_as_weight(G)
-
     # Identify nodes of interest (start and end points) to exclude from the induced subgraph
-    start_nodes, end_nodes = nodes_of_interest(G, application, graph_type, graph_id)
-    #exclude_indices = set(start_nodes + end_nodes)
+    start_nodes, end_nodes = nodes_of_interest(application, graph_type, graph_id)
+    exclude_indices = set(start_nodes + end_nodes)
 
     # Perform community detection using Undirected Louvain method
     #partition = community.partition_at_level(dendrogram, len(dendrogram) - 1)
     #dendrogram = community.generate_dendrogram(G, random_state=42, weight='weight') #, random_state=42
-    dendrogram, hierarchy_tree = community_detection_hierarchy(G.subgraph(set(G.nodes) - set(start_nodes + end_nodes)), level=2)
+    dendrogram, hierarchy_tree = community_detection_hierarchy(G.subgraph(set(G.nodes) - exclude_indices), level=2)
 
     # Print the number of communities by level
     for level, partition in enumerate(dendrogram):

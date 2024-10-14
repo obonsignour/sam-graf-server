@@ -25,28 +25,6 @@ except KeyError:
     print("Error: OpenAI API key or Neo4j credentials not found in environment variables.")
     exit(1)
 
-# Name of the properties used in the similarity function
-properties_of_interest = ['Type', 'Level', 'External', 'Method'] #, 'Hidden'
-
-# A similarity function based on node properties
-def similarity(node1, node2, properties_of_interest):
-    similarity_sum = 0
-    for prop in properties_of_interest:
-        if node1[prop] == node2[prop]:
-            similarity_sum += 1
-
-    # Calculate overall similarity
-    overall_similarity = similarity_sum / len(properties_of_interest)
-
-    return overall_similarity
-
-# Add edges with weights based on similarity
-def add_semantic_as_weight(G):
-    for edge in G.es():
-        u = edge.source
-        v = edge.target
-        weight = similarity(G.vs[u], G.vs[v], properties_of_interest)
-        edge['weight'] = weight
 
 # Sets the weight attribute to 1 for all edges in the igraph graph G that do not already have a weight attribute.
 def set_default_weight(G):
@@ -274,46 +252,49 @@ def add_community_attributes(graph, community_list, model, graph_type, graph_id,
             node = graph.vs[node_idx]
             node[f"community_level_{level}_{model}_{graph_type}_{graph_id}"] = communitiesNames[level][community_id]
 
-def get_graph_name(application, graph_id):
-    # Connect to Neo4j
+# Function to get both startNodes and endNodes
+def nodes_of_interest(application, graph_type, graph_id):
+    # Connect to the Neo4j database
     driver = GraphDatabase.driver(URI, auth=(user, password), database=database_name)
-    # Build the Cypher query
-    query = (f"""
-        match (n:{application})
-        where ID(n) = {graph_id}
-        RETURN n.Name AS nodeName
-        """
-    )
-    # Execute the Cypher query
+    
+    end_nodes = []
+    start_nodes = []
+
+    # Dynamically build the query with the application and graph_type variables inserted directly
+    query = f"""
+    MATCH (n:{application})-[:ENDS_WITH]-(d:{graph_type}:{application})
+    WHERE ID(d) = {graph_id}
+    AND (n:Object OR n:SubObject)
+    RETURN DISTINCT ID(n) AS nodeId, 'endNode' AS nodeType
+    UNION
+    MATCH (n:{application})-[:STARTS_WITH]-(d:{graph_type}:{application})
+    WHERE ID(d) = {graph_id}
+    AND (n:Object OR n:SubObject)
+    RETURN DISTINCT ID(n) AS nodeId, 'startNode' AS nodeType
+    """
+    
+    # Execute query and collect results
     with driver.session() as session:
         result = session.run(query)
-        record = result.single()  # Assuming you expect only one result
-    # Extract the node label from the result
-    node_name = record['nodeName'] if record else None
-    # Close the Neo4j driver
-    driver.close()
-    return node_name
+        for record in result:
+            if record["nodeType"] == "endNode":
+                end_nodes.append(record["nodeId"])
+            elif record["nodeType"] == "startNode":
+                start_nodes.append(record["nodeId"])
 
-def nodes_of_interest(G, application, graph_type, graph_id):
-    if graph_type == "DataGraph":
-        table_name =  get_graph_name(application, graph_id)
-        start_nodes = [node for node, attr in enumerate(G.vs) if 'DgStartPoint' in attr.attributes() and attr['DgStartPoint'] == "start"]
-        start_nodes = [node for node in start_nodes if G.vs[node]['Name'] == table_name]
-        end_nodes = [node for node, attr in enumerate(G.vs) if 'DgEndPoint' in attr.attributes() and attr['DgEndPoint'] == "end"]
-        return start_nodes, end_nodes
-    elif graph_type == "Transaction":
-        entry_name = get_graph_name(application, graph_id)
-        start_nodes = [node for node, attr in enumerate(G.vs) if 'StartPoint' in attr.attributes() and attr['StartPoint'] == "start"]
-        start_nodes = [node for node in start_nodes if G.vs[node]['Name'] == entry_name]
-        end_nodes = [node for node, attr in enumerate(G.vs) if 'EndPoint' in attr.attributes() and attr['EndPoint'] == "end"]
-        """
-        start_nodes = [edge.target for edge in G.es if 'type' in edge.attributes() and edge['type'] == "STARTS_WITH"]
-        start_nodes = [node for node in start_nodes if G.vs[node]['Name'] == entry_name]
-        end_nodes = [edge.target for edge in G.es if 'type' in edge.attributes() and edge['type'] == "ENDS_WITH"]
-        """
-        return start_nodes, end_nodes
-    else:
-        print("nodes_of_interest is built for DataGraph or Transaction")
+    # Close the driver connection
+    driver.close()
+
+    return start_nodes, end_nodes
+
+def create_filtered_subgraph(G, exclude_indices):
+    # Convert exclude_indices to strings to match the vertex 'id' type in G
+    exclude_indices_str = set(map(str, exclude_indices))
+    # Use induced_subgraph to retain original vertex indices
+    vertices_to_keep = [v.index for v in G.vs if v['id'] not in exclude_indices_str]
+    subgraph = G.induced_subgraph(vertices_to_keep)
+    
+    return subgraph
 
 def generate_cypher_query(application, graph_type, graph_id, linkTypes):
     if graph_type == "DataGraph":
@@ -486,15 +467,12 @@ def Leiden_Call_Graph(application, graph_id, graph_type, linkTypes=["all"]):
     
     start_time_algo = time.time()
 
-    # Adding semantic through weight on edges based on similarity
-    #add_semantic_as_weight(G)
-
     # Identify nodes of interest (start and end points) to exclude from the induced subgraph
-    start_nodes, end_nodes = nodes_of_interest(G, application, graph_type, graph_id)
+    start_nodes, end_nodes = nodes_of_interest(application, graph_type, graph_id)
     exclude_indices = set(start_nodes + end_nodes)
 
     # Perform community detection
-    result, hierarchy_tree = community_detection_hierarchy(G.induced_subgraph([v for v in G.vs if v.index not in exclude_indices]), level=2)
+    result, hierarchy_tree = community_detection_hierarchy(create_filtered_subgraph(G, exclude_indices), level=2)
 
     # Print the number of communities by level
     for level, partition in enumerate(result):
@@ -570,4 +548,4 @@ if __name__ == "__main__":
 
     end_time = time.time()
     elapsed_time = end_time - start_time
-    print(f"Execution time for the Leiden Algorithm on the {application} application: {elapsed_time} seconds")
+    print(f"Execution time for the Leiden Algorithm on the {graph_type} {graph_id} of the {application} application: {elapsed_time} seconds")
