@@ -61,7 +61,7 @@ def community_detection_hierarchy(graph, level=None):
         for community_id in set(partition_level_0.values()):
             nodes_in_community = [node for node, cid in partition_level_0.items() if cid == community_id]
             subgraph = graph.subgraph(nodes_in_community)
-            subgraph_partition = community.best_partition(subgraph, random_state=42)#, weight='weight')
+            subgraph_partition = community.best_partition(subgraph, random_state=42, weight='weight')
             subgraph_partitions.append(subgraph_partition)
             subgraph_tree[community_id] = list(set(subgraph_partition.values()))
         
@@ -247,12 +247,16 @@ def communitiesNamesThread(G, dendrogram):
     return CommunitiesNames
 
 
-def add_community_attributes(graph, community_list, model, graph_type, graph_id, communitiesNames):
+def add_community_attributes(graph, community_list, model, graph_type, graph_id, communitiesNames, exclude_indices):
     num_levels = len(community_list)
 
     for level in range(num_levels):
-        #for node_idx, community_value in community_list[level].items():
         for node, community_id in community_list[level].items():
+            # Skip the nodes in exclude_indices
+            if node in exclude_indices:
+                continue
+
+            # Add the community attribute for this node
             graph.nodes[node][f'community_level_{level}_{model}_{graph_type}_{graph_id}'] = communitiesNames[level][community_id]
 
 # Function to get both startNodes and endNodes
@@ -462,14 +466,10 @@ def Undirected_Louvain_Call_Graph(application, graph_id, graph_type, linkTypes=[
 
     start_time_algo = time.time()
 
-    # Identify nodes of interest (start and end points) to exclude from the induced subgraph
-    start_nodes, end_nodes = nodes_of_interest(application, graph_type, graph_id)
-    exclude_indices = set(start_nodes + end_nodes)
-
     # Perform community detection using Undirected Louvain method
     #partition = community.partition_at_level(dendrogram, len(dendrogram) - 1)
     #dendrogram = community.generate_dendrogram(G, random_state=42, weight='weight') #, random_state=42
-    dendrogram, hierarchy_tree = community_detection_hierarchy(G.subgraph(set(G.nodes) - exclude_indices), level=2)
+    dendrogram, hierarchy_tree = community_detection_hierarchy(G, level=2)
 
     # Print the number of communities by level
     for level, partition in enumerate(dendrogram):
@@ -489,8 +489,12 @@ def Undirected_Louvain_Call_Graph(application, graph_id, graph_type, linkTypes=[
     end_time_names = time.time()
     print(f"Naming time:  {end_time_names-start_time_names}")
 
+    # Identify nodes of interest (start and end points) to exclude
+    start_nodes, end_nodes = nodes_of_interest(application, graph_type, graph_id)
+    exclude_indices = set(start_nodes + end_nodes)
+
     # Add attributes to the graph G
-    add_community_attributes(G, dendrogram, model, graph_type, graph_id, communities_names)
+    add_community_attributes(G, dendrogram, model, graph_type, graph_id, communities_names, exclude_indices)
     
     # Retrieve the name of the attribute
     for i in range(len(dendrogram)):

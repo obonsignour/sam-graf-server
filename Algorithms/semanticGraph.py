@@ -418,106 +418,54 @@ and (o:Object or o:SubObject) and o.Mangling is not null
 return distinct o.Name as name, o.Mangling as text, o.AipId as id, 'mangling' as source
 """
 
-get_text_query_string_cyclomatic_compexity_0 = """
-MATCH (op:ObjectProperty)-[p:Property]-(o) 
-WHERE $target_label in labels(o)
-AND (o:Object OR o:SubObject OR o:Column OR o:Constraint)
-AND tolower(op.Description) CONTAINS 'comment'
-AND NOT tolower(op.Description) CONTAINS 'number'
-AND EXISTS {
-  MATCH (c:ObjectProperty)-[r:Property]-(o)
-  WHERE c.Description = 'Cyclomatic Complexity'
-  AND r.value <> '1'
-}
-RETURN DISTINCT o.Name AS name, p.value AS text, o.AipId AS id, 'comment' AS source
-union all
-MATCH (c:ObjectProperty)-[r:Property]-(o) 
-where $target_label in labels(o) 
-and (o:Object or o:SubObject or o:Column or o:Constraint)
-and c.Description = "Cyclomatic Complexity"
-and r.value <> '1'
-return distinct o.Name as name, o.Name as text, o.AipId as id, 'name' as source
-union all
-MATCH (c:ObjectProperty)-[r:Property]-(o) 
-where $target_label in labels(o) 
-and (o:Object or o:SubObject or o:Column or o:Constraint)
-and c.Description = "Cyclomatic Complexity"
-and r.value <> '1'
-return distinct o.Name as name, o.Mangling as text, o.AipId as id, 'mangling' as source
-"""
 
-get_text_query_string_cyclomatic_compexity_1 = """
+get_text_query_string_no_technical_nodes = """
 MATCH (op:ObjectProperty)-[p:Property]-(o) 
 WHERE $target_label in labels(o)
 AND (o:Object OR o:SubObject OR o:Column OR o:Constraint)
-AND tolower(op.Description) CONTAINS 'comment'
+AND tolower(op.Description) CONTAINS 'comment' 
 AND NOT tolower(op.Description) CONTAINS 'number'
-AND NOT EXISTS {
-  MATCH (c:ObjectProperty)-[r:Property]-(o)
-  WHERE c.Description = 'Cyclomatic Complexity'
-  AND r.value = '1'
-}
+AND (o.Technical IS NULL OR o.Technical = false)
 RETURN DISTINCT o.Name AS name, p.value AS text, o.AipId AS id, 'comment' AS source
 UNION ALL
-MATCH (c:ObjectProperty)-[r:Property]-(o) 
+MATCH (o) 
 WHERE $target_label in labels(o) 
 AND (o:Object OR o:SubObject OR o:Column OR o:Constraint)
-AND NOT EXISTS {
-  MATCH (c:ObjectProperty)-[r:Property]-(o)
-  WHERE c.Description = 'Cyclomatic Complexity'
-  AND r.value = '1'
-}
+AND (o.Technical IS NULL OR o.Technical = false)
 RETURN DISTINCT o.Name AS name, o.Name AS text, o.AipId AS id, 'name' AS source
 UNION ALL
-MATCH (c:ObjectProperty)-[r:Property]-(o) 
+MATCH (o) 
 WHERE $target_label in labels(o) 
-AND (o:Object OR o:SubObject OR o:Column OR o:Constraint)
-AND NOT EXISTS {
-  MATCH (c:ObjectProperty)-[r:Property]-(o)
-  WHERE c.Description = 'Cyclomatic Complexity'
-  AND r.value = '1'
-}
+AND (o:Object OR o:SubObject) 
+AND o.Mangling IS NOT NULL
+AND (o.Technical IS NULL OR o.Technical = false)
 RETURN DISTINCT o.Name AS name, o.Mangling AS text, o.AipId AS id, 'mangling' AS source
 """
 
-get_neighborhood ="""
-MATCH (c:ObjectProperty)-[r:Property]-(filteredNode)
-WHERE $target_label IN labels(filteredNode)
-AND (filteredNode:Object OR filteredNode:SubObject)
-AND c.Description = "Cyclomatic Complexity"
-AND r.value <> '1'
-WITH collect(id(filteredNode)) AS nodeIds
-
+get_neighborhood_2 ="""
 MATCH (d:DataGraph)<-[:IS_IN_DATAGRAPH]-(n)
 WHERE $target_label IN labels(d)
 AND $target_label IN labels(n)
 AND n.AipId = $target_aip
-AND id(n) IN nodeIds
-WITH DISTINCT d AS dataGraphs, nodeIds
+WITH DISTINCT d AS dataGraphs
 
 MATCH (dataGraphs)<-[:IS_IN_DATAGRAPH]-(m)
 WHERE $target_label IN labels(m)
 AND (m:Object OR m:SubObject)
-AND id(m) IN nodeIds
 RETURN DISTINCT m.AipId
 """
 
-update_neo4j_0 = """
-MATCH (a {AipId: $node1}), (b {AipId: $node2})
-WHERE $target_label IN labels(a)
-AND $target_label IN labels(b)
-CALL apoc.create.relationship(a, $relationship_type, $properties, b) YIELD rel
-RETURN a, b, rel
-"""
-
-update_neo4j = """
+update_neo4j2 = """
 MERGE (lc:LinkCategory {Name: "SEMANTIC"})
 
 WITH lc
 MATCH (a {AipId: $node1}), (b {AipId: $node2})
 WHERE $target_label IN labels(a)
 AND $target_label IN labels(b)
-CALL apoc.create.relationship(a, $relationship_type, $properties, b) YIELD rel as r
+MERGE (a)-[r:`$relationship_type`]->(b)
+//MERGE (a)-[r:SEMANTIC_SIM]->(b)
+ON CREATE SET r = $properties  // Set properties when the relationship is first created
+ON MATCH SET r = $properties   // Overwrite properties if the relationship already exists
 
 WITH lc, a, b, r
 MERGE (l:LinkType {Name: r.Name})
@@ -525,6 +473,40 @@ MERGE (l)<-[:Contains]-(lc)
 
 RETURN a, b, r, l
 """
+
+
+update_neo4j3 = """
+MERGE (lc:LinkCategory {Name: "SEMANTIC"})
+
+WITH lc
+MATCH (a {AipId: $node1}), (b {AipId: $node2})
+WHERE $target_label IN labels(a)
+AND $target_label IN labels(b)
+
+// Match and delete existing relationships of type $relationship_type
+OPTIONAL MATCH (a)-[r_existing:`$relationship_type`]->(b)
+DELETE r_existing
+
+// Create the new relationship
+MERGE (a)-[r:`$relationship_type`]->(b)
+ON CREATE SET r = $properties  // Set properties when the relationship is first created
+
+WITH lc, a, b, r
+MERGE (l:LinkType {Name: r.Name})
+MERGE (l)<-[:Contains]-(lc)
+
+RETURN a, b, r, l
+"""
+
+query_parents_dict_template = """
+MATCH (n)<-[r:`$relationship_type`]-(m)
+WHERE $target_label IN labels(n)
+AND $target_label IN labels(m)
+AND (n:Object OR n:SubObject)
+AND (m:Object OR n:SubObject)
+RETURN DISTINCT ID(m) AS child, ID(n) AS parent
+"""
+
 
 # init
 print("""
@@ -717,7 +699,9 @@ for app in application_label_dtf["ApplicationLabel"]:
     logging.info("Querying text elements from [%s] application..."%(app))
     t0 = time()
     query_params = dict(target_label=app)
-    query_string = get_text_query_string_cyclomatic_compexity_0
+    #query_string = get_text_query_string_cyclomatic_compexity_0
+    #query_string = get_text_query_string_no_technical_nodes
+    query_string = get_text_query_string
     query_results = conn.query(query_string,params=query_params,db=opts.neo4j_database,trace=opts.trace_neo4j)
     logging.info("done in %0.3fs." % (time() - t0))
     logging.info('')
@@ -875,44 +859,12 @@ for app in application_label_dtf["ApplicationLabel"]:
     if opts.trace_panda:
         logging.info(application_text_dtf.info())
     
-    """
-    t0 = time()
-    application_text_dtf['annotatedText'] = application_text_dtf["sentence"].map(lemma_pos_extraction)
-    logging.info("... POS done in %0.3fs." % (time() - t0))
-    if opts.trace_panda:
-        logging.info(application_text_dtf.info())
-    """
 
     logging.info("done in %0.3fs." % (time() - ot0))
     logging.info('')
 
-    
-    
-    """
-    # Print the first two rows of the filtered DataFrame
-    filtered_df = application_text_dtf[application_text_dtf['source'] == 'source_code']
-    print(filtered_df.head(3))
-
-    # Save the string to a .txt file
-    first_3_rows = filtered_df.head(3)
-    output_string = first_3_rows.to_string(index=False)
-    with open('filtered_rows.txt', 'w') as file:
-        file.write(output_string)
-
-    # Print all available columns and their data types
-    print(application_text_dtf.dtypes)
-    """
-    """
-    def extract_keywordsold(text):
-    r.extract_keywords_from_text(text)
-    keywords = r.get_ranked_phrases_with_scores()
-    print(f"keywords : {keywords}")
-    best_keywords = keywords[0][1]
-    return best_keywords
-    """
 
     t0 = time()
-    from rake_nltk import Rake
 
     pd.set_option('display.max_columns', None)
 
@@ -935,19 +887,6 @@ for app in application_label_dtf["ApplicationLabel"]:
     # Apply the merging function
     merged_df = merge_sentences(application_text_dtf)
 
-    # Function to extract keywords (provided)
-    def extract_keywords(text):
-        #print(f"{text}\n")
-        r = Rake()
-        r.extract_keywords_from_text(text)
-        keywords_with_scores = r.get_ranked_phrases_with_scores()
-        if not keywords_with_scores:
-            return []
-        #highest_score = max(score for score, _ in keywords_with_scores)
-        #best_keywords = [keyword for score, keyword in keywords_with_scores if score == highest_score]
-        #return best_keywords
-        return keywords_with_scores[0][1]
-
     from sklearn.feature_extraction.text import TfidfVectorizer
 
     def extract_keywords_tfidf(text, num_keywords=5):
@@ -961,22 +900,28 @@ for app in application_label_dtf["ApplicationLabel"]:
         Returns:
         list: A list of top keywords.
         """
+        # Check if the text is empty or would result in an empty vocabulary
+        if not text.strip():
+            return []
+
         tfidf_vectorizer = TfidfVectorizer(stop_words='english', max_features=num_keywords)
-        tfidf_matrix = tfidf_vectorizer.fit_transform([text])
-        feature_names = tfidf_vectorizer.get_feature_names_out()
-        
-        # Get the scores for the features
-        tfidf_scores = tfidf_matrix.toarray().flatten()
-        
-        # Sort the feature names by their scores in descending order
-        top_keywords = [feature_names[i] for i in tfidf_scores.argsort()[-num_keywords:][::-1]]
-        
-        return top_keywords
+        try:
+            tfidf_matrix = tfidf_vectorizer.fit_transform([text])
+            feature_names = tfidf_vectorizer.get_feature_names_out()
+
+            # Get the scores for the features
+            tfidf_scores = tfidf_matrix.toarray().flatten()
+
+            # Sort the feature names by their scores in descending order
+            top_keywords = [feature_names[i] for i in tfidf_scores.argsort()[-num_keywords:][::-1]]
+            
+            return top_keywords
+        except ValueError:
+            # Return an empty list if the vocabulary is empty
+            return []
 
     # Apply keyword extraction to the merged sentences
-    #merged_df['keywords'] = merged_df['sentence'].apply(extract_keywords)
     merged_df['keywords'] = merged_df['sentence'].apply(extract_keywords_tfidf)
-
 
     # Final DataFrame
     Role_df = merged_df[['id', 'name', 'sentence', 'keywords']]
@@ -1065,7 +1010,7 @@ for app in application_label_dtf["ApplicationLabel"]:
     #for id in Role_df["id"].head(2):
         #id = Role_df["id"].iloc[1]
         query_params = dict(target_label = app, target_aip = id)
-        query_string = get_neighborhood
+        query_string = get_neighborhood_2
         #print(query_string)
         query_results = conn.query(query_string,params=query_params,db=opts.neo4j_database,trace=opts.trace_neo4j)
         #print(f"query_results : {query_results}")
@@ -1077,10 +1022,17 @@ for app in application_label_dtf["ApplicationLabel"]:
     from gensim.models import KeyedVectors
     from sklearn.metrics.pairwise import cosine_similarity
 
-    # Load the model
+    import numpy as np
+
+    def safe_cosine_similarity(vec1, vec2):
+        if np.linalg.norm(vec1) == 0 or np.linalg.norm(vec2) == 0:
+            return 0  # Default similarity when one of the vectors is empty
+        return cosine_similarity([vec1], [vec2])[0][0]
+
+    # Charger le modèle
     word_vectors = KeyedVectors.load_word2vec_format('GoogleNews-vectors-negative300.bin', binary=True)
 
-    # Function to get the aggregate vector for a node
+    # Fonction pour obtenir le vecteur sémantique d'un noeud à partir de ses keywords
     def get_node_vector(keywords, model):
         vectors = []
         for word in keywords:
@@ -1089,14 +1041,197 @@ for app in application_label_dtf["ApplicationLabel"]:
         if vectors:
             return np.mean(vectors, axis=0)
         else:
-            return np.zeros(len(next(iter(model.values()))))  # Model vector size
+            return np.zeros(model.vector_size)
 
-    # Compute vector for each node
+    # Adding parent semantic into child's vector, first version with a list of dicts. All graphs (links) same weight in the formula. 
+    def get_enriched_node_vector(node, G, model, parents_dict_list, alpha=0.3):
+        # Get the semantic vector of the current node
+        keywords = G.nodes[node]['keywords']
+        node_vector = get_node_vector(keywords, model)
+        
+        # List to store the mean of parent vectors
+        all_parent_means = []
+        
+        for parents_dict in parents_dict_list:
+            parent_vectors = []
+            
+            # If the node has parents in this dict
+            if node in parents_dict:
+                for parent in parents_dict[node]:
+                    if parent in G.nodes:
+                        parent_keywords = G.nodes[parent]['keywords']
+                        parent_vector = get_node_vector(parent_keywords, model)
+                        parent_vectors.append(parent_vector)
+            
+            # If there are parent vectors, compute the mean
+            if parent_vectors:
+                parent_vector_mean = np.mean(parent_vectors, axis=0)
+                all_parent_means.append(parent_vector_mean)
+        
+        # Adjust the final vector calculation if any parents were found
+        if all_parent_means:
+            num_valid_parent_sets = len(all_parent_means)
+            final_vector = (1 - alpha) * node_vector
+            
+            # Add each mean of the parent vectors weighted by alpha / nb de valid parents
+            for parent_mean in all_parent_means:
+                final_vector += (alpha / num_valid_parent_sets) * parent_mean
+            
+            return final_vector
+        else:
+            # If no parents, return the node's own vector
+            return node_vector
+
+
+    # Adding parent semantic into child's vector, first version with a list of dicts. All graphs (links) same weight in the formula. 
+    def get_enriched_node_vector2(node, G, model, parents_dict_dict, alpha=0.3):
+        # Get the semantic vector of the current node
+        keywords = G.nodes[node]['keywords']
+        node_vector = get_node_vector(keywords, model)
+        
+        # List to store the mean of parent vectors, weighted by their relationship type
+        all_parent_means = []
+        relationship_weights = {
+            'BELONGTO': 2,
+            'INHERIT': 2,
+            'RELYON': 1,
+            'MENTION': 1,
+            'OVERRIDE': 1,
+            'IMPLEMENT': 1
+        }
+        
+        # Iterate over each relationship type in the parent dictionary
+        for relationship, parents_dict in parents_dict_dict.items():
+            parent_vectors = []
+            
+            # If the node has parents in this relationship type
+            if node in parents_dict:
+                for parent in parents_dict[node]:
+                    if parent in G.nodes:
+                        parent_keywords = G.nodes[parent]['keywords']
+                        parent_vector = get_node_vector(parent_keywords, model)
+                        parent_vectors.append(parent_vector)
+            
+            # If there are parent vectors, compute the weighted mean for this relationship type
+            if parent_vectors:
+                parent_vector_mean = np.mean(parent_vectors, axis=0)
+                weight = relationship_weights.get(relationship, 1)
+                all_parent_means.append((weight, parent_vector_mean))
+        
+        # Adjust the final vector calculation if any parents were found
+        if all_parent_means:
+            final_vector = (1 - alpha) * node_vector
+            total_weight = sum(weight for weight, _ in all_parent_means)
+            
+            # Add each mean of the parent vectors, weighted by the relationship's weight
+            for weight, parent_mean in all_parent_means:
+                final_vector += (alpha * (weight / total_weight)) * parent_mean
+            
+            return final_vector
+        else:
+            # If no parents, return the node's own vector
+            return node_vector
+    
+    # Function to create the parents dictionary
+    def get_parents_dict(relationship_type):
+        # Initialize the parents dictionary
+        parents_dict = {}
+
+        query_params = {
+            'target_label': app,
+            'relationship_type': relationship_type
+        }
+        
+        query_string = query_parents_dict_template
+        # Execute the query and process the results
+        results = conn.query(query_string, params=query_params, db=opts.neo4j_database, trace=opts.trace_neo4j)
+        
+        for record in results:
+            child = record['child']
+            parent = record['parent']
+            
+            # Add the parent to the child's parent list
+            if child not in parents_dict:
+                parents_dict[child] = []
+            parents_dict[child].append(parent)
+
+        return parents_dict
+
+    # Function to create the parents dictionary when 
+    def get_parents_dict_other_sens(relationship_type):
+        # Initialize the parents dictionary
+        parents_dict = {}
+
+        query_params = {
+            'target_label': app,
+            'relationship_type': relationship_type
+        }
+        
+        query_string = query_parents_dict_template
+        # Execute the query and process the results
+        results = conn.query(query_string, params=query_params, db=opts.neo4j_database, trace=opts.trace_neo4j)
+        
+        for record in results:
+            parent = record['child']
+            child  = record['parent']
+            
+            # Add the parent to the child's parent list
+            if child not in parents_dict:
+                parents_dict[child] = []
+            parents_dict[child].append(parent)
+
+        return parents_dict
+
+
+    logging.info('')
+    logging.info("Enrichment of children's semantic vectors with those of their parents (BelongTO) from [%s] application..."%(app))
+    t0 = time()
+    """
+    parents_dict_list =[]
+    # Create the parents dictionary for BelongTO graph
+    #parents_dict_belongto = get_parents_dict(parents_dict_query_belongto)
+    parents_dict_list.append(get_parents_dict('BELONGTO'))
+    #print(parents_dict)
+    #print(len(parents_dict))
+
+    # Adding the parents dictionary for RelyON graph and Mention graph
+    #parents_dict_relyon = get_parents_dict(parents_dict_query_relyon)
+    parents_dict_list.append(get_parents_dict('RELYON'))
+    parents_dict_list.append(get_parents_dict('MENTION'))
+
+    # Adding the parents dictionary for Inherit graph  and Override graph
+    parents_dict_list.append(get_parents_dict('INHERIT'))
+    parents_dict_list.append(get_parents_dict('OVERRIDE'))
+
+    # Adding the parents dictionary for Implement graph (other sens of edge)
+    parents_dict_list.append(get_parents_dict_other_sens('IMPLEMENT'))
+    """
+
+    # Initialize a dictionary to store the parent dictionaries for each relationship
+    parents_dict_dict = {}
+
+    # Create the parents dictionary for BelongTO graph
+    parents_dict_dict['BELONGTO'] = get_parents_dict('BELONGTO')
+
+    # Adding the parents dictionary for RelyON graph and Mention graph
+    parents_dict_dict['RELYON'] = get_parents_dict('RELYON')
+    parents_dict_dict['MENTION'] = get_parents_dict('MENTION')
+
+    # Adding the parents dictionary for Inherit graph and Override graph
+    parents_dict_dict['INHERIT'] = get_parents_dict('INHERIT')
+    parents_dict_dict['OVERRIDE'] = get_parents_dict('OVERRIDE')
+
+    # Adding the parents dictionary for Implement graph (other sens of edge)
+    parents_dict_dict['IMPLEMENT'] = get_parents_dict_other_sens('IMPLEMENT')
+
+    # Calculer le vecteur pour chaque noeud en tenant compte des liens d'appartenance
     node_vectors = {}
     for node in G.nodes:
-        keywords = G.nodes[node]['keywords']
-        node_vectors[node] = get_node_vector(keywords, word_vectors)
+        node_vectors[node] = get_enriched_node_vector2(node, G, word_vectors, parents_dict_dict)
 
+    logging.info("done in %0.3fs." % (time() - t0))
+    logging.info('')
+    
     #print(node_vectors)
     #print(type(node_vectors))
     #print(type(node_vectors['9887']))
@@ -1129,23 +1264,28 @@ for app in application_label_dtf["ApplicationLabel"]:
     
     # Function to create an edge name from common keywords
     def create_edge_name(common_keywords):
-        return ''.join([word.capitalize() for word in common_keywords])
+        return ''.join([word.capitalize() for word in sorted(common_keywords)])
 
     # Compute cosine similarity and add edges based on the threshold
     for node1 in D:
+        if not D[node1]:
+            print(f"No neighbors found for node1 {node1}")
+            continue  # Skip this node if there are no neighbors
+
         node1_str = str(node1)  # Convert node1 to string, ensure it matches the graph ID format
         if node1_str not in node_vectors:
-            print(f"Node {node1_str} not found in node_vectors")
+            print(f"Node1{node1_str} not found in node_vectors")
             continue
 
         for node2 in D[node1]:
             node2_str = str(node2)  # Convert node2 to string, ensure it matches the graph ID format
             if node2_str not in node_vectors:
-                print(f"Node {node2_str} not found in node_vectors")
+                print(f"Node2 {node2_str} not found in node_vectors")
                 continue
 
             if node1_str < node2_str:  # Avoid duplicate checking
-                sim = cosine_similarity([node_vectors[node1_str]], [node_vectors[node2_str]])[0][0]
+                #sim = cosine_similarity([node_vectors[node1_str]], [node_vectors[node2_str]])[0][0]
+                sim = safe_cosine_similarity(node_vectors[node1_str], node_vectors[node2_str])
                 if sim >= similarity_threshold:
                     #G.add_edge(node1_str, node2_str, weight=sim)
                     # Find common keywords
@@ -1158,7 +1298,7 @@ for app in application_label_dtf["ApplicationLabel"]:
                     
                     # Define edge properties
                     edge_properties = {
-                        'weight': sim,
+                        'Weight': sim,
                         'Name': edge_name,
                         'CommonKeywords': common_keywords,
                     }
@@ -1185,7 +1325,7 @@ for app in application_label_dtf["ApplicationLabel"]:
         edge_properties = {key: value for key, value in edge_data.items() if key != 'type'}
         
         # Construct the Cypher query
-        query_string = update_neo4j
+        query_string = update_neo4j3
         
         # Query parameters
         query_params = dict(
@@ -1202,6 +1342,9 @@ for app in application_label_dtf["ApplicationLabel"]:
     logging.info("Update complete in %0.3fs." % (time() - t0))
     logging.info('')
 
+    print(f"Number of rows in DataFrame: {Role_df.shape[0]}")
+    print(f"Length of the dictionary: {len(D)}")
+    #print(D)
 
 
 logging.info("Disconnection from Neo4j ...")

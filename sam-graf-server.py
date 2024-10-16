@@ -212,8 +212,8 @@ def get_a_datagraph(app_name, graph_id):
     return _get_a_callgraph(app_name, 'DataGraph', graph_id)
 
 
-@app.route('/Applications/<app_name>/Models/<model_name>', methods=['GET'])
-def get_a_model(app_name, model_name):
+@app.route('/Applications/<app_name>/Models/<graph_id>/<model_name>', methods=['GET'])
+def get_a_model(app_name, graph_id, model_name):
     """
     GET /Applications/<app_name>/Models/<model_name>
     Fetches an instance of model: the graph resulting from the computation of a similarity model for a given graph.
@@ -226,7 +226,7 @@ def get_a_model(app_name, model_name):
         JSON: The specified graph.
     """
     my_query = NeoQuery(URI, AUTH, DATABASE)
-    cypher_query = modelgraph_query(app_name, model_name)
+    cypher_query = modelgraph_query(app_name, graph_id, model_name)
     return my_query.execute_query(cypher_query)
 
 

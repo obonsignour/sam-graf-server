@@ -328,33 +328,20 @@ def communitiesNamesThread(G, dendrogram):
     return CommunitiesNames
 
 
-def add_community_attributes(graph, community_list, model, graph_type, graph_id, communitiesNames):
+def add_community_attributes(graph, community_list, model, graph_type, graph_id, communitiesNames, exclude_indices):
     num_levels = len(community_list)
 
     for level in range(num_levels):
         for node, community_ids in community_list[level].items():
+            # Skip the nodes in exclude_indices
+            if node in exclude_indices:
+                continue
             # If the community_ids is a list, get the corresponding names for each ID
             community_names = [communitiesNames[level][community_id] for community_id in community_ids]
             # Join the list into a string with the specified delimiter
             community_names_str = '$&$'.join(community_names)
             # Store as a concatenated string
             graph.nodes[node][f'community_level_{level}_{model}_{graph_type}_{graph_id}'] = community_names_str
-
-
-# A version checking if community_ids is a list (not neccessary here because it is always a list)
-def add_community_attributes2(graph, community_list, model, graph_type, graph_id, communitiesNames):
-    num_levels = len(community_list)
-
-    for level in range(num_levels):
-        for node, community_ids in community_list[level].items():
-            if isinstance(community_ids, list):
-                # If the community_ids is a list, get the corresponding names for each ID
-                community_names = [communitiesNames[level][community_id] for community_id in community_ids]
-                # Store as a list
-                graph.nodes[node][f'community_level_{level}_{model}_{graph_type}_{graph_id}'] = community_names
-            else:
-                # If it's a single community_id, directly assign the corresponding name
-                graph.nodes[node][f'community_level_{level}_{model}_{graph_type}_{graph_id}'] = communitiesNames[level][community_ids]
 
 
 # Function to get both startNodes and endNodes
@@ -573,12 +560,8 @@ def SLPA_Call_Graph(application, graph_id, graph_type, linkTypes=["all"]):
 
     start_time_algo = time.time()
 
-    # Identify nodes of interest (start and end points) to exclude from the induced subgraph
-    start_nodes, end_nodes = nodes_of_interest(application, graph_type, graph_id)
-    exclude_indices = set(start_nodes + end_nodes)
-
     # Perform community detection using SLPA method
-    dendrogram, hierarchy_tree = community_detection_hierarchy(G.subgraph(set(G.nodes) - exclude_indices), level=2)
+    dendrogram, hierarchy_tree = community_detection_hierarchy(G, level=2)
 
     # Print the number of communities by level
     for level, partition in enumerate(dendrogram):
@@ -602,8 +585,12 @@ def SLPA_Call_Graph(application, graph_id, graph_type, linkTypes=["all"]):
     end_time_names = time.time()
     print(f"Naming time:  {end_time_names-start_time_names}")
 
+        # Identify nodes of interest (start and end points) to exclude from the induced subgraph
+    start_nodes, end_nodes = nodes_of_interest(application, graph_type, graph_id)
+    exclude_indices = set(start_nodes + end_nodes)
+
     # Add attributes to the graph G
-    add_community_attributes(G, dendrogram, model, graph_type, graph_id, communities_names)
+    add_community_attributes(G, dendrogram, model, graph_type, graph_id, communities_names, exclude_indices)
 
     """    
     # Retrieve the name of the attribute

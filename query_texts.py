@@ -57,10 +57,11 @@ def callgraph_query(app_name: str, graph_type: str, graph_id: int) -> str:
 #             )
 
 
-def modelgraph_query(app_name: str, modelgraph_name: str) -> str:
+def modelgraph_query(app_name: str, graph_id: int, modelgraph_name: str) -> str:
     return (f"""
-        MATCH p = (d:Model:{app_name})<-[i1:IS_IN_MODEL]-(n:{app_name})
+        MATCH p = (t:{app_name})<-[:RELATES_TO]-(d:Model:{app_name})<-[i1:IS_IN_MODEL]-(n:{app_name})
         WHERE d.name = "{modelgraph_name}"
+        AND ID(t) = {graph_id}
         AND (n:Object OR n:SubObject)
         WITH n, apoc.map.setLists(properties(n), ['Community'], [i1.Community]) AS propsCompleted
         WITH apoc.create.vNode(labels(n), propsCompleted) AS n1

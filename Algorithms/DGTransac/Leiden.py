@@ -241,16 +241,25 @@ def communitiesNamesThread(G, dendrogram):
     return CommunitiesNames
 
 
-def add_community_attributes(graph, community_list, model, graph_type, graph_id, communitiesNames):
+def add_community_attributes(graph, community_list, model, graph_type, graph_id, communitiesNames, exclude_indices):
+    # Convert exclude_indices to strings to match the vertex 'id' type in the graph
+    exclude_indices_str = set(map(str, exclude_indices))
+    
     num_levels = len(community_list)
 
     for level in range(num_levels):
-        #for node_idx, community_value in community_list[level].items():
         for node_id, community_id in community_list[level].items():
+            # Skip the nodes in exclude_indices
+            if node_id in exclude_indices_str:
+                continue  # Skip this node
+
             # Find the index of the node with the specified "id" attribute
             node_idx = graph.vs.find(id=node_id).index
             node = graph.vs[node_idx]
+            
+            # Add the community attribute for this node
             node[f"community_level_{level}_{model}_{graph_type}_{graph_id}"] = communitiesNames[level][community_id]
+
 
 # Function to get both startNodes and endNodes
 def nodes_of_interest(application, graph_type, graph_id):
@@ -287,14 +296,6 @@ def nodes_of_interest(application, graph_type, graph_id):
 
     return start_nodes, end_nodes
 
-def create_filtered_subgraph(G, exclude_indices):
-    # Convert exclude_indices to strings to match the vertex 'id' type in G
-    exclude_indices_str = set(map(str, exclude_indices))
-    # Use induced_subgraph to retain original vertex indices
-    vertices_to_keep = [v.index for v in G.vs if v['id'] not in exclude_indices_str]
-    subgraph = G.induced_subgraph(vertices_to_keep)
-    
-    return subgraph
 
 def generate_cypher_query(application, graph_type, graph_id, linkTypes):
     if graph_type == "DataGraph":
@@ -467,12 +468,8 @@ def Leiden_Call_Graph(application, graph_id, graph_type, linkTypes=["all"]):
     
     start_time_algo = time.time()
 
-    # Identify nodes of interest (start and end points) to exclude from the induced subgraph
-    start_nodes, end_nodes = nodes_of_interest(application, graph_type, graph_id)
-    exclude_indices = set(start_nodes + end_nodes)
-
     # Perform community detection
-    result, hierarchy_tree = community_detection_hierarchy(create_filtered_subgraph(G, exclude_indices), level=2)
+    result, hierarchy_tree = community_detection_hierarchy(G, level=2)
 
     # Print the number of communities by level
     for level, partition in enumerate(result):
@@ -504,8 +501,12 @@ def Leiden_Call_Graph(application, graph_id, graph_type, linkTypes=["all"]):
     end_time_names = time.time()
     print(f"Naming time:  {end_time_names-start_time_names}")
 
+    # Identify nodes of interest (start and end points) to exclude
+    start_nodes, end_nodes = nodes_of_interest(application, graph_type, graph_id)
+    exclude_indices = set(start_nodes + end_nodes)
+
     # Add attributes to the igraph graph G
-    add_community_attributes(G, result, model, graph_type, graph_id, communities_names)
+    add_community_attributes(G, result, model, graph_type, graph_id, communities_names, exclude_indices)
 
     # Retrieve the name of the attribute
     for i in range(len(result)):
