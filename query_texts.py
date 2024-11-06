@@ -57,7 +57,7 @@ def callgraph_query(app_name: str, graph_type: str, graph_id: int) -> str:
 #             )
 
 
-def modelgraph_query(app_name: str, graph_id: int, modelgraph_name: str) -> str:
+def modelgraph_query0(app_name: str, graph_id: int, modelgraph_name: str) -> str:
     return (f"""
         MATCH p = (t:{app_name})<-[:RELATES_TO]-(d:Model:{app_name})<-[i1:IS_IN_MODEL]-(n:{app_name})
         WHERE d.name = "{modelgraph_name}"
@@ -67,7 +67,7 @@ def modelgraph_query(app_name: str, graph_id: int, modelgraph_name: str) -> str:
         WITH apoc.create.vNode(labels(n), propsCompleted) AS n1
         WITH collect(n1) AS vNodes, collect(apoc.any.property(n1, "AipId")) AS aipIds
         CALL cast.linkTypes([\"CALL_IN_TRAN\"]) yield linkTypes
-        WITH vNodes, aipIds, linkTypes
+        WITH vNodes, aipIds, linkTypes + ["STARTS_WITH", "ENDS_WITH"] AS linkTypes
         MATCH (n:{app_name})<-[r]-(m:{app_name})
         WHERE (n:Object OR n:SubObject)
         AND (m:Object OR m:SubObject)
@@ -80,6 +80,48 @@ def modelgraph_query(app_name: str, graph_id: int, modelgraph_name: str) -> str:
         RETURN n1, m1, r1
         """
             )
+
+
+def modelgraph_query(app_name: str, graph_id: int, modelgraph_name: str) -> str:
+    query = """
+        MATCH p = (t:{app_name})<-[:RELATES_TO]-(d:Model:{app_name})<-[i1:IS_IN_MODEL]-(n:{app_name})
+        WHERE d.name = "{modelgraph_name}"
+        AND id(t) = {graph_id}
+        AND (n:Object OR n:SubObject)
+        WITH t, n, apoc.map.setLists(properties(n), ['Community'], [i1.Community]) AS propsCompleted
+        
+        CALL {{
+            WITH t, n, propsCompleted 
+            OPTIONAL MATCH (t)-[r]->(n)
+            WITH type(r) As typRel, propsCompleted
+            WITH propsCompleted, 
+                CASE typRel 
+                    WHEN 'STARTS_WITH' THEN apoc.map.setEntry(propsCompleted, 'StartingPoint', True) 
+                    WHEN 'ENDS_WITH' THEN apoc.map.setEntry(propsCompleted, 'EndingPoint', True) 
+                    ELSE propsCompleted 
+                END AS newPropsCompleted
+            RETURN newPropsCompleted
+        }}
+        WITH n, newPropsCompleted as propsCompleted 
+        
+        WITH apoc.create.vNode(labels(n), propsCompleted) AS n1
+        WITH collect(n1) AS vNodes, collect(apoc.any.property(n1, "AipId")) AS aipIds
+        CALL cast.linkTypes(["CALL_IN_TRAN"]) yield linkTypes
+        
+        WITH vNodes, aipIds, linkTypes
+        MATCH (n:{app_name})<-[r]-(m:{app_name})
+        WHERE (n:Object OR n:SubObject)
+        AND (m:Object OR m:SubObject)
+        AND n.AipId IN aipIds
+        AND m.AipId IN aipIds
+        AND type(r) IN linkTypes
+        
+        WITH n, m, r, vNodes
+        WITH [n1 IN vNodes WHERE apoc.any.property(n1, "AipId")=n.AipId | n1][0] AS n1,  [m1 IN vNodes WHERE apoc.any.property(m1, "AipId")=m.AipId | m1][0] AS m1, r
+        WITH n1, m1, apoc.create.vRelationship(n1, type(r), properties(r), m1) AS r1
+        RETURN n1, m1, r1
+        """
+    return query.format(app_name=app_name, graph_id=graph_id, modelgraph_name=modelgraph_name)
 
 
 def get_appgraph_query(app_name: str) -> str:
