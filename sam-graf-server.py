@@ -29,8 +29,29 @@ from flask import Flask, request, jsonify
 
 from query_texts import get_appgraph_query, get_callgraph_query, callgraph_query, modelgraph_query
 
+from flask.json.provider import JSONProvider
+from neo4j.time import DateTime as Neo4jDateTime
+import json
+import datetime
+
+class CustomJSONProvider(JSONProvider):
+    """Custom JSON provider that can handle Neo4j DateTime objects."""
+    
+    def dumps(self, obj, **kwargs):
+        return json.dumps(obj, default=self._default, **kwargs)
+    
+    def loads(self, s, **kwargs):
+        return json.loads(s, **kwargs)
+    
+    def _default(self, obj):
+        if isinstance(obj, Neo4jDateTime):
+            # Convert Neo4j DateTime to ISO format string
+            return obj.to_native().isoformat()
+        # Let the standard JSON encoder handle the default case
+        raise TypeError(f"Object of type {type(obj).__name__} is not JSON serializable")
 
 app = Flask(__name__)
+app.json = CustomJSONProvider(app)
 __version__ = "0.1.0"
 
 try:
@@ -229,6 +250,128 @@ def get_a_model(app_name, graph_id, model_name):
     cypher_query = modelgraph_query(app_name, graph_id, model_name)
     return my_query.execute_query(cypher_query)
 
+
+@app.route('/Applications/<app_name>/<graph_type>s/<graph_id>/NodesOfInterest', methods=['GET'])
+def get_nodes_of_interest(app_name, graph_type, graph_id):
+    """
+    GET /Applications/<app_name>/<graph_type>s/<graph_id>/NodesOfInterest
+    Fetches start and end nodes for the specified graph.
+
+    Args:
+        app_name (str): The name of the application. Case sensitive.
+        graph_type (str): Either "Transaction" or "DataGraph".
+        graph_id (str): The ID of the graph.
+
+    Returns:
+        JSON: Object with startNodes and endNodes arrays.
+    """
+    my_query = NeoQuery(URI, AUTH, DATABASE)
+    
+    if graph_type.endswith('s'):
+        graph_type = graph_type[:-1] 
+    
+    # Query to find nodes connected by STARTS_WITH and ENDS_WITH relationships
+    cypher_query = f"""
+        MATCH (n:{app_name})<-[:STARTS_WITH]-(d:{graph_type}:{app_name})
+        WHERE id(d) = {graph_id}
+        AND (n:Object OR n:SubObject)
+        RETURN DISTINCT id(n) AS nodeId, 'startNode' AS nodeType
+        UNION
+        MATCH (n:{app_name})<-[:ENDS_WITH]-(d:{graph_type}:{app_name})
+        WHERE id(d) = {graph_id}
+        AND (n:Object OR n:SubObject)
+        RETURN DISTINCT id(n) AS nodeId, 'endNode' AS nodeType
+    """
+    
+    # Execute the query
+    result = my_query.execute_query(cypher_query)
+    
+    # Process the result to create startNodes and endNodes arrays
+    start_nodes = []
+    end_nodes = []
+    
+    for item in result:
+        if item['nodeType'] == 'startNode':
+            start_nodes.append(str(item['nodeId']))
+        elif item['nodeType'] == 'endNode':
+            end_nodes.append(str(item['nodeId']))
+    
+    return jsonify({
+        "startNodes": start_nodes,
+        "endNodes": end_nodes
+    })
+
+from flask import Flask, jsonify, request
+from flask_cors import CORS
+import logging
+from postgres_service import PostgresService
+import os
+from dotenv import load_dotenv
+from flask_cors import CORS
+
+CORS(app)
+
+# Set up logging
+logging.basicConfig(level=logging.INFO, 
+                    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
+
+# Load environment variables
+load_dotenv()
+postgres_service = PostgresService()
+
+@app.route('/API/source-code/<app_name>/<object_id>', methods=['GET'])
+def get_source_code(app_name, object_id):
+    try:
+        logger.info(f"Received request for source code of object ID: {object_id}")
+        
+        #if app_name == "ecommerce115":
+        #    schema = "ecommerce_local"
+        #else:
+        #    schema = f"{app_name}_local"
+        schema = f"{app_name}_local"
+        logger.info(f"Using schema: {schema}")
+        
+        # Create a new postgres service with the correct schema
+        postgres_service = PostgresService()
+        postgres_service.schema = schema  # Set the schema directly
+        
+        # Connect to the database
+        if not postgres_service.connect():
+            return jsonify({
+                'success': False,
+                'error': 'Failed to connect to database'
+            }), 500
+            
+        # Get the source code
+        result = postgres_service.get_source_code(object_id)
+        
+        # Close the connection
+        postgres_service.close()
+        
+        if 'error' in result and not result.get('sourceCode'):
+            logger.error(f"Error fetching source code: {result['error']}")
+            return jsonify({
+                'success': False,
+                'error': result['error']
+            }), 404
+            
+        logger.info(f"Successfully retrieved source code for object ID: {object_id}")
+        return jsonify({
+            'success': True,
+            'sourceCode': result.get('sourceCode'),
+            'sourcePath': result.get('sourcePath'),
+            'lineStart': result.get('lineStart'),
+            'lineEnd': result.get('lineEnd')
+        })
+        
+    except Exception as e:
+        logger.error(f"Exception in get_source_code: {e}")
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+    
 
 # ========================================================================================================================================
 # Algo APIs

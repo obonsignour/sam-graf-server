@@ -1,0 +1,821 @@
+2025-04-14 12:09:58,623 - sam-graf-server - INFO - Environment variables:
+2025-04-14 12:09:58,624 - sam-graf-server - INFO -   SHELL=/bin/bash
+2025-04-14 12:09:58,624 - sam-graf-server - INFO -   NVM_INC=/home/smm/.nvm/versions/node/v21.7.1/include/node
+2025-04-14 12:09:58,624 - sam-graf-server - INFO -   WSL2_GUI_APPS_ENABLED=1
+2025-04-14 12:09:58,624 - sam-graf-server - INFO -   CONDA_EXE=/home/smm/miniconda3/bin/conda
+2025-04-14 12:09:58,624 - sam-graf-server - INFO -   _CE_M=
+2025-04-14 12:09:58,624 - sam-graf-server - INFO -   WSL_DISTRO_NAME=Ubuntu
+2025-04-14 12:09:58,624 - sam-graf-server - INFO -   WT_SESSION=50390f64-aaff-41d9-8b1b-aa357d169ec4
+2025-04-14 12:09:58,625 - sam-graf-server - INFO -   JAVA_HOME=/home/smm/.sdkman/candidates/java/current
+2025-04-14 12:09:58,625 - sam-graf-server - INFO -   SDKMAN_CANDIDATES_DIR=/home/smm/.sdkman/candidates
+2025-04-14 12:09:58,625 - sam-graf-server - INFO -   XML_CATALOG_FILES=file:///home/smm/miniconda3/envs/myenv/etc/xml/catalog file:///etc/xml/catalog
+2025-04-14 12:09:58,625 - sam-graf-server - INFO -   NAME=SMMLAP
+2025-04-14 12:09:58,625 - sam-graf-server - INFO -   PWD=/home/smm/WebApp/sam-graf-server
+2025-04-14 12:09:58,625 - sam-graf-server - INFO -   GSETTINGS_SCHEMA_DIR=/home/smm/miniconda3/envs/myenv/share/glib-2.0/schemas
+2025-04-14 12:09:58,625 - sam-graf-server - INFO -   LOGNAME=smm
+2025-04-14 12:09:58,625 - sam-graf-server - INFO -   CONDA_PREFIX=/home/smm/miniconda3/envs/myenv
+2025-04-14 12:09:58,625 - sam-graf-server - INFO -   GSETTINGS_SCHEMA_DIR_CONDA_BACKUP=
+2025-04-14 12:09:58,625 - sam-graf-server - INFO -   MOTD_SHOWN=update-motd
+2025-04-14 12:09:58,626 - sam-graf-server - INFO -   HOME=/home/smm
+2025-04-14 12:09:58,626 - sam-graf-server - INFO -   LANG=C.UTF-8
+2025-04-14 12:09:58,626 - sam-graf-server - INFO -   WSL_INTEROP=/run/WSL/202613_interop
+2025-04-14 12:09:58,626 - sam-graf-server - INFO -   LS_COLORS=rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:
+2025-04-14 12:09:58,626 - sam-graf-server - INFO -   WAYLAND_DISPLAY=wayland-0
+2025-04-14 12:09:58,626 - sam-graf-server - INFO -   CONDA_PROMPT_MODIFIER=(myenv) 
+2025-04-14 12:09:58,626 - sam-graf-server - INFO -   NVM_DIR=/home/smm/.nvm
+2025-04-14 12:09:58,626 - sam-graf-server - INFO -   LESSCLOSE=/usr/bin/lesspipe %s %s
+2025-04-14 12:09:58,626 - sam-graf-server - INFO -   TERM=xterm-256color
+2025-04-14 12:09:58,627 - sam-graf-server - INFO -   _CE_CONDA=
+2025-04-14 12:09:58,627 - sam-graf-server - INFO -   LESSOPEN=| /usr/bin/lesspipe %s
+2025-04-14 12:09:58,627 - sam-graf-server - INFO -   USER=smm
+2025-04-14 12:09:58,627 - sam-graf-server - INFO -   CONDA_SHLVL=2
+2025-04-14 12:09:58,627 - sam-graf-server - INFO -   SDKMAN_DIR=/home/smm/.sdkman
+2025-04-14 12:09:58,627 - sam-graf-server - INFO -   DISPLAY=:0
+2025-04-14 12:09:58,627 - sam-graf-server - INFO -   SHLVL=1
+2025-04-14 12:09:58,627 - sam-graf-server - INFO -   NVM_CD_FLAGS=
+2025-04-14 12:09:58,627 - sam-graf-server - INFO -   SDKMAN_CANDIDATES_API=https://api.sdkman.io/2
+2025-04-14 12:09:58,628 - sam-graf-server - INFO -   CONDA_PYTHON_EXE=/home/smm/miniconda3/bin/python
+2025-04-14 12:09:58,628 - sam-graf-server - INFO -   XDG_RUNTIME_DIR=/run/user/1000/
+2025-04-14 12:09:58,628 - sam-graf-server - INFO -   CONDA_DEFAULT_ENV=myenv
+2025-04-14 12:09:58,628 - sam-graf-server - INFO -   WSLENV=WT_SESSION:WT_PROFILE_ID:
+2025-04-14 12:09:58,628 - sam-graf-server - INFO -   XDG_DATA_DIRS=/usr/local/share:/usr/share:/var/lib/snapd/desktop
+2025-04-14 12:09:58,628 - sam-graf-server - INFO -   PATH=/home/smm/.sdkman/candidates/java/current/bin:/home/smm/.nvm/versions/node/v21.7.1/bin:/home/smm/miniconda3/envs/myenv/bin:/home/smm/miniconda3/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/Program Files/Common Files/Oracle/Java/javapath:/mnt/c/Program Files (x86)/Common Files/Oracle/Java/java8path:/mnt/c/Program Files (x86)/Common Files/Oracle/Java/javapath:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0:/mnt/c/WINDOWS/System32/OpenSSH:/mnt/c/Users/SMM/AppData/Local/Programs/Python/Python312/Scripts:/mnt/c/Users/SMM/AppData/Local/Programs/Python/Python312:/mnt/c/Users/SMM/AppData/Local/Programs/Python/Launcher:/mnt/c/Users/SMM/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/SMM/AppData/Local/Programs/Microsoft VS Code/bin:/snap/bin:/user/bin/java
+2025-04-14 12:09:58,628 - sam-graf-server - INFO -   DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus
+2025-04-14 12:09:58,628 - sam-graf-server - INFO -   SDKMAN_PLATFORM=linuxx64
+2025-04-14 12:09:58,629 - sam-graf-server - INFO -   NVM_BIN=/home/smm/.nvm/versions/node/v21.7.1/bin
+2025-04-14 12:09:58,629 - sam-graf-server - INFO -   HOSTTYPE=x86_64
+2025-04-14 12:09:58,629 - sam-graf-server - INFO -   CONDA_PREFIX_1=/home/smm/miniconda3
+2025-04-14 12:09:58,629 - sam-graf-server - INFO -   PULSE_SERVER=unix:/mnt/wslg/PulseServer
+2025-04-14 12:09:58,629 - sam-graf-server - INFO -   WT_PROFILE_ID={51855cb2-8cce-5362-8f54-464b92b32386}
+2025-04-14 12:09:58,629 - sam-graf-server - INFO -   OLDPWD=/home/smm
+2025-04-14 12:09:58,629 - sam-graf-server - INFO -   _=/home/smm/miniconda3/envs/myenv/bin/flask
+2025-04-14 12:09:58,629 - sam-graf-server - INFO -   FLASK_RUN_FROM_CLI=true
+2025-04-14 12:09:58,630 - sam-graf-server - INFO -   NEO4J_URI=bolt://172.16.20.137:7687
+2025-04-14 12:09:58,630 - sam-graf-server - INFO -   NEO4J_USER=neo4j
+2025-04-14 12:09:58,630 - sam-graf-server - INFO -   NEO4J_DATABASE=neo4j
+2025-04-14 12:09:58,630 - sam-graf-server - INFO -   FLASK_APP=sam-graf-server.py
+2025-04-14 12:09:58,630 - sam-graf-server - INFO -   FLASK_DEBUG=1
+2025-04-14 12:09:58,631 - sam-graf-server - INFO -   PG_HOST=172.16.20.137
+2025-04-14 12:09:58,631 - sam-graf-server - INFO -   PG_PORT=2285
+2025-04-14 12:09:58,631 - sam-graf-server - INFO -   PG_USER=operator
+2025-04-14 12:09:58,631 - sam-graf-server - INFO -   PG_DATABASE=postgres
+2025-04-14 12:09:58,631 - sam-graf-server - INFO -   PG_SCHEMA=ecommerce_local
+2025-04-14 12:09:58,631 - sam-graf-server - INFO -   FLASK_ENV=development
+2025-04-14 12:09:58,631 - sam-graf-server - INFO -   FLASK_RUN_PORT=5500
+2025-04-14 12:09:58,632 - sam-graf-server - INFO -   OMP_WAIT_POLICY=passive
+2025-04-14 12:09:58,632 - sam-graf-server - INFO -   KMP_DUPLICATE_LIB_OK=True
+2025-04-14 12:09:58,632 - sam-graf-server - INFO -   KMP_INIT_AT_FORK=FALSE
+2025-04-14 12:09:58,642 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5500
+2025-04-14 12:09:58,642 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-04-14 12:09:58,643 - werkzeug - INFO -  * Restarting with stat
+2025-04-14 12:10:01,112 - sam-graf-server - INFO - Environment variables:
+2025-04-14 12:10:01,112 - sam-graf-server - INFO -   SHELL=/bin/bash
+2025-04-14 12:10:01,113 - sam-graf-server - INFO -   NVM_INC=/home/smm/.nvm/versions/node/v21.7.1/include/node
+2025-04-14 12:10:01,113 - sam-graf-server - INFO -   WSL2_GUI_APPS_ENABLED=1
+2025-04-14 12:10:01,113 - sam-graf-server - INFO -   CONDA_EXE=/home/smm/miniconda3/bin/conda
+2025-04-14 12:10:01,113 - sam-graf-server - INFO -   _CE_M=
+2025-04-14 12:10:01,113 - sam-graf-server - INFO -   WSL_DISTRO_NAME=Ubuntu
+2025-04-14 12:10:01,114 - sam-graf-server - INFO -   WT_SESSION=50390f64-aaff-41d9-8b1b-aa357d169ec4
+2025-04-14 12:10:01,114 - sam-graf-server - INFO -   JAVA_HOME=/home/smm/.sdkman/candidates/java/current
+2025-04-14 12:10:01,114 - sam-graf-server - INFO -   SDKMAN_CANDIDATES_DIR=/home/smm/.sdkman/candidates
+2025-04-14 12:10:01,114 - sam-graf-server - INFO -   XML_CATALOG_FILES=file:///home/smm/miniconda3/envs/myenv/etc/xml/catalog file:///etc/xml/catalog
+2025-04-14 12:10:01,115 - sam-graf-server - INFO -   NAME=SMMLAP
+2025-04-14 12:10:01,115 - sam-graf-server - INFO -   PWD=/home/smm/WebApp/sam-graf-server
+2025-04-14 12:10:01,115 - sam-graf-server - INFO -   GSETTINGS_SCHEMA_DIR=/home/smm/miniconda3/envs/myenv/share/glib-2.0/schemas
+2025-04-14 12:10:01,115 - sam-graf-server - INFO -   LOGNAME=smm
+2025-04-14 12:10:01,115 - sam-graf-server - INFO -   CONDA_PREFIX=/home/smm/miniconda3/envs/myenv
+2025-04-14 12:10:01,115 - sam-graf-server - INFO -   GSETTINGS_SCHEMA_DIR_CONDA_BACKUP=
+2025-04-14 12:10:01,116 - sam-graf-server - INFO -   MOTD_SHOWN=update-motd
+2025-04-14 12:10:01,116 - sam-graf-server - INFO -   HOME=/home/smm
+2025-04-14 12:10:01,116 - sam-graf-server - INFO -   LANG=C.UTF-8
+2025-04-14 12:10:01,116 - sam-graf-server - INFO -   WSL_INTEROP=/run/WSL/202613_interop
+2025-04-14 12:10:01,116 - sam-graf-server - INFO -   LS_COLORS=rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:
+2025-04-14 12:10:01,116 - sam-graf-server - INFO -   WAYLAND_DISPLAY=wayland-0
+2025-04-14 12:10:01,117 - sam-graf-server - INFO -   CONDA_PROMPT_MODIFIER=(myenv) 
+2025-04-14 12:10:01,117 - sam-graf-server - INFO -   NVM_DIR=/home/smm/.nvm
+2025-04-14 12:10:01,117 - sam-graf-server - INFO -   LESSCLOSE=/usr/bin/lesspipe %s %s
+2025-04-14 12:10:01,117 - sam-graf-server - INFO -   TERM=xterm-256color
+2025-04-14 12:10:01,117 - sam-graf-server - INFO -   _CE_CONDA=
+2025-04-14 12:10:01,117 - sam-graf-server - INFO -   LESSOPEN=| /usr/bin/lesspipe %s
+2025-04-14 12:10:01,118 - sam-graf-server - INFO -   USER=smm
+2025-04-14 12:10:01,118 - sam-graf-server - INFO -   CONDA_SHLVL=2
+2025-04-14 12:10:01,118 - sam-graf-server - INFO -   SDKMAN_DIR=/home/smm/.sdkman
+2025-04-14 12:10:01,118 - sam-graf-server - INFO -   DISPLAY=:0
+2025-04-14 12:10:01,118 - sam-graf-server - INFO -   SHLVL=1
+2025-04-14 12:10:01,118 - sam-graf-server - INFO -   NVM_CD_FLAGS=
+2025-04-14 12:10:01,118 - sam-graf-server - INFO -   SDKMAN_CANDIDATES_API=https://api.sdkman.io/2
+2025-04-14 12:10:01,119 - sam-graf-server - INFO -   CONDA_PYTHON_EXE=/home/smm/miniconda3/bin/python
+2025-04-14 12:10:01,119 - sam-graf-server - INFO -   XDG_RUNTIME_DIR=/run/user/1000/
+2025-04-14 12:10:01,119 - sam-graf-server - INFO -   CONDA_DEFAULT_ENV=myenv
+2025-04-14 12:10:01,119 - sam-graf-server - INFO -   WSLENV=WT_SESSION:WT_PROFILE_ID:
+2025-04-14 12:10:01,119 - sam-graf-server - INFO -   XDG_DATA_DIRS=/usr/local/share:/usr/share:/var/lib/snapd/desktop
+2025-04-14 12:10:01,119 - sam-graf-server - INFO -   PATH=/home/smm/.sdkman/candidates/java/current/bin:/home/smm/.nvm/versions/node/v21.7.1/bin:/home/smm/miniconda3/envs/myenv/bin:/home/smm/miniconda3/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/Program Files/Common Files/Oracle/Java/javapath:/mnt/c/Program Files (x86)/Common Files/Oracle/Java/java8path:/mnt/c/Program Files (x86)/Common Files/Oracle/Java/javapath:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0:/mnt/c/WINDOWS/System32/OpenSSH:/mnt/c/Users/SMM/AppData/Local/Programs/Python/Python312/Scripts:/mnt/c/Users/SMM/AppData/Local/Programs/Python/Python312:/mnt/c/Users/SMM/AppData/Local/Programs/Python/Launcher:/mnt/c/Users/SMM/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/SMM/AppData/Local/Programs/Microsoft VS Code/bin:/snap/bin:/user/bin/java
+2025-04-14 12:10:01,119 - sam-graf-server - INFO -   DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus
+2025-04-14 12:10:01,120 - sam-graf-server - INFO -   SDKMAN_PLATFORM=linuxx64
+2025-04-14 12:10:01,120 - sam-graf-server - INFO -   NVM_BIN=/home/smm/.nvm/versions/node/v21.7.1/bin
+2025-04-14 12:10:01,120 - sam-graf-server - INFO -   HOSTTYPE=x86_64
+2025-04-14 12:10:01,120 - sam-graf-server - INFO -   CONDA_PREFIX_1=/home/smm/miniconda3
+2025-04-14 12:10:01,120 - sam-graf-server - INFO -   PULSE_SERVER=unix:/mnt/wslg/PulseServer
+2025-04-14 12:10:01,120 - sam-graf-server - INFO -   WT_PROFILE_ID={51855cb2-8cce-5362-8f54-464b92b32386}
+2025-04-14 12:10:01,120 - sam-graf-server - INFO -   OLDPWD=/home/smm
+2025-04-14 12:10:01,121 - sam-graf-server - INFO -   _=/home/smm/miniconda3/envs/myenv/bin/flask
+2025-04-14 12:10:01,121 - sam-graf-server - INFO -   FLASK_RUN_FROM_CLI=true
+2025-04-14 12:10:01,121 - sam-graf-server - INFO -   NEO4J_URI=bolt://172.16.20.137:7687
+2025-04-14 12:10:01,121 - sam-graf-server - INFO -   NEO4J_USER=neo4j
+2025-04-14 12:10:01,121 - sam-graf-server - INFO -   NEO4J_DATABASE=neo4j
+2025-04-14 12:10:01,121 - sam-graf-server - INFO -   FLASK_APP=sam-graf-server.py
+2025-04-14 12:10:01,122 - sam-graf-server - INFO -   FLASK_DEBUG=1
+2025-04-14 12:10:01,122 - sam-graf-server - INFO -   PG_HOST=172.16.20.137
+2025-04-14 12:10:01,122 - sam-graf-server - INFO -   PG_PORT=2285
+2025-04-14 12:10:01,122 - sam-graf-server - INFO -   PG_USER=operator
+2025-04-14 12:10:01,122 - sam-graf-server - INFO -   PG_DATABASE=postgres
+2025-04-14 12:10:01,122 - sam-graf-server - INFO -   PG_SCHEMA=ecommerce_local
+2025-04-14 12:10:01,122 - sam-graf-server - INFO -   FLASK_ENV=development
+2025-04-14 12:10:01,123 - sam-graf-server - INFO -   FLASK_RUN_PORT=5500
+2025-04-14 12:10:01,123 - sam-graf-server - INFO -   OMP_WAIT_POLICY=passive
+2025-04-14 12:10:01,123 - sam-graf-server - INFO -   KMP_DUPLICATE_LIB_OK=True
+2025-04-14 12:10:01,123 - sam-graf-server - INFO -   KMP_INIT_AT_FORK=FALSE
+2025-04-14 12:10:01,123 - sam-graf-server - INFO -   WERKZEUG_SERVER_FD=10
+2025-04-14 12:10:01,124 - sam-graf-server - INFO -   WERKZEUG_RUN_MAIN=true
+2025-04-14 12:10:01,134 - werkzeug - WARNING -  * Debugger is active!
+2025-04-14 12:10:01,135 - werkzeug - INFO -  * Debugger PIN: 867-852-603
+2025-04-14 12:13:40,736 - werkzeug - INFO - 127.0.0.1 - - [14/Apr/2025 12:13:40] "[33mGET /Applications HTTP/1.1[0m" 404 -
+2025-04-14 12:13:40,770 - werkzeug - INFO - 127.0.0.1 - - [14/Apr/2025 12:13:40] "[33mGET /Applications HTTP/1.1[0m" 404 -
+2025-04-14 12:25:48,984 - sam-graf-server - INFO - Environment variables:
+2025-04-14 12:25:48,986 - sam-graf-server - INFO -   SHELL=/bin/bash
+2025-04-14 12:25:48,986 - sam-graf-server - INFO -   NVM_INC=/home/smm/.nvm/versions/node/v21.7.1/include/node
+2025-04-14 12:25:48,986 - sam-graf-server - INFO -   WSL2_GUI_APPS_ENABLED=1
+2025-04-14 12:25:48,986 - sam-graf-server - INFO -   CONDA_EXE=/home/smm/miniconda3/bin/conda
+2025-04-14 12:25:48,986 - sam-graf-server - INFO -   _CE_M=
+2025-04-14 12:25:48,987 - sam-graf-server - INFO -   WSL_DISTRO_NAME=Ubuntu
+2025-04-14 12:25:48,987 - sam-graf-server - INFO -   WT_SESSION=50390f64-aaff-41d9-8b1b-aa357d169ec4
+2025-04-14 12:25:48,987 - sam-graf-server - INFO -   JAVA_HOME=/home/smm/.sdkman/candidates/java/current
+2025-04-14 12:25:48,987 - sam-graf-server - INFO -   SDKMAN_CANDIDATES_DIR=/home/smm/.sdkman/candidates
+2025-04-14 12:25:48,987 - sam-graf-server - INFO -   XML_CATALOG_FILES=file:///home/smm/miniconda3/envs/myenv/etc/xml/catalog file:///etc/xml/catalog
+2025-04-14 12:25:48,987 - sam-graf-server - INFO -   NAME=SMMLAP
+2025-04-14 12:25:48,988 - sam-graf-server - INFO -   PWD=/home/smm/WebApp/sam-graf-server
+2025-04-14 12:25:48,988 - sam-graf-server - INFO -   GSETTINGS_SCHEMA_DIR=/home/smm/miniconda3/envs/myenv/share/glib-2.0/schemas
+2025-04-14 12:25:48,988 - sam-graf-server - INFO -   LOGNAME=smm
+2025-04-14 12:25:48,988 - sam-graf-server - INFO -   CONDA_PREFIX=/home/smm/miniconda3/envs/myenv
+2025-04-14 12:25:48,988 - sam-graf-server - INFO -   GSETTINGS_SCHEMA_DIR_CONDA_BACKUP=
+2025-04-14 12:25:48,988 - sam-graf-server - INFO -   MOTD_SHOWN=update-motd
+2025-04-14 12:25:48,988 - sam-graf-server - INFO -   HOME=/home/smm
+2025-04-14 12:25:48,988 - sam-graf-server - INFO -   LANG=C.UTF-8
+2025-04-14 12:25:48,989 - sam-graf-server - INFO -   WSL_INTEROP=/run/WSL/202613_interop
+2025-04-14 12:25:48,989 - sam-graf-server - INFO -   LS_COLORS=rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:
+2025-04-14 12:25:48,989 - sam-graf-server - INFO -   WAYLAND_DISPLAY=wayland-0
+2025-04-14 12:25:48,989 - sam-graf-server - INFO -   CONDA_PROMPT_MODIFIER=(myenv) 
+2025-04-14 12:25:48,989 - sam-graf-server - INFO -   NVM_DIR=/home/smm/.nvm
+2025-04-14 12:25:48,989 - sam-graf-server - INFO -   LESSCLOSE=/usr/bin/lesspipe %s %s
+2025-04-14 12:25:48,989 - sam-graf-server - INFO -   TERM=xterm-256color
+2025-04-14 12:25:48,990 - sam-graf-server - INFO -   _CE_CONDA=
+2025-04-14 12:25:48,990 - sam-graf-server - INFO -   LESSOPEN=| /usr/bin/lesspipe %s
+2025-04-14 12:25:48,990 - sam-graf-server - INFO -   USER=smm
+2025-04-14 12:25:48,990 - sam-graf-server - INFO -   CONDA_SHLVL=2
+2025-04-14 12:25:48,990 - sam-graf-server - INFO -   SDKMAN_DIR=/home/smm/.sdkman
+2025-04-14 12:25:48,990 - sam-graf-server - INFO -   DISPLAY=:0
+2025-04-14 12:25:48,990 - sam-graf-server - INFO -   SHLVL=1
+2025-04-14 12:25:48,990 - sam-graf-server - INFO -   NVM_CD_FLAGS=
+2025-04-14 12:25:48,991 - sam-graf-server - INFO -   SDKMAN_CANDIDATES_API=https://api.sdkman.io/2
+2025-04-14 12:25:48,991 - sam-graf-server - INFO -   CONDA_PYTHON_EXE=/home/smm/miniconda3/bin/python
+2025-04-14 12:25:48,991 - sam-graf-server - INFO -   XDG_RUNTIME_DIR=/run/user/1000/
+2025-04-14 12:25:48,991 - sam-graf-server - INFO -   CONDA_DEFAULT_ENV=myenv
+2025-04-14 12:25:48,991 - sam-graf-server - INFO -   WSLENV=WT_SESSION:WT_PROFILE_ID:
+2025-04-14 12:25:48,991 - sam-graf-server - INFO -   XDG_DATA_DIRS=/usr/local/share:/usr/share:/var/lib/snapd/desktop
+2025-04-14 12:25:48,991 - sam-graf-server - INFO -   PATH=/home/smm/.sdkman/candidates/java/current/bin:/home/smm/.nvm/versions/node/v21.7.1/bin:/home/smm/miniconda3/envs/myenv/bin:/home/smm/miniconda3/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/Program Files/Common Files/Oracle/Java/javapath:/mnt/c/Program Files (x86)/Common Files/Oracle/Java/java8path:/mnt/c/Program Files (x86)/Common Files/Oracle/Java/javapath:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0:/mnt/c/WINDOWS/System32/OpenSSH:/mnt/c/Users/SMM/AppData/Local/Programs/Python/Python312/Scripts:/mnt/c/Users/SMM/AppData/Local/Programs/Python/Python312:/mnt/c/Users/SMM/AppData/Local/Programs/Python/Launcher:/mnt/c/Users/SMM/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/SMM/AppData/Local/Programs/Microsoft VS Code/bin:/snap/bin:/user/bin/java
+2025-04-14 12:25:48,992 - sam-graf-server - INFO -   DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus
+2025-04-14 12:25:48,992 - sam-graf-server - INFO -   SDKMAN_PLATFORM=linuxx64
+2025-04-14 12:25:48,992 - sam-graf-server - INFO -   NVM_BIN=/home/smm/.nvm/versions/node/v21.7.1/bin
+2025-04-14 12:25:48,992 - sam-graf-server - INFO -   HOSTTYPE=x86_64
+2025-04-14 12:25:48,992 - sam-graf-server - INFO -   CONDA_PREFIX_1=/home/smm/miniconda3
+2025-04-14 12:25:48,992 - sam-graf-server - INFO -   PULSE_SERVER=unix:/mnt/wslg/PulseServer
+2025-04-14 12:25:48,992 - sam-graf-server - INFO -   WT_PROFILE_ID={51855cb2-8cce-5362-8f54-464b92b32386}
+2025-04-14 12:25:48,992 - sam-graf-server - INFO -   OLDPWD=/home/smm
+2025-04-14 12:25:48,993 - sam-graf-server - INFO -   _=/home/smm/miniconda3/envs/myenv/bin/flask
+2025-04-14 12:25:48,993 - sam-graf-server - INFO -   FLASK_RUN_FROM_CLI=true
+2025-04-14 12:25:48,993 - sam-graf-server - INFO -   NEO4J_URI=bolt://172.16.20.137:7687
+2025-04-14 12:25:48,993 - sam-graf-server - INFO -   NEO4J_USER=neo4j
+2025-04-14 12:25:48,993 - sam-graf-server - INFO -   NEO4J_DATABASE=neo4j
+2025-04-14 12:25:48,993 - sam-graf-server - INFO -   FLASK_APP=sam-graf-server.py
+2025-04-14 12:25:48,993 - sam-graf-server - INFO -   FLASK_DEBUG=1
+2025-04-14 12:25:48,994 - sam-graf-server - INFO -   PG_HOST=172.16.20.137
+2025-04-14 12:25:48,994 - sam-graf-server - INFO -   PG_PORT=2285
+2025-04-14 12:25:48,994 - sam-graf-server - INFO -   PG_USER=operator
+2025-04-14 12:25:48,994 - sam-graf-server - INFO -   PG_DATABASE=postgres
+2025-04-14 12:25:48,994 - sam-graf-server - INFO -   PG_SCHEMA=ecommerce_local
+2025-04-14 12:25:48,994 - sam-graf-server - INFO -   FLASK_ENV=development
+2025-04-14 12:25:48,994 - sam-graf-server - INFO -   FLASK_RUN_PORT=5500
+2025-04-14 12:25:48,994 - sam-graf-server - INFO -   OMP_WAIT_POLICY=passive
+2025-04-14 12:25:48,995 - sam-graf-server - INFO -   KMP_DUPLICATE_LIB_OK=True
+2025-04-14 12:25:48,995 - sam-graf-server - INFO -   KMP_INIT_AT_FORK=FALSE
+2025-04-14 12:25:49,007 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5500
+2025-04-14 12:25:49,007 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-04-14 12:25:49,008 - werkzeug - INFO -  * Restarting with stat
+2025-04-14 12:25:51,960 - sam-graf-server - INFO - Environment variables:
+2025-04-14 12:25:51,960 - sam-graf-server - INFO -   SHELL=/bin/bash
+2025-04-14 12:25:51,961 - sam-graf-server - INFO -   NVM_INC=/home/smm/.nvm/versions/node/v21.7.1/include/node
+2025-04-14 12:25:51,961 - sam-graf-server - INFO -   WSL2_GUI_APPS_ENABLED=1
+2025-04-14 12:25:51,961 - sam-graf-server - INFO -   CONDA_EXE=/home/smm/miniconda3/bin/conda
+2025-04-14 12:25:51,961 - sam-graf-server - INFO -   _CE_M=
+2025-04-14 12:25:51,961 - sam-graf-server - INFO -   WSL_DISTRO_NAME=Ubuntu
+2025-04-14 12:25:51,961 - sam-graf-server - INFO -   WT_SESSION=50390f64-aaff-41d9-8b1b-aa357d169ec4
+2025-04-14 12:25:51,962 - sam-graf-server - INFO -   JAVA_HOME=/home/smm/.sdkman/candidates/java/current
+2025-04-14 12:25:51,962 - sam-graf-server - INFO -   SDKMAN_CANDIDATES_DIR=/home/smm/.sdkman/candidates
+2025-04-14 12:25:51,962 - sam-graf-server - INFO -   XML_CATALOG_FILES=file:///home/smm/miniconda3/envs/myenv/etc/xml/catalog file:///etc/xml/catalog
+2025-04-14 12:25:51,962 - sam-graf-server - INFO -   NAME=SMMLAP
+2025-04-14 12:25:51,962 - sam-graf-server - INFO -   PWD=/home/smm/WebApp/sam-graf-server
+2025-04-14 12:25:51,962 - sam-graf-server - INFO -   GSETTINGS_SCHEMA_DIR=/home/smm/miniconda3/envs/myenv/share/glib-2.0/schemas
+2025-04-14 12:25:51,963 - sam-graf-server - INFO -   LOGNAME=smm
+2025-04-14 12:25:51,963 - sam-graf-server - INFO -   CONDA_PREFIX=/home/smm/miniconda3/envs/myenv
+2025-04-14 12:25:51,963 - sam-graf-server - INFO -   GSETTINGS_SCHEMA_DIR_CONDA_BACKUP=
+2025-04-14 12:25:51,963 - sam-graf-server - INFO -   MOTD_SHOWN=update-motd
+2025-04-14 12:25:51,963 - sam-graf-server - INFO -   HOME=/home/smm
+2025-04-14 12:25:51,963 - sam-graf-server - INFO -   LANG=C.UTF-8
+2025-04-14 12:25:51,964 - sam-graf-server - INFO -   WSL_INTEROP=/run/WSL/202613_interop
+2025-04-14 12:25:51,964 - sam-graf-server - INFO -   LS_COLORS=rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:
+2025-04-14 12:25:51,964 - sam-graf-server - INFO -   WAYLAND_DISPLAY=wayland-0
+2025-04-14 12:25:51,964 - sam-graf-server - INFO -   CONDA_PROMPT_MODIFIER=(myenv) 
+2025-04-14 12:25:51,964 - sam-graf-server - INFO -   NVM_DIR=/home/smm/.nvm
+2025-04-14 12:25:51,965 - sam-graf-server - INFO -   LESSCLOSE=/usr/bin/lesspipe %s %s
+2025-04-14 12:25:51,965 - sam-graf-server - INFO -   TERM=xterm-256color
+2025-04-14 12:25:51,965 - sam-graf-server - INFO -   _CE_CONDA=
+2025-04-14 12:25:51,965 - sam-graf-server - INFO -   LESSOPEN=| /usr/bin/lesspipe %s
+2025-04-14 12:25:51,965 - sam-graf-server - INFO -   USER=smm
+2025-04-14 12:25:51,965 - sam-graf-server - INFO -   CONDA_SHLVL=2
+2025-04-14 12:25:51,965 - sam-graf-server - INFO -   SDKMAN_DIR=/home/smm/.sdkman
+2025-04-14 12:25:51,966 - sam-graf-server - INFO -   DISPLAY=:0
+2025-04-14 12:25:51,966 - sam-graf-server - INFO -   SHLVL=1
+2025-04-14 12:25:51,966 - sam-graf-server - INFO -   NVM_CD_FLAGS=
+2025-04-14 12:25:51,966 - sam-graf-server - INFO -   SDKMAN_CANDIDATES_API=https://api.sdkman.io/2
+2025-04-14 12:25:51,966 - sam-graf-server - INFO -   CONDA_PYTHON_EXE=/home/smm/miniconda3/bin/python
+2025-04-14 12:25:51,966 - sam-graf-server - INFO -   XDG_RUNTIME_DIR=/run/user/1000/
+2025-04-14 12:25:51,967 - sam-graf-server - INFO -   CONDA_DEFAULT_ENV=myenv
+2025-04-14 12:25:51,967 - sam-graf-server - INFO -   WSLENV=WT_SESSION:WT_PROFILE_ID:
+2025-04-14 12:25:51,967 - sam-graf-server - INFO -   XDG_DATA_DIRS=/usr/local/share:/usr/share:/var/lib/snapd/desktop
+2025-04-14 12:25:51,967 - sam-graf-server - INFO -   PATH=/home/smm/.sdkman/candidates/java/current/bin:/home/smm/.nvm/versions/node/v21.7.1/bin:/home/smm/miniconda3/envs/myenv/bin:/home/smm/miniconda3/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/Program Files/Common Files/Oracle/Java/javapath:/mnt/c/Program Files (x86)/Common Files/Oracle/Java/java8path:/mnt/c/Program Files (x86)/Common Files/Oracle/Java/javapath:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0:/mnt/c/WINDOWS/System32/OpenSSH:/mnt/c/Users/SMM/AppData/Local/Programs/Python/Python312/Scripts:/mnt/c/Users/SMM/AppData/Local/Programs/Python/Python312:/mnt/c/Users/SMM/AppData/Local/Programs/Python/Launcher:/mnt/c/Users/SMM/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/SMM/AppData/Local/Programs/Microsoft VS Code/bin:/snap/bin:/user/bin/java
+2025-04-14 12:25:51,967 - sam-graf-server - INFO -   DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus
+2025-04-14 12:25:51,967 - sam-graf-server - INFO -   SDKMAN_PLATFORM=linuxx64
+2025-04-14 12:25:51,968 - sam-graf-server - INFO -   NVM_BIN=/home/smm/.nvm/versions/node/v21.7.1/bin
+2025-04-14 12:25:51,968 - sam-graf-server - INFO -   HOSTTYPE=x86_64
+2025-04-14 12:25:51,968 - sam-graf-server - INFO -   CONDA_PREFIX_1=/home/smm/miniconda3
+2025-04-14 12:25:51,968 - sam-graf-server - INFO -   PULSE_SERVER=unix:/mnt/wslg/PulseServer
+2025-04-14 12:25:51,968 - sam-graf-server - INFO -   WT_PROFILE_ID={51855cb2-8cce-5362-8f54-464b92b32386}
+2025-04-14 12:25:51,968 - sam-graf-server - INFO -   OLDPWD=/home/smm
+2025-04-14 12:25:51,968 - sam-graf-server - INFO -   _=/home/smm/miniconda3/envs/myenv/bin/flask
+2025-04-14 12:25:51,969 - sam-graf-server - INFO -   FLASK_RUN_FROM_CLI=true
+2025-04-14 12:25:51,969 - sam-graf-server - INFO -   NEO4J_URI=bolt://172.16.20.137:7687
+2025-04-14 12:25:51,969 - sam-graf-server - INFO -   NEO4J_USER=neo4j
+2025-04-14 12:25:51,969 - sam-graf-server - INFO -   NEO4J_DATABASE=neo4j
+2025-04-14 12:25:51,969 - sam-graf-server - INFO -   FLASK_APP=sam-graf-server.py
+2025-04-14 12:25:51,969 - sam-graf-server - INFO -   FLASK_DEBUG=1
+2025-04-14 12:25:51,969 - sam-graf-server - INFO -   PG_HOST=172.16.20.137
+2025-04-14 12:25:51,970 - sam-graf-server - INFO -   PG_PORT=2285
+2025-04-14 12:25:51,970 - sam-graf-server - INFO -   PG_USER=operator
+2025-04-14 12:25:51,970 - sam-graf-server - INFO -   PG_DATABASE=postgres
+2025-04-14 12:25:51,970 - sam-graf-server - INFO -   PG_SCHEMA=ecommerce_local
+2025-04-14 12:25:51,970 - sam-graf-server - INFO -   FLASK_ENV=development
+2025-04-14 12:25:51,970 - sam-graf-server - INFO -   FLASK_RUN_PORT=5500
+2025-04-14 12:25:51,970 - sam-graf-server - INFO -   OMP_WAIT_POLICY=passive
+2025-04-14 12:25:51,971 - sam-graf-server - INFO -   KMP_DUPLICATE_LIB_OK=True
+2025-04-14 12:25:51,971 - sam-graf-server - INFO -   KMP_INIT_AT_FORK=FALSE
+2025-04-14 12:25:51,971 - sam-graf-server - INFO -   WERKZEUG_SERVER_FD=10
+2025-04-14 12:25:51,971 - sam-graf-server - INFO -   WERKZEUG_RUN_MAIN=true
+2025-04-14 12:25:51,982 - werkzeug - WARNING -  * Debugger is active!
+2025-04-14 12:25:51,984 - werkzeug - INFO -  * Debugger PIN: 867-852-603
+2025-04-14 12:26:12,165 - werkzeug - INFO - 127.0.0.1 - - [14/Apr/2025 12:26:12] "[33mGET /Applications HTTP/1.1[0m" 404 -
+2025-04-14 12:26:12,194 - werkzeug - INFO - 127.0.0.1 - - [14/Apr/2025 12:26:12] "[33mGET /Applications HTTP/1.1[0m" 404 -
+2025-04-14 12:26:35,942 - werkzeug - INFO - 127.0.0.1 - - [14/Apr/2025 12:26:35] "[33mGET /Applications HTTP/1.1[0m" 404 -
+2025-04-14 12:28:22,483 - sam-graf-server - INFO - Environment variables:
+2025-04-14 12:28:22,483 - sam-graf-server - INFO -   SHELL=/bin/bash
+2025-04-14 12:28:22,483 - sam-graf-server - INFO -   NVM_INC=/home/smm/.nvm/versions/node/v21.7.1/include/node
+2025-04-14 12:28:22,483 - sam-graf-server - INFO -   WSL2_GUI_APPS_ENABLED=1
+2025-04-14 12:28:22,484 - sam-graf-server - INFO -   CONDA_EXE=/home/smm/miniconda3/bin/conda
+2025-04-14 12:28:22,484 - sam-graf-server - INFO -   _CE_M=
+2025-04-14 12:28:22,484 - sam-graf-server - INFO -   WSL_DISTRO_NAME=Ubuntu
+2025-04-14 12:28:22,484 - sam-graf-server - INFO -   WT_SESSION=50390f64-aaff-41d9-8b1b-aa357d169ec4
+2025-04-14 12:28:22,484 - sam-graf-server - INFO -   JAVA_HOME=/home/smm/.sdkman/candidates/java/current
+2025-04-14 12:28:22,484 - sam-graf-server - INFO -   SDKMAN_CANDIDATES_DIR=/home/smm/.sdkman/candidates
+2025-04-14 12:28:22,485 - sam-graf-server - INFO -   XML_CATALOG_FILES=file:///home/smm/miniconda3/envs/myenv/etc/xml/catalog file:///etc/xml/catalog
+2025-04-14 12:28:22,485 - sam-graf-server - INFO -   NAME=SMMLAP
+2025-04-14 12:28:22,485 - sam-graf-server - INFO -   PWD=/home/smm/WebApp/sam-graf-server
+2025-04-14 12:28:22,485 - sam-graf-server - INFO -   GSETTINGS_SCHEMA_DIR=/home/smm/miniconda3/envs/myenv/share/glib-2.0/schemas
+2025-04-14 12:28:22,485 - sam-graf-server - INFO -   LOGNAME=smm
+2025-04-14 12:28:22,485 - sam-graf-server - INFO -   CONDA_PREFIX=/home/smm/miniconda3/envs/myenv
+2025-04-14 12:28:22,485 - sam-graf-server - INFO -   GSETTINGS_SCHEMA_DIR_CONDA_BACKUP=
+2025-04-14 12:28:22,486 - sam-graf-server - INFO -   MOTD_SHOWN=update-motd
+2025-04-14 12:28:22,486 - sam-graf-server - INFO -   HOME=/home/smm
+2025-04-14 12:28:22,486 - sam-graf-server - INFO -   LANG=C.UTF-8
+2025-04-14 12:28:22,486 - sam-graf-server - INFO -   WSL_INTEROP=/run/WSL/202613_interop
+2025-04-14 12:28:22,486 - sam-graf-server - INFO -   LS_COLORS=rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:
+2025-04-14 12:28:22,486 - sam-graf-server - INFO -   WAYLAND_DISPLAY=wayland-0
+2025-04-14 12:28:22,487 - sam-graf-server - INFO -   CONDA_PROMPT_MODIFIER=(myenv) 
+2025-04-14 12:28:22,487 - sam-graf-server - INFO -   NVM_DIR=/home/smm/.nvm
+2025-04-14 12:28:22,487 - sam-graf-server - INFO -   LESSCLOSE=/usr/bin/lesspipe %s %s
+2025-04-14 12:28:22,487 - sam-graf-server - INFO -   TERM=xterm-256color
+2025-04-14 12:28:22,487 - sam-graf-server - INFO -   _CE_CONDA=
+2025-04-14 12:28:22,487 - sam-graf-server - INFO -   LESSOPEN=| /usr/bin/lesspipe %s
+2025-04-14 12:28:22,488 - sam-graf-server - INFO -   USER=smm
+2025-04-14 12:28:22,488 - sam-graf-server - INFO -   CONDA_SHLVL=2
+2025-04-14 12:28:22,488 - sam-graf-server - INFO -   SDKMAN_DIR=/home/smm/.sdkman
+2025-04-14 12:28:22,488 - sam-graf-server - INFO -   DISPLAY=:0
+2025-04-14 12:28:22,488 - sam-graf-server - INFO -   SHLVL=1
+2025-04-14 12:28:22,488 - sam-graf-server - INFO -   NVM_CD_FLAGS=
+2025-04-14 12:28:22,489 - sam-graf-server - INFO -   SDKMAN_CANDIDATES_API=https://api.sdkman.io/2
+2025-04-14 12:28:22,489 - sam-graf-server - INFO -   CONDA_PYTHON_EXE=/home/smm/miniconda3/bin/python
+2025-04-14 12:28:22,489 - sam-graf-server - INFO -   XDG_RUNTIME_DIR=/run/user/1000/
+2025-04-14 12:28:22,489 - sam-graf-server - INFO -   CONDA_DEFAULT_ENV=myenv
+2025-04-14 12:28:22,489 - sam-graf-server - INFO -   WSLENV=WT_SESSION:WT_PROFILE_ID:
+2025-04-14 12:28:22,489 - sam-graf-server - INFO -   XDG_DATA_DIRS=/usr/local/share:/usr/share:/var/lib/snapd/desktop
+2025-04-14 12:28:22,489 - sam-graf-server - INFO -   PATH=/home/smm/.sdkman/candidates/java/current/bin:/home/smm/.nvm/versions/node/v21.7.1/bin:/home/smm/miniconda3/envs/myenv/bin:/home/smm/miniconda3/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/Program Files/Common Files/Oracle/Java/javapath:/mnt/c/Program Files (x86)/Common Files/Oracle/Java/java8path:/mnt/c/Program Files (x86)/Common Files/Oracle/Java/javapath:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0:/mnt/c/WINDOWS/System32/OpenSSH:/mnt/c/Users/SMM/AppData/Local/Programs/Python/Python312/Scripts:/mnt/c/Users/SMM/AppData/Local/Programs/Python/Python312:/mnt/c/Users/SMM/AppData/Local/Programs/Python/Launcher:/mnt/c/Users/SMM/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/SMM/AppData/Local/Programs/Microsoft VS Code/bin:/snap/bin:/user/bin/java
+2025-04-14 12:28:22,490 - sam-graf-server - INFO -   DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus
+2025-04-14 12:28:22,490 - sam-graf-server - INFO -   SDKMAN_PLATFORM=linuxx64
+2025-04-14 12:28:22,490 - sam-graf-server - INFO -   NVM_BIN=/home/smm/.nvm/versions/node/v21.7.1/bin
+2025-04-14 12:28:22,490 - sam-graf-server - INFO -   HOSTTYPE=x86_64
+2025-04-14 12:28:22,490 - sam-graf-server - INFO -   CONDA_PREFIX_1=/home/smm/miniconda3
+2025-04-14 12:28:22,490 - sam-graf-server - INFO -   PULSE_SERVER=unix:/mnt/wslg/PulseServer
+2025-04-14 12:28:22,491 - sam-graf-server - INFO -   WT_PROFILE_ID={51855cb2-8cce-5362-8f54-464b92b32386}
+2025-04-14 12:28:22,491 - sam-graf-server - INFO -   OLDPWD=/home/smm
+2025-04-14 12:28:22,491 - sam-graf-server - INFO -   _=/home/smm/miniconda3/envs/myenv/bin/flask
+2025-04-14 12:28:22,491 - sam-graf-server - INFO -   FLASK_RUN_FROM_CLI=true
+2025-04-14 12:28:22,491 - sam-graf-server - INFO -   NEO4J_URI=bolt://172.16.20.137:7687
+2025-04-14 12:28:22,491 - sam-graf-server - INFO -   NEO4J_USER=neo4j
+2025-04-14 12:28:22,492 - sam-graf-server - INFO -   NEO4J_DATABASE=neo4j
+2025-04-14 12:28:22,492 - sam-graf-server - INFO -   FLASK_APP=sam-graf-server.py
+2025-04-14 12:28:22,492 - sam-graf-server - INFO -   FLASK_DEBUG=1
+2025-04-14 12:28:22,492 - sam-graf-server - INFO -   PG_HOST=172.16.20.137
+2025-04-14 12:28:22,492 - sam-graf-server - INFO -   PG_PORT=2285
+2025-04-14 12:28:22,493 - sam-graf-server - INFO -   PG_USER=operator
+2025-04-14 12:28:22,493 - sam-graf-server - INFO -   PG_DATABASE=postgres
+2025-04-14 12:28:22,493 - sam-graf-server - INFO -   PG_SCHEMA=ecommerce_local
+2025-04-14 12:28:22,494 - sam-graf-server - INFO -   FLASK_ENV=development
+2025-04-14 12:28:22,494 - sam-graf-server - INFO -   FLASK_RUN_PORT=5500
+2025-04-14 12:28:22,494 - sam-graf-server - INFO -   OMP_WAIT_POLICY=passive
+2025-04-14 12:28:22,494 - sam-graf-server - INFO -   KMP_DUPLICATE_LIB_OK=True
+2025-04-14 12:28:22,495 - sam-graf-server - INFO -   KMP_INIT_AT_FORK=FALSE
+2025-04-14 12:28:22,510 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5500
+2025-04-14 12:28:22,510 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-04-14 12:28:22,511 - werkzeug - INFO -  * Restarting with stat
+2025-04-14 12:28:25,578 - sam-graf-server - INFO - Environment variables:
+2025-04-14 12:28:25,578 - sam-graf-server - INFO -   SHELL=/bin/bash
+2025-04-14 12:28:25,578 - sam-graf-server - INFO -   NVM_INC=/home/smm/.nvm/versions/node/v21.7.1/include/node
+2025-04-14 12:28:25,578 - sam-graf-server - INFO -   WSL2_GUI_APPS_ENABLED=1
+2025-04-14 12:28:25,579 - sam-graf-server - INFO -   CONDA_EXE=/home/smm/miniconda3/bin/conda
+2025-04-14 12:28:25,579 - sam-graf-server - INFO -   _CE_M=
+2025-04-14 12:28:25,579 - sam-graf-server - INFO -   WSL_DISTRO_NAME=Ubuntu
+2025-04-14 12:28:25,579 - sam-graf-server - INFO -   WT_SESSION=50390f64-aaff-41d9-8b1b-aa357d169ec4
+2025-04-14 12:28:25,579 - sam-graf-server - INFO -   JAVA_HOME=/home/smm/.sdkman/candidates/java/current
+2025-04-14 12:28:25,579 - sam-graf-server - INFO -   SDKMAN_CANDIDATES_DIR=/home/smm/.sdkman/candidates
+2025-04-14 12:28:25,579 - sam-graf-server - INFO -   XML_CATALOG_FILES=file:///home/smm/miniconda3/envs/myenv/etc/xml/catalog file:///etc/xml/catalog
+2025-04-14 12:28:25,580 - sam-graf-server - INFO -   NAME=SMMLAP
+2025-04-14 12:28:25,580 - sam-graf-server - INFO -   PWD=/home/smm/WebApp/sam-graf-server
+2025-04-14 12:28:25,580 - sam-graf-server - INFO -   GSETTINGS_SCHEMA_DIR=/home/smm/miniconda3/envs/myenv/share/glib-2.0/schemas
+2025-04-14 12:28:25,580 - sam-graf-server - INFO -   LOGNAME=smm
+2025-04-14 12:28:25,580 - sam-graf-server - INFO -   CONDA_PREFIX=/home/smm/miniconda3/envs/myenv
+2025-04-14 12:28:25,580 - sam-graf-server - INFO -   GSETTINGS_SCHEMA_DIR_CONDA_BACKUP=
+2025-04-14 12:28:25,580 - sam-graf-server - INFO -   MOTD_SHOWN=update-motd
+2025-04-14 12:28:25,581 - sam-graf-server - INFO -   HOME=/home/smm
+2025-04-14 12:28:25,581 - sam-graf-server - INFO -   LANG=C.UTF-8
+2025-04-14 12:28:25,581 - sam-graf-server - INFO -   WSL_INTEROP=/run/WSL/202613_interop
+2025-04-14 12:28:25,581 - sam-graf-server - INFO -   LS_COLORS=rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:
+2025-04-14 12:28:25,581 - sam-graf-server - INFO -   WAYLAND_DISPLAY=wayland-0
+2025-04-14 12:28:25,581 - sam-graf-server - INFO -   CONDA_PROMPT_MODIFIER=(myenv) 
+2025-04-14 12:28:25,581 - sam-graf-server - INFO -   NVM_DIR=/home/smm/.nvm
+2025-04-14 12:28:25,582 - sam-graf-server - INFO -   LESSCLOSE=/usr/bin/lesspipe %s %s
+2025-04-14 12:28:25,582 - sam-graf-server - INFO -   TERM=xterm-256color
+2025-04-14 12:28:25,582 - sam-graf-server - INFO -   _CE_CONDA=
+2025-04-14 12:28:25,582 - sam-graf-server - INFO -   LESSOPEN=| /usr/bin/lesspipe %s
+2025-04-14 12:28:25,582 - sam-graf-server - INFO -   USER=smm
+2025-04-14 12:28:25,582 - sam-graf-server - INFO -   CONDA_SHLVL=2
+2025-04-14 12:28:25,583 - sam-graf-server - INFO -   SDKMAN_DIR=/home/smm/.sdkman
+2025-04-14 12:28:25,583 - sam-graf-server - INFO -   DISPLAY=:0
+2025-04-14 12:28:25,583 - sam-graf-server - INFO -   SHLVL=1
+2025-04-14 12:28:25,583 - sam-graf-server - INFO -   NVM_CD_FLAGS=
+2025-04-14 12:28:25,583 - sam-graf-server - INFO -   SDKMAN_CANDIDATES_API=https://api.sdkman.io/2
+2025-04-14 12:28:25,583 - sam-graf-server - INFO -   CONDA_PYTHON_EXE=/home/smm/miniconda3/bin/python
+2025-04-14 12:28:25,583 - sam-graf-server - INFO -   XDG_RUNTIME_DIR=/run/user/1000/
+2025-04-14 12:28:25,584 - sam-graf-server - INFO -   CONDA_DEFAULT_ENV=myenv
+2025-04-14 12:28:25,584 - sam-graf-server - INFO -   WSLENV=WT_SESSION:WT_PROFILE_ID:
+2025-04-14 12:28:25,584 - sam-graf-server - INFO -   XDG_DATA_DIRS=/usr/local/share:/usr/share:/var/lib/snapd/desktop
+2025-04-14 12:28:25,584 - sam-graf-server - INFO -   PATH=/home/smm/.sdkman/candidates/java/current/bin:/home/smm/.nvm/versions/node/v21.7.1/bin:/home/smm/miniconda3/envs/myenv/bin:/home/smm/miniconda3/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/Program Files/Common Files/Oracle/Java/javapath:/mnt/c/Program Files (x86)/Common Files/Oracle/Java/java8path:/mnt/c/Program Files (x86)/Common Files/Oracle/Java/javapath:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0:/mnt/c/WINDOWS/System32/OpenSSH:/mnt/c/Users/SMM/AppData/Local/Programs/Python/Python312/Scripts:/mnt/c/Users/SMM/AppData/Local/Programs/Python/Python312:/mnt/c/Users/SMM/AppData/Local/Programs/Python/Launcher:/mnt/c/Users/SMM/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/SMM/AppData/Local/Programs/Microsoft VS Code/bin:/snap/bin:/user/bin/java
+2025-04-14 12:28:25,584 - sam-graf-server - INFO -   DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus
+2025-04-14 12:28:25,584 - sam-graf-server - INFO -   SDKMAN_PLATFORM=linuxx64
+2025-04-14 12:28:25,584 - sam-graf-server - INFO -   NVM_BIN=/home/smm/.nvm/versions/node/v21.7.1/bin
+2025-04-14 12:28:25,585 - sam-graf-server - INFO -   HOSTTYPE=x86_64
+2025-04-14 12:28:25,585 - sam-graf-server - INFO -   CONDA_PREFIX_1=/home/smm/miniconda3
+2025-04-14 12:28:25,585 - sam-graf-server - INFO -   PULSE_SERVER=unix:/mnt/wslg/PulseServer
+2025-04-14 12:28:25,585 - sam-graf-server - INFO -   WT_PROFILE_ID={51855cb2-8cce-5362-8f54-464b92b32386}
+2025-04-14 12:28:25,585 - sam-graf-server - INFO -   OLDPWD=/home/smm
+2025-04-14 12:28:25,585 - sam-graf-server - INFO -   _=/home/smm/miniconda3/envs/myenv/bin/flask
+2025-04-14 12:28:25,586 - sam-graf-server - INFO -   FLASK_RUN_FROM_CLI=true
+2025-04-14 12:28:25,586 - sam-graf-server - INFO -   NEO4J_URI=bolt://172.16.20.137:7687
+2025-04-14 12:28:25,586 - sam-graf-server - INFO -   NEO4J_USER=neo4j
+2025-04-14 12:28:25,586 - sam-graf-server - INFO -   NEO4J_DATABASE=neo4j
+2025-04-14 12:28:25,586 - sam-graf-server - INFO -   FLASK_APP=sam-graf-server.py
+2025-04-14 12:28:25,586 - sam-graf-server - INFO -   FLASK_DEBUG=1
+2025-04-14 12:28:25,586 - sam-graf-server - INFO -   PG_HOST=172.16.20.137
+2025-04-14 12:28:25,587 - sam-graf-server - INFO -   PG_PORT=2285
+2025-04-14 12:28:25,587 - sam-graf-server - INFO -   PG_USER=operator
+2025-04-14 12:28:25,587 - sam-graf-server - INFO -   PG_DATABASE=postgres
+2025-04-14 12:28:25,587 - sam-graf-server - INFO -   PG_SCHEMA=ecommerce_local
+2025-04-14 12:28:25,587 - sam-graf-server - INFO -   FLASK_ENV=development
+2025-04-14 12:28:25,587 - sam-graf-server - INFO -   FLASK_RUN_PORT=5500
+2025-04-14 12:28:25,587 - sam-graf-server - INFO -   OMP_WAIT_POLICY=passive
+2025-04-14 12:28:25,588 - sam-graf-server - INFO -   KMP_DUPLICATE_LIB_OK=True
+2025-04-14 12:28:25,588 - sam-graf-server - INFO -   KMP_INIT_AT_FORK=FALSE
+2025-04-14 12:28:25,588 - sam-graf-server - INFO -   WERKZEUG_SERVER_FD=10
+2025-04-14 12:28:25,588 - sam-graf-server - INFO -   WERKZEUG_RUN_MAIN=true
+2025-04-14 12:28:25,598 - werkzeug - WARNING -  * Debugger is active!
+2025-04-14 12:28:25,599 - werkzeug - INFO -  * Debugger PIN: 867-852-603
+2025-04-14 12:28:36,967 - werkzeug - INFO - 127.0.0.1 - - [14/Apr/2025 12:28:36] "[33mGET /Applications HTTP/1.1[0m" 404 -
+2025-04-14 12:28:36,968 - werkzeug - INFO - 127.0.0.1 - - [14/Apr/2025 12:28:36] "[33mGET /Applications HTTP/1.1[0m" 404 -
+2025-04-14 12:28:39,770 - werkzeug - INFO - 127.0.0.1 - - [14/Apr/2025 12:28:39] "[33mGET /Applications HTTP/1.1[0m" 404 -
+2025-04-14 12:28:39,773 - werkzeug - INFO - 127.0.0.1 - - [14/Apr/2025 12:28:39] "[33mGET /Applications HTTP/1.1[0m" 404 -
+2025-04-14 12:28:59,338 - werkzeug - INFO - 127.0.0.1 - - [14/Apr/2025 12:28:59] "[33mGET /Applications HTTP/1.1[0m" 404 -
+2025-04-14 12:28:59,339 - werkzeug - INFO - 127.0.0.1 - - [14/Apr/2025 12:28:59] "[33mGET /Applications HTTP/1.1[0m" 404 -
+2025-04-14 12:28:59,750 - werkzeug - INFO - 127.0.0.1 - - [14/Apr/2025 12:28:59] "[33mGET /Applications HTTP/1.1[0m" 404 -
+2025-04-14 12:28:59,751 - werkzeug - INFO - 127.0.0.1 - - [14/Apr/2025 12:28:59] "[33mGET /Applications HTTP/1.1[0m" 404 -
+2025-04-14 12:29:06,837 - werkzeug - INFO - 127.0.0.1 - - [14/Apr/2025 12:29:06] "[33mGET /Applications/undefined/DataGraphs HTTP/1.1[0m" 404 -
+2025-04-14 12:29:06,889 - werkzeug - INFO - 127.0.0.1 - - [14/Apr/2025 12:29:06] "[33mGET /Applications/undefined/DataGraphs HTTP/1.1[0m" 404 -
+2025-04-14 12:29:23,960 - werkzeug - INFO - 127.0.0.1 - - [14/Apr/2025 12:29:23] "[33mGET /Applications HTTP/1.1[0m" 404 -
+2025-04-14 12:29:23,961 - werkzeug - INFO - 127.0.0.1 - - [14/Apr/2025 12:29:23] "[33mGET /Applications HTTP/1.1[0m" 404 -
+2025-04-14 12:29:24,569 - werkzeug - INFO - 127.0.0.1 - - [14/Apr/2025 12:29:24] "[33mGET /Applications HTTP/1.1[0m" 404 -
+2025-04-14 12:29:24,571 - werkzeug - INFO - 127.0.0.1 - - [14/Apr/2025 12:29:24] "[33mGET /Applications HTTP/1.1[0m" 404 -
+2025-04-14 12:29:27,283 - werkzeug - INFO - 127.0.0.1 - - [14/Apr/2025 12:29:27] "[33mGET /Applications/undefined/DataGraphs HTTP/1.1[0m" 404 -
+2025-04-14 12:29:27,389 - werkzeug - INFO - 127.0.0.1 - - [14/Apr/2025 12:29:27] "[33mGET /Applications/undefined/DataGraphs HTTP/1.1[0m" 404 -
+2025-04-14 12:29:35,548 - werkzeug - INFO - 127.0.0.1 - - [14/Apr/2025 12:29:35] "[33mGET /Applications HTTP/1.1[0m" 404 -
+2025-04-14 12:29:35,549 - werkzeug - INFO - 127.0.0.1 - - [14/Apr/2025 12:29:35] "[33mGET /Applications/undefined/DataGraphs HTTP/1.1[0m" 404 -
+2025-04-14 12:29:38,131 - werkzeug - INFO - 127.0.0.1 - - [14/Apr/2025 12:29:38] "[33mGET /Applications HTTP/1.1[0m" 404 -
+2025-04-14 12:29:38,132 - werkzeug - INFO - 127.0.0.1 - - [14/Apr/2025 12:29:38] "[33mGET /Applications HTTP/1.1[0m" 404 -
+2025-04-14 12:29:40,227 - werkzeug - INFO - 127.0.0.1 - - [14/Apr/2025 12:29:40] "[33mGET /Applications HTTP/1.1[0m" 404 -
+2025-04-14 12:29:40,229 - werkzeug - INFO - 127.0.0.1 - - [14/Apr/2025 12:29:40] "[33mGET /Applications HTTP/1.1[0m" 404 -
+2025-04-14 12:29:42,778 - werkzeug - INFO - 127.0.0.1 - - [14/Apr/2025 12:29:42] "[33mGET /Applications HTTP/1.1[0m" 404 -
+2025-04-14 12:29:42,778 - werkzeug - INFO - 127.0.0.1 - - [14/Apr/2025 12:29:42] "[33mGET /Applications/ecommerce115/Models/85024/Leidenall HTTP/1.1[0m" 404 -
+2025-04-14 12:30:21,489 - sam-graf-server - INFO - Environment variables:
+2025-04-14 12:30:21,490 - sam-graf-server - INFO -   SHELL=/bin/bash
+2025-04-14 12:30:21,490 - sam-graf-server - INFO -   NVM_INC=/home/smm/.nvm/versions/node/v21.7.1/include/node
+2025-04-14 12:30:21,490 - sam-graf-server - INFO -   WSL2_GUI_APPS_ENABLED=1
+2025-04-14 12:30:21,490 - sam-graf-server - INFO -   CONDA_EXE=/home/smm/miniconda3/bin/conda
+2025-04-14 12:30:21,490 - sam-graf-server - INFO -   _CE_M=
+2025-04-14 12:30:21,490 - sam-graf-server - INFO -   WSL_DISTRO_NAME=Ubuntu
+2025-04-14 12:30:21,491 - sam-graf-server - INFO -   WT_SESSION=50390f64-aaff-41d9-8b1b-aa357d169ec4
+2025-04-14 12:30:21,491 - sam-graf-server - INFO -   JAVA_HOME=/home/smm/.sdkman/candidates/java/current
+2025-04-14 12:30:21,491 - sam-graf-server - INFO -   SDKMAN_CANDIDATES_DIR=/home/smm/.sdkman/candidates
+2025-04-14 12:30:21,491 - sam-graf-server - INFO -   XML_CATALOG_FILES=file:///home/smm/miniconda3/envs/myenv/etc/xml/catalog file:///etc/xml/catalog
+2025-04-14 12:30:21,491 - sam-graf-server - INFO -   NAME=SMMLAP
+2025-04-14 12:30:21,491 - sam-graf-server - INFO -   PWD=/home/smm/WebApp/sam-graf-server
+2025-04-14 12:30:21,491 - sam-graf-server - INFO -   GSETTINGS_SCHEMA_DIR=/home/smm/miniconda3/envs/myenv/share/glib-2.0/schemas
+2025-04-14 12:30:21,492 - sam-graf-server - INFO -   LOGNAME=smm
+2025-04-14 12:30:21,492 - sam-graf-server - INFO -   CONDA_PREFIX=/home/smm/miniconda3/envs/myenv
+2025-04-14 12:30:21,492 - sam-graf-server - INFO -   GSETTINGS_SCHEMA_DIR_CONDA_BACKUP=
+2025-04-14 12:30:21,492 - sam-graf-server - INFO -   MOTD_SHOWN=update-motd
+2025-04-14 12:30:21,492 - sam-graf-server - INFO -   HOME=/home/smm
+2025-04-14 12:30:21,493 - sam-graf-server - INFO -   LANG=C.UTF-8
+2025-04-14 12:30:21,493 - sam-graf-server - INFO -   WSL_INTEROP=/run/WSL/202613_interop
+2025-04-14 12:30:21,493 - sam-graf-server - INFO -   LS_COLORS=rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:
+2025-04-14 12:30:21,493 - sam-graf-server - INFO -   WAYLAND_DISPLAY=wayland-0
+2025-04-14 12:30:21,493 - sam-graf-server - INFO -   CONDA_PROMPT_MODIFIER=(myenv) 
+2025-04-14 12:30:21,493 - sam-graf-server - INFO -   NVM_DIR=/home/smm/.nvm
+2025-04-14 12:30:21,493 - sam-graf-server - INFO -   LESSCLOSE=/usr/bin/lesspipe %s %s
+2025-04-14 12:30:21,494 - sam-graf-server - INFO -   TERM=xterm-256color
+2025-04-14 12:30:21,494 - sam-graf-server - INFO -   _CE_CONDA=
+2025-04-14 12:30:21,494 - sam-graf-server - INFO -   LESSOPEN=| /usr/bin/lesspipe %s
+2025-04-14 12:30:21,494 - sam-graf-server - INFO -   USER=smm
+2025-04-14 12:30:21,494 - sam-graf-server - INFO -   CONDA_SHLVL=2
+2025-04-14 12:30:21,494 - sam-graf-server - INFO -   SDKMAN_DIR=/home/smm/.sdkman
+2025-04-14 12:30:21,495 - sam-graf-server - INFO -   DISPLAY=:0
+2025-04-14 12:30:21,495 - sam-graf-server - INFO -   SHLVL=1
+2025-04-14 12:30:21,495 - sam-graf-server - INFO -   NVM_CD_FLAGS=
+2025-04-14 12:30:21,495 - sam-graf-server - INFO -   SDKMAN_CANDIDATES_API=https://api.sdkman.io/2
+2025-04-14 12:30:21,495 - sam-graf-server - INFO -   CONDA_PYTHON_EXE=/home/smm/miniconda3/bin/python
+2025-04-14 12:30:21,495 - sam-graf-server - INFO -   XDG_RUNTIME_DIR=/run/user/1000/
+2025-04-14 12:30:21,496 - sam-graf-server - INFO -   CONDA_DEFAULT_ENV=myenv
+2025-04-14 12:30:21,496 - sam-graf-server - INFO -   WSLENV=WT_SESSION:WT_PROFILE_ID:
+2025-04-14 12:30:21,496 - sam-graf-server - INFO -   XDG_DATA_DIRS=/usr/local/share:/usr/share:/var/lib/snapd/desktop
+2025-04-14 12:30:21,496 - sam-graf-server - INFO -   PATH=/home/smm/.sdkman/candidates/java/current/bin:/home/smm/.nvm/versions/node/v21.7.1/bin:/home/smm/miniconda3/envs/myenv/bin:/home/smm/miniconda3/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/Program Files/Common Files/Oracle/Java/javapath:/mnt/c/Program Files (x86)/Common Files/Oracle/Java/java8path:/mnt/c/Program Files (x86)/Common Files/Oracle/Java/javapath:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0:/mnt/c/WINDOWS/System32/OpenSSH:/mnt/c/Users/SMM/AppData/Local/Programs/Python/Python312/Scripts:/mnt/c/Users/SMM/AppData/Local/Programs/Python/Python312:/mnt/c/Users/SMM/AppData/Local/Programs/Python/Launcher:/mnt/c/Users/SMM/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/SMM/AppData/Local/Programs/Microsoft VS Code/bin:/snap/bin:/user/bin/java
+2025-04-14 12:30:21,496 - sam-graf-server - INFO -   DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus
+2025-04-14 12:30:21,496 - sam-graf-server - INFO -   SDKMAN_PLATFORM=linuxx64
+2025-04-14 12:30:21,497 - sam-graf-server - INFO -   NVM_BIN=/home/smm/.nvm/versions/node/v21.7.1/bin
+2025-04-14 12:30:21,497 - sam-graf-server - INFO -   HOSTTYPE=x86_64
+2025-04-14 12:30:21,497 - sam-graf-server - INFO -   CONDA_PREFIX_1=/home/smm/miniconda3
+2025-04-14 12:30:21,497 - sam-graf-server - INFO -   PULSE_SERVER=unix:/mnt/wslg/PulseServer
+2025-04-14 12:30:21,497 - sam-graf-server - INFO -   WT_PROFILE_ID={51855cb2-8cce-5362-8f54-464b92b32386}
+2025-04-14 12:30:21,497 - sam-graf-server - INFO -   OLDPWD=/home/smm
+2025-04-14 12:30:21,497 - sam-graf-server - INFO -   _=/home/smm/miniconda3/envs/myenv/bin/flask
+2025-04-14 12:30:21,497 - sam-graf-server - INFO -   FLASK_RUN_FROM_CLI=true
+2025-04-14 12:30:21,497 - sam-graf-server - INFO -   NEO4J_URI=bolt://172.16.20.137:7687
+2025-04-14 12:30:21,497 - sam-graf-server - INFO -   NEO4J_USER=neo4j
+2025-04-14 12:30:21,498 - sam-graf-server - INFO -   NEO4J_DATABASE=neo4j
+2025-04-14 12:30:21,498 - sam-graf-server - INFO -   FLASK_APP=sam-graf-server.py
+2025-04-14 12:30:21,498 - sam-graf-server - INFO -   FLASK_DEBUG=1
+2025-04-14 12:30:21,498 - sam-graf-server - INFO -   PG_HOST=172.16.20.137
+2025-04-14 12:30:21,498 - sam-graf-server - INFO -   PG_PORT=2285
+2025-04-14 12:30:21,498 - sam-graf-server - INFO -   PG_USER=operator
+2025-04-14 12:30:21,499 - sam-graf-server - INFO -   PG_DATABASE=postgres
+2025-04-14 12:30:21,499 - sam-graf-server - INFO -   PG_SCHEMA=ecommerce_local
+2025-04-14 12:30:21,499 - sam-graf-server - INFO -   FLASK_ENV=development
+2025-04-14 12:30:21,499 - sam-graf-server - INFO -   FLASK_RUN_PORT=5500
+2025-04-14 12:30:21,499 - sam-graf-server - INFO -   OMP_WAIT_POLICY=passive
+2025-04-14 12:30:21,499 - sam-graf-server - INFO -   KMP_DUPLICATE_LIB_OK=True
+2025-04-14 12:30:21,499 - sam-graf-server - INFO -   KMP_INIT_AT_FORK=FALSE
+2025-04-14 12:30:21,508 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5500
+2025-04-14 12:30:21,508 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-04-14 12:30:21,508 - werkzeug - INFO -  * Restarting with stat
+2025-04-14 12:30:23,766 - sam-graf-server - INFO - Environment variables:
+2025-04-14 12:30:23,766 - sam-graf-server - INFO -   SHELL=/bin/bash
+2025-04-14 12:30:23,767 - sam-graf-server - INFO -   NVM_INC=/home/smm/.nvm/versions/node/v21.7.1/include/node
+2025-04-14 12:30:23,767 - sam-graf-server - INFO -   WSL2_GUI_APPS_ENABLED=1
+2025-04-14 12:30:23,767 - sam-graf-server - INFO -   CONDA_EXE=/home/smm/miniconda3/bin/conda
+2025-04-14 12:30:23,767 - sam-graf-server - INFO -   _CE_M=
+2025-04-14 12:30:23,767 - sam-graf-server - INFO -   WSL_DISTRO_NAME=Ubuntu
+2025-04-14 12:30:23,767 - sam-graf-server - INFO -   WT_SESSION=50390f64-aaff-41d9-8b1b-aa357d169ec4
+2025-04-14 12:30:23,767 - sam-graf-server - INFO -   JAVA_HOME=/home/smm/.sdkman/candidates/java/current
+2025-04-14 12:30:23,768 - sam-graf-server - INFO -   SDKMAN_CANDIDATES_DIR=/home/smm/.sdkman/candidates
+2025-04-14 12:30:23,768 - sam-graf-server - INFO -   XML_CATALOG_FILES=file:///home/smm/miniconda3/envs/myenv/etc/xml/catalog file:///etc/xml/catalog
+2025-04-14 12:30:23,768 - sam-graf-server - INFO -   NAME=SMMLAP
+2025-04-14 12:30:23,768 - sam-graf-server - INFO -   PWD=/home/smm/WebApp/sam-graf-server
+2025-04-14 12:30:23,768 - sam-graf-server - INFO -   GSETTINGS_SCHEMA_DIR=/home/smm/miniconda3/envs/myenv/share/glib-2.0/schemas
+2025-04-14 12:30:23,768 - sam-graf-server - INFO -   LOGNAME=smm
+2025-04-14 12:30:23,768 - sam-graf-server - INFO -   CONDA_PREFIX=/home/smm/miniconda3/envs/myenv
+2025-04-14 12:30:23,769 - sam-graf-server - INFO -   GSETTINGS_SCHEMA_DIR_CONDA_BACKUP=
+2025-04-14 12:30:23,769 - sam-graf-server - INFO -   MOTD_SHOWN=update-motd
+2025-04-14 12:30:23,769 - sam-graf-server - INFO -   HOME=/home/smm
+2025-04-14 12:30:23,769 - sam-graf-server - INFO -   LANG=C.UTF-8
+2025-04-14 12:30:23,769 - sam-graf-server - INFO -   WSL_INTEROP=/run/WSL/202613_interop
+2025-04-14 12:30:23,769 - sam-graf-server - INFO -   LS_COLORS=rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:
+2025-04-14 12:30:23,769 - sam-graf-server - INFO -   WAYLAND_DISPLAY=wayland-0
+2025-04-14 12:30:23,770 - sam-graf-server - INFO -   CONDA_PROMPT_MODIFIER=(myenv) 
+2025-04-14 12:30:23,770 - sam-graf-server - INFO -   NVM_DIR=/home/smm/.nvm
+2025-04-14 12:30:23,770 - sam-graf-server - INFO -   LESSCLOSE=/usr/bin/lesspipe %s %s
+2025-04-14 12:30:23,770 - sam-graf-server - INFO -   TERM=xterm-256color
+2025-04-14 12:30:23,770 - sam-graf-server - INFO -   _CE_CONDA=
+2025-04-14 12:30:23,770 - sam-graf-server - INFO -   LESSOPEN=| /usr/bin/lesspipe %s
+2025-04-14 12:30:23,770 - sam-graf-server - INFO -   USER=smm
+2025-04-14 12:30:23,771 - sam-graf-server - INFO -   CONDA_SHLVL=2
+2025-04-14 12:30:23,771 - sam-graf-server - INFO -   SDKMAN_DIR=/home/smm/.sdkman
+2025-04-14 12:30:23,771 - sam-graf-server - INFO -   DISPLAY=:0
+2025-04-14 12:30:23,771 - sam-graf-server - INFO -   SHLVL=1
+2025-04-14 12:30:23,771 - sam-graf-server - INFO -   NVM_CD_FLAGS=
+2025-04-14 12:30:23,771 - sam-graf-server - INFO -   SDKMAN_CANDIDATES_API=https://api.sdkman.io/2
+2025-04-14 12:30:23,771 - sam-graf-server - INFO -   CONDA_PYTHON_EXE=/home/smm/miniconda3/bin/python
+2025-04-14 12:30:23,771 - sam-graf-server - INFO -   XDG_RUNTIME_DIR=/run/user/1000/
+2025-04-14 12:30:23,772 - sam-graf-server - INFO -   CONDA_DEFAULT_ENV=myenv
+2025-04-14 12:30:23,772 - sam-graf-server - INFO -   WSLENV=WT_SESSION:WT_PROFILE_ID:
+2025-04-14 12:30:23,772 - sam-graf-server - INFO -   XDG_DATA_DIRS=/usr/local/share:/usr/share:/var/lib/snapd/desktop
+2025-04-14 12:30:23,772 - sam-graf-server - INFO -   PATH=/home/smm/.sdkman/candidates/java/current/bin:/home/smm/.nvm/versions/node/v21.7.1/bin:/home/smm/miniconda3/envs/myenv/bin:/home/smm/miniconda3/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/Program Files/Common Files/Oracle/Java/javapath:/mnt/c/Program Files (x86)/Common Files/Oracle/Java/java8path:/mnt/c/Program Files (x86)/Common Files/Oracle/Java/javapath:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0:/mnt/c/WINDOWS/System32/OpenSSH:/mnt/c/Users/SMM/AppData/Local/Programs/Python/Python312/Scripts:/mnt/c/Users/SMM/AppData/Local/Programs/Python/Python312:/mnt/c/Users/SMM/AppData/Local/Programs/Python/Launcher:/mnt/c/Users/SMM/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/SMM/AppData/Local/Programs/Microsoft VS Code/bin:/snap/bin:/user/bin/java
+2025-04-14 12:30:23,772 - sam-graf-server - INFO -   DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus
+2025-04-14 12:30:23,772 - sam-graf-server - INFO -   SDKMAN_PLATFORM=linuxx64
+2025-04-14 12:30:23,772 - sam-graf-server - INFO -   NVM_BIN=/home/smm/.nvm/versions/node/v21.7.1/bin
+2025-04-14 12:30:23,773 - sam-graf-server - INFO -   HOSTTYPE=x86_64
+2025-04-14 12:30:23,773 - sam-graf-server - INFO -   CONDA_PREFIX_1=/home/smm/miniconda3
+2025-04-14 12:30:23,773 - sam-graf-server - INFO -   PULSE_SERVER=unix:/mnt/wslg/PulseServer
+2025-04-14 12:30:23,773 - sam-graf-server - INFO -   WT_PROFILE_ID={51855cb2-8cce-5362-8f54-464b92b32386}
+2025-04-14 12:30:23,773 - sam-graf-server - INFO -   OLDPWD=/home/smm
+2025-04-14 12:30:23,773 - sam-graf-server - INFO -   _=/home/smm/miniconda3/envs/myenv/bin/flask
+2025-04-14 12:30:23,773 - sam-graf-server - INFO -   FLASK_RUN_FROM_CLI=true
+2025-04-14 12:30:23,773 - sam-graf-server - INFO -   NEO4J_URI=bolt://172.16.20.137:7687
+2025-04-14 12:30:23,774 - sam-graf-server - INFO -   NEO4J_USER=neo4j
+2025-04-14 12:30:23,774 - sam-graf-server - INFO -   NEO4J_DATABASE=neo4j
+2025-04-14 12:30:23,774 - sam-graf-server - INFO -   FLASK_APP=sam-graf-server.py
+2025-04-14 12:30:23,774 - sam-graf-server - INFO -   FLASK_DEBUG=1
+2025-04-14 12:30:23,774 - sam-graf-server - INFO -   PG_HOST=172.16.20.137
+2025-04-14 12:30:23,774 - sam-graf-server - INFO -   PG_PORT=2285
+2025-04-14 12:30:23,774 - sam-graf-server - INFO -   PG_USER=operator
+2025-04-14 12:30:23,775 - sam-graf-server - INFO -   PG_DATABASE=postgres
+2025-04-14 12:30:23,775 - sam-graf-server - INFO -   PG_SCHEMA=ecommerce_local
+2025-04-14 12:30:23,775 - sam-graf-server - INFO -   FLASK_ENV=development
+2025-04-14 12:30:23,775 - sam-graf-server - INFO -   FLASK_RUN_PORT=5500
+2025-04-14 12:30:23,776 - sam-graf-server - INFO -   OMP_WAIT_POLICY=passive
+2025-04-14 12:30:23,776 - sam-graf-server - INFO -   KMP_DUPLICATE_LIB_OK=True
+2025-04-14 12:30:23,776 - sam-graf-server - INFO -   KMP_INIT_AT_FORK=FALSE
+2025-04-14 12:30:23,777 - sam-graf-server - INFO -   WERKZEUG_SERVER_FD=10
+2025-04-14 12:30:23,777 - sam-graf-server - INFO -   WERKZEUG_RUN_MAIN=true
+2025-04-14 12:30:23,787 - werkzeug - WARNING -  * Debugger is active!
+2025-04-14 12:30:23,787 - werkzeug - INFO -  * Debugger PIN: 867-852-603
+2025-04-14 12:30:31,402 - werkzeug - INFO - 127.0.0.1 - - [14/Apr/2025 12:30:31] "[33mGET /Applications/default HTTP/1.1[0m" 404 -
+2025-04-14 12:31:17,032 - werkzeug - INFO -  * Detected change in '/home/smm/WebApp/sam-graf-server/sam-graf-server.py', reloading
+2025-04-14 12:31:17,431 - werkzeug - INFO -  * Restarting with stat
+2025-04-14 12:31:19,698 - sam-graf-server - INFO - Environment variables:
+2025-04-14 12:31:19,698 - sam-graf-server - INFO -   SHELL=/bin/bash
+2025-04-14 12:31:19,698 - sam-graf-server - INFO -   NVM_INC=/home/smm/.nvm/versions/node/v21.7.1/include/node
+2025-04-14 12:31:19,699 - sam-graf-server - INFO -   WSL2_GUI_APPS_ENABLED=1
+2025-04-14 12:31:19,699 - sam-graf-server - INFO -   CONDA_EXE=/home/smm/miniconda3/bin/conda
+2025-04-14 12:31:19,699 - sam-graf-server - INFO -   _CE_M=
+2025-04-14 12:31:19,699 - sam-graf-server - INFO -   WSL_DISTRO_NAME=Ubuntu
+2025-04-14 12:31:19,699 - sam-graf-server - INFO -   WT_SESSION=50390f64-aaff-41d9-8b1b-aa357d169ec4
+2025-04-14 12:31:19,699 - sam-graf-server - INFO -   JAVA_HOME=/home/smm/.sdkman/candidates/java/current
+2025-04-14 12:31:19,700 - sam-graf-server - INFO -   SDKMAN_CANDIDATES_DIR=/home/smm/.sdkman/candidates
+2025-04-14 12:31:19,700 - sam-graf-server - INFO -   XML_CATALOG_FILES=file:///home/smm/miniconda3/envs/myenv/etc/xml/catalog file:///etc/xml/catalog
+2025-04-14 12:31:19,700 - sam-graf-server - INFO -   NAME=SMMLAP
+2025-04-14 12:31:19,700 - sam-graf-server - INFO -   PWD=/home/smm/WebApp/sam-graf-server
+2025-04-14 12:31:19,700 - sam-graf-server - INFO -   GSETTINGS_SCHEMA_DIR=/home/smm/miniconda3/envs/myenv/share/glib-2.0/schemas
+2025-04-14 12:31:19,700 - sam-graf-server - INFO -   LOGNAME=smm
+2025-04-14 12:31:19,700 - sam-graf-server - INFO -   CONDA_PREFIX=/home/smm/miniconda3/envs/myenv
+2025-04-14 12:31:19,701 - sam-graf-server - INFO -   GSETTINGS_SCHEMA_DIR_CONDA_BACKUP=
+2025-04-14 12:31:19,701 - sam-graf-server - INFO -   MOTD_SHOWN=update-motd
+2025-04-14 12:31:19,701 - sam-graf-server - INFO -   HOME=/home/smm
+2025-04-14 12:31:19,701 - sam-graf-server - INFO -   LANG=C.UTF-8
+2025-04-14 12:31:19,701 - sam-graf-server - INFO -   WSL_INTEROP=/run/WSL/202613_interop
+2025-04-14 12:31:19,702 - sam-graf-server - INFO -   LS_COLORS=rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:
+2025-04-14 12:31:19,702 - sam-graf-server - INFO -   WAYLAND_DISPLAY=wayland-0
+2025-04-14 12:31:19,702 - sam-graf-server - INFO -   CONDA_PROMPT_MODIFIER=(myenv) 
+2025-04-14 12:31:19,702 - sam-graf-server - INFO -   NVM_DIR=/home/smm/.nvm
+2025-04-14 12:31:19,702 - sam-graf-server - INFO -   LESSCLOSE=/usr/bin/lesspipe %s %s
+2025-04-14 12:31:19,703 - sam-graf-server - INFO -   TERM=xterm-256color
+2025-04-14 12:31:19,703 - sam-graf-server - INFO -   _CE_CONDA=
+2025-04-14 12:31:19,703 - sam-graf-server - INFO -   LESSOPEN=| /usr/bin/lesspipe %s
+2025-04-14 12:31:19,703 - sam-graf-server - INFO -   USER=smm
+2025-04-14 12:31:19,704 - sam-graf-server - INFO -   CONDA_SHLVL=2
+2025-04-14 12:31:19,704 - sam-graf-server - INFO -   SDKMAN_DIR=/home/smm/.sdkman
+2025-04-14 12:31:19,704 - sam-graf-server - INFO -   DISPLAY=:0
+2025-04-14 12:31:19,705 - sam-graf-server - INFO -   SHLVL=1
+2025-04-14 12:31:19,705 - sam-graf-server - INFO -   NVM_CD_FLAGS=
+2025-04-14 12:31:19,705 - sam-graf-server - INFO -   SDKMAN_CANDIDATES_API=https://api.sdkman.io/2
+2025-04-14 12:31:19,705 - sam-graf-server - INFO -   CONDA_PYTHON_EXE=/home/smm/miniconda3/bin/python
+2025-04-14 12:31:19,705 - sam-graf-server - INFO -   XDG_RUNTIME_DIR=/run/user/1000/
+2025-04-14 12:31:19,705 - sam-graf-server - INFO -   CONDA_DEFAULT_ENV=myenv
+2025-04-14 12:31:19,705 - sam-graf-server - INFO -   WSLENV=WT_SESSION:WT_PROFILE_ID:
+2025-04-14 12:31:19,705 - sam-graf-server - INFO -   XDG_DATA_DIRS=/usr/local/share:/usr/share:/var/lib/snapd/desktop
+2025-04-14 12:31:19,705 - sam-graf-server - INFO -   PATH=/home/smm/.sdkman/candidates/java/current/bin:/home/smm/.nvm/versions/node/v21.7.1/bin:/home/smm/miniconda3/envs/myenv/bin:/home/smm/miniconda3/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/Program Files/Common Files/Oracle/Java/javapath:/mnt/c/Program Files (x86)/Common Files/Oracle/Java/java8path:/mnt/c/Program Files (x86)/Common Files/Oracle/Java/javapath:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0:/mnt/c/WINDOWS/System32/OpenSSH:/mnt/c/Users/SMM/AppData/Local/Programs/Python/Python312/Scripts:/mnt/c/Users/SMM/AppData/Local/Programs/Python/Python312:/mnt/c/Users/SMM/AppData/Local/Programs/Python/Launcher:/mnt/c/Users/SMM/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/SMM/AppData/Local/Programs/Microsoft VS Code/bin:/snap/bin:/user/bin/java
+2025-04-14 12:31:19,706 - sam-graf-server - INFO -   DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus
+2025-04-14 12:31:19,706 - sam-graf-server - INFO -   SDKMAN_PLATFORM=linuxx64
+2025-04-14 12:31:19,706 - sam-graf-server - INFO -   NVM_BIN=/home/smm/.nvm/versions/node/v21.7.1/bin
+2025-04-14 12:31:19,706 - sam-graf-server - INFO -   HOSTTYPE=x86_64
+2025-04-14 12:31:19,706 - sam-graf-server - INFO -   CONDA_PREFIX_1=/home/smm/miniconda3
+2025-04-14 12:31:19,706 - sam-graf-server - INFO -   PULSE_SERVER=unix:/mnt/wslg/PulseServer
+2025-04-14 12:31:19,706 - sam-graf-server - INFO -   WT_PROFILE_ID={51855cb2-8cce-5362-8f54-464b92b32386}
+2025-04-14 12:31:19,707 - sam-graf-server - INFO -   OLDPWD=/home/smm
+2025-04-14 12:31:19,707 - sam-graf-server - INFO -   _=/home/smm/miniconda3/envs/myenv/bin/flask
+2025-04-14 12:31:19,707 - sam-graf-server - INFO -   FLASK_RUN_FROM_CLI=true
+2025-04-14 12:31:19,707 - sam-graf-server - INFO -   NEO4J_URI=bolt://172.16.20.137:7687
+2025-04-14 12:31:19,707 - sam-graf-server - INFO -   NEO4J_USER=neo4j
+2025-04-14 12:31:19,707 - sam-graf-server - INFO -   NEO4J_DATABASE=neo4j
+2025-04-14 12:31:19,707 - sam-graf-server - INFO -   FLASK_APP=sam-graf-server.py
+2025-04-14 12:31:19,707 - sam-graf-server - INFO -   FLASK_DEBUG=1
+2025-04-14 12:31:19,708 - sam-graf-server - INFO -   PG_HOST=172.16.20.137
+2025-04-14 12:31:19,708 - sam-graf-server - INFO -   PG_PORT=2285
+2025-04-14 12:31:19,708 - sam-graf-server - INFO -   PG_USER=operator
+2025-04-14 12:31:19,708 - sam-graf-server - INFO -   PG_DATABASE=postgres
+2025-04-14 12:31:19,708 - sam-graf-server - INFO -   PG_SCHEMA=ecommerce_local
+2025-04-14 12:31:19,708 - sam-graf-server - INFO -   FLASK_ENV=development
+2025-04-14 12:31:19,708 - sam-graf-server - INFO -   FLASK_RUN_PORT=5500
+2025-04-14 12:31:19,708 - sam-graf-server - INFO -   OMP_WAIT_POLICY=passive
+2025-04-14 12:31:19,709 - sam-graf-server - INFO -   KMP_DUPLICATE_LIB_OK=True
+2025-04-14 12:31:19,709 - sam-graf-server - INFO -   KMP_INIT_AT_FORK=FALSE
+2025-04-14 12:31:19,709 - sam-graf-server - INFO -   WERKZEUG_SERVER_FD=10
+2025-04-14 12:31:19,709 - sam-graf-server - INFO -   WERKZEUG_RUN_MAIN=true
+2025-04-14 12:31:19,717 - werkzeug - WARNING -  * Debugger is active!
+2025-04-14 12:31:19,717 - werkzeug - INFO -  * Debugger PIN: 867-852-603
+2025-04-14 12:31:26,370 - sam-graf-server - INFO - Environment variables:
+2025-04-14 12:31:26,370 - sam-graf-server - INFO -   SHELL=/bin/bash
+2025-04-14 12:31:26,371 - sam-graf-server - INFO -   NVM_INC=/home/smm/.nvm/versions/node/v21.7.1/include/node
+2025-04-14 12:31:26,371 - sam-graf-server - INFO -   WSL2_GUI_APPS_ENABLED=1
+2025-04-14 12:31:26,371 - sam-graf-server - INFO -   CONDA_EXE=/home/smm/miniconda3/bin/conda
+2025-04-14 12:31:26,371 - sam-graf-server - INFO -   _CE_M=
+2025-04-14 12:31:26,371 - sam-graf-server - INFO -   WSL_DISTRO_NAME=Ubuntu
+2025-04-14 12:31:26,371 - sam-graf-server - INFO -   WT_SESSION=50390f64-aaff-41d9-8b1b-aa357d169ec4
+2025-04-14 12:31:26,371 - sam-graf-server - INFO -   JAVA_HOME=/home/smm/.sdkman/candidates/java/current
+2025-04-14 12:31:26,372 - sam-graf-server - INFO -   SDKMAN_CANDIDATES_DIR=/home/smm/.sdkman/candidates
+2025-04-14 12:31:26,372 - sam-graf-server - INFO -   XML_CATALOG_FILES=file:///home/smm/miniconda3/envs/myenv/etc/xml/catalog file:///etc/xml/catalog
+2025-04-14 12:31:26,372 - sam-graf-server - INFO -   NAME=SMMLAP
+2025-04-14 12:31:26,372 - sam-graf-server - INFO -   PWD=/home/smm/WebApp/sam-graf-server
+2025-04-14 12:31:26,372 - sam-graf-server - INFO -   GSETTINGS_SCHEMA_DIR=/home/smm/miniconda3/envs/myenv/share/glib-2.0/schemas
+2025-04-14 12:31:26,372 - sam-graf-server - INFO -   LOGNAME=smm
+2025-04-14 12:31:26,373 - sam-graf-server - INFO -   CONDA_PREFIX=/home/smm/miniconda3/envs/myenv
+2025-04-14 12:31:26,373 - sam-graf-server - INFO -   GSETTINGS_SCHEMA_DIR_CONDA_BACKUP=
+2025-04-14 12:31:26,373 - sam-graf-server - INFO -   MOTD_SHOWN=update-motd
+2025-04-14 12:31:26,373 - sam-graf-server - INFO -   HOME=/home/smm
+2025-04-14 12:31:26,373 - sam-graf-server - INFO -   LANG=C.UTF-8
+2025-04-14 12:31:26,373 - sam-graf-server - INFO -   WSL_INTEROP=/run/WSL/202613_interop
+2025-04-14 12:31:26,373 - sam-graf-server - INFO -   LS_COLORS=rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:
+2025-04-14 12:31:26,374 - sam-graf-server - INFO -   WAYLAND_DISPLAY=wayland-0
+2025-04-14 12:31:26,374 - sam-graf-server - INFO -   CONDA_PROMPT_MODIFIER=(myenv) 
+2025-04-14 12:31:26,374 - sam-graf-server - INFO -   NVM_DIR=/home/smm/.nvm
+2025-04-14 12:31:26,374 - sam-graf-server - INFO -   LESSCLOSE=/usr/bin/lesspipe %s %s
+2025-04-14 12:31:26,374 - sam-graf-server - INFO -   TERM=xterm-256color
+2025-04-14 12:31:26,374 - sam-graf-server - INFO -   _CE_CONDA=
+2025-04-14 12:31:26,374 - sam-graf-server - INFO -   LESSOPEN=| /usr/bin/lesspipe %s
+2025-04-14 12:31:26,375 - sam-graf-server - INFO -   USER=smm
+2025-04-14 12:31:26,375 - sam-graf-server - INFO -   CONDA_SHLVL=2
+2025-04-14 12:31:26,375 - sam-graf-server - INFO -   SDKMAN_DIR=/home/smm/.sdkman
+2025-04-14 12:31:26,375 - sam-graf-server - INFO -   DISPLAY=:0
+2025-04-14 12:31:26,375 - sam-graf-server - INFO -   SHLVL=1
+2025-04-14 12:31:26,375 - sam-graf-server - INFO -   NVM_CD_FLAGS=
+2025-04-14 12:31:26,375 - sam-graf-server - INFO -   SDKMAN_CANDIDATES_API=https://api.sdkman.io/2
+2025-04-14 12:31:26,375 - sam-graf-server - INFO -   CONDA_PYTHON_EXE=/home/smm/miniconda3/bin/python
+2025-04-14 12:31:26,376 - sam-graf-server - INFO -   XDG_RUNTIME_DIR=/run/user/1000/
+2025-04-14 12:31:26,376 - sam-graf-server - INFO -   CONDA_DEFAULT_ENV=myenv
+2025-04-14 12:31:26,376 - sam-graf-server - INFO -   WSLENV=WT_SESSION:WT_PROFILE_ID:
+2025-04-14 12:31:26,376 - sam-graf-server - INFO -   XDG_DATA_DIRS=/usr/local/share:/usr/share:/var/lib/snapd/desktop
+2025-04-14 12:31:26,376 - sam-graf-server - INFO -   PATH=/home/smm/.sdkman/candidates/java/current/bin:/home/smm/.nvm/versions/node/v21.7.1/bin:/home/smm/miniconda3/envs/myenv/bin:/home/smm/miniconda3/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/Program Files/Common Files/Oracle/Java/javapath:/mnt/c/Program Files (x86)/Common Files/Oracle/Java/java8path:/mnt/c/Program Files (x86)/Common Files/Oracle/Java/javapath:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0:/mnt/c/WINDOWS/System32/OpenSSH:/mnt/c/Users/SMM/AppData/Local/Programs/Python/Python312/Scripts:/mnt/c/Users/SMM/AppData/Local/Programs/Python/Python312:/mnt/c/Users/SMM/AppData/Local/Programs/Python/Launcher:/mnt/c/Users/SMM/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/SMM/AppData/Local/Programs/Microsoft VS Code/bin:/snap/bin:/user/bin/java
+2025-04-14 12:31:26,376 - sam-graf-server - INFO -   DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus
+2025-04-14 12:31:26,377 - sam-graf-server - INFO -   SDKMAN_PLATFORM=linuxx64
+2025-04-14 12:31:26,377 - sam-graf-server - INFO -   NVM_BIN=/home/smm/.nvm/versions/node/v21.7.1/bin
+2025-04-14 12:31:26,377 - sam-graf-server - INFO -   HOSTTYPE=x86_64
+2025-04-14 12:31:26,377 - sam-graf-server - INFO -   CONDA_PREFIX_1=/home/smm/miniconda3
+2025-04-14 12:31:26,377 - sam-graf-server - INFO -   PULSE_SERVER=unix:/mnt/wslg/PulseServer
+2025-04-14 12:31:26,377 - sam-graf-server - INFO -   WT_PROFILE_ID={51855cb2-8cce-5362-8f54-464b92b32386}
+2025-04-14 12:31:26,377 - sam-graf-server - INFO -   OLDPWD=/home/smm
+2025-04-14 12:31:26,378 - sam-graf-server - INFO -   _=/home/smm/miniconda3/envs/myenv/bin/flask
+2025-04-14 12:31:26,378 - sam-graf-server - INFO -   FLASK_RUN_FROM_CLI=true
+2025-04-14 12:31:26,378 - sam-graf-server - INFO -   NEO4J_URI=bolt://172.16.20.137:7687
+2025-04-14 12:31:26,378 - sam-graf-server - INFO -   NEO4J_USER=neo4j
+2025-04-14 12:31:26,378 - sam-graf-server - INFO -   NEO4J_DATABASE=neo4j
+2025-04-14 12:31:26,378 - sam-graf-server - INFO -   FLASK_APP=sam-graf-server.py
+2025-04-14 12:31:26,378 - sam-graf-server - INFO -   FLASK_DEBUG=1
+2025-04-14 12:31:26,378 - sam-graf-server - INFO -   PG_HOST=172.16.20.137
+2025-04-14 12:31:26,379 - sam-graf-server - INFO -   PG_PORT=2285
+2025-04-14 12:31:26,379 - sam-graf-server - INFO -   PG_USER=operator
+2025-04-14 12:31:26,379 - sam-graf-server - INFO -   PG_DATABASE=postgres
+2025-04-14 12:31:26,379 - sam-graf-server - INFO -   PG_SCHEMA=ecommerce_local
+2025-04-14 12:31:26,379 - sam-graf-server - INFO -   FLASK_ENV=development
+2025-04-14 12:31:26,379 - sam-graf-server - INFO -   FLASK_RUN_PORT=5500
+2025-04-14 12:31:26,379 - sam-graf-server - INFO -   OMP_WAIT_POLICY=passive
+2025-04-14 12:31:26,380 - sam-graf-server - INFO -   KMP_DUPLICATE_LIB_OK=True
+2025-04-14 12:31:26,380 - sam-graf-server - INFO -   KMP_INIT_AT_FORK=FALSE
+2025-04-14 12:31:26,393 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5500
+2025-04-14 12:31:26,393 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-04-14 12:31:26,394 - werkzeug - INFO -  * Restarting with stat
+2025-04-14 12:31:29,605 - sam-graf-server - INFO - Environment variables:
+2025-04-14 12:31:29,605 - sam-graf-server - INFO -   SHELL=/bin/bash
+2025-04-14 12:31:29,606 - sam-graf-server - INFO -   NVM_INC=/home/smm/.nvm/versions/node/v21.7.1/include/node
+2025-04-14 12:31:29,606 - sam-graf-server - INFO -   WSL2_GUI_APPS_ENABLED=1
+2025-04-14 12:31:29,606 - sam-graf-server - INFO -   CONDA_EXE=/home/smm/miniconda3/bin/conda
+2025-04-14 12:31:29,606 - sam-graf-server - INFO -   _CE_M=
+2025-04-14 12:31:29,606 - sam-graf-server - INFO -   WSL_DISTRO_NAME=Ubuntu
+2025-04-14 12:31:29,607 - sam-graf-server - INFO -   WT_SESSION=50390f64-aaff-41d9-8b1b-aa357d169ec4
+2025-04-14 12:31:29,607 - sam-graf-server - INFO -   JAVA_HOME=/home/smm/.sdkman/candidates/java/current
+2025-04-14 12:31:29,607 - sam-graf-server - INFO -   SDKMAN_CANDIDATES_DIR=/home/smm/.sdkman/candidates
+2025-04-14 12:31:29,607 - sam-graf-server - INFO -   XML_CATALOG_FILES=file:///home/smm/miniconda3/envs/myenv/etc/xml/catalog file:///etc/xml/catalog
+2025-04-14 12:31:29,607 - sam-graf-server - INFO -   NAME=SMMLAP
+2025-04-14 12:31:29,607 - sam-graf-server - INFO -   PWD=/home/smm/WebApp/sam-graf-server
+2025-04-14 12:31:29,608 - sam-graf-server - INFO -   GSETTINGS_SCHEMA_DIR=/home/smm/miniconda3/envs/myenv/share/glib-2.0/schemas
+2025-04-14 12:31:29,608 - sam-graf-server - INFO -   LOGNAME=smm
+2025-04-14 12:31:29,608 - sam-graf-server - INFO -   CONDA_PREFIX=/home/smm/miniconda3/envs/myenv
+2025-04-14 12:31:29,608 - sam-graf-server - INFO -   GSETTINGS_SCHEMA_DIR_CONDA_BACKUP=
+2025-04-14 12:31:29,608 - sam-graf-server - INFO -   MOTD_SHOWN=update-motd
+2025-04-14 12:31:29,608 - sam-graf-server - INFO -   HOME=/home/smm
+2025-04-14 12:31:29,609 - sam-graf-server - INFO -   LANG=C.UTF-8
+2025-04-14 12:31:29,609 - sam-graf-server - INFO -   WSL_INTEROP=/run/WSL/202613_interop
+2025-04-14 12:31:29,609 - sam-graf-server - INFO -   LS_COLORS=rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:
+2025-04-14 12:31:29,609 - sam-graf-server - INFO -   WAYLAND_DISPLAY=wayland-0
+2025-04-14 12:31:29,609 - sam-graf-server - INFO -   CONDA_PROMPT_MODIFIER=(myenv) 
+2025-04-14 12:31:29,610 - sam-graf-server - INFO -   NVM_DIR=/home/smm/.nvm
+2025-04-14 12:31:29,610 - sam-graf-server - INFO -   LESSCLOSE=/usr/bin/lesspipe %s %s
+2025-04-14 12:31:29,610 - sam-graf-server - INFO -   TERM=xterm-256color
+2025-04-14 12:31:29,610 - sam-graf-server - INFO -   _CE_CONDA=
+2025-04-14 12:31:29,610 - sam-graf-server - INFO -   LESSOPEN=| /usr/bin/lesspipe %s
+2025-04-14 12:31:29,610 - sam-graf-server - INFO -   USER=smm
+2025-04-14 12:31:29,610 - sam-graf-server - INFO -   CONDA_SHLVL=2
+2025-04-14 12:31:29,611 - sam-graf-server - INFO -   SDKMAN_DIR=/home/smm/.sdkman
+2025-04-14 12:31:29,611 - sam-graf-server - INFO -   DISPLAY=:0
+2025-04-14 12:31:29,611 - sam-graf-server - INFO -   SHLVL=1
+2025-04-14 12:31:29,611 - sam-graf-server - INFO -   NVM_CD_FLAGS=
+2025-04-14 12:31:29,611 - sam-graf-server - INFO -   SDKMAN_CANDIDATES_API=https://api.sdkman.io/2
+2025-04-14 12:31:29,611 - sam-graf-server - INFO -   CONDA_PYTHON_EXE=/home/smm/miniconda3/bin/python
+2025-04-14 12:31:29,612 - sam-graf-server - INFO -   XDG_RUNTIME_DIR=/run/user/1000/
+2025-04-14 12:31:29,612 - sam-graf-server - INFO -   CONDA_DEFAULT_ENV=myenv
+2025-04-14 12:31:29,612 - sam-graf-server - INFO -   WSLENV=WT_SESSION:WT_PROFILE_ID:
+2025-04-14 12:31:29,612 - sam-graf-server - INFO -   XDG_DATA_DIRS=/usr/local/share:/usr/share:/var/lib/snapd/desktop
+2025-04-14 12:31:29,612 - sam-graf-server - INFO -   PATH=/home/smm/.sdkman/candidates/java/current/bin:/home/smm/.nvm/versions/node/v21.7.1/bin:/home/smm/miniconda3/envs/myenv/bin:/home/smm/miniconda3/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/Program Files/Common Files/Oracle/Java/javapath:/mnt/c/Program Files (x86)/Common Files/Oracle/Java/java8path:/mnt/c/Program Files (x86)/Common Files/Oracle/Java/javapath:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0:/mnt/c/WINDOWS/System32/OpenSSH:/mnt/c/Users/SMM/AppData/Local/Programs/Python/Python312/Scripts:/mnt/c/Users/SMM/AppData/Local/Programs/Python/Python312:/mnt/c/Users/SMM/AppData/Local/Programs/Python/Launcher:/mnt/c/Users/SMM/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/SMM/AppData/Local/Programs/Microsoft VS Code/bin:/snap/bin:/user/bin/java
+2025-04-14 12:31:29,612 - sam-graf-server - INFO -   DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus
+2025-04-14 12:31:29,612 - sam-graf-server - INFO -   SDKMAN_PLATFORM=linuxx64
+2025-04-14 12:31:29,613 - sam-graf-server - INFO -   NVM_BIN=/home/smm/.nvm/versions/node/v21.7.1/bin
+2025-04-14 12:31:29,613 - sam-graf-server - INFO -   HOSTTYPE=x86_64
+2025-04-14 12:31:29,613 - sam-graf-server - INFO -   CONDA_PREFIX_1=/home/smm/miniconda3
+2025-04-14 12:31:29,613 - sam-graf-server - INFO -   PULSE_SERVER=unix:/mnt/wslg/PulseServer
+2025-04-14 12:31:29,613 - sam-graf-server - INFO -   WT_PROFILE_ID={51855cb2-8cce-5362-8f54-464b92b32386}
+2025-04-14 12:31:29,613 - sam-graf-server - INFO -   OLDPWD=/home/smm
+2025-04-14 12:31:29,614 - sam-graf-server - INFO -   _=/home/smm/miniconda3/envs/myenv/bin/flask
+2025-04-14 12:31:29,614 - sam-graf-server - INFO -   FLASK_RUN_FROM_CLI=true
+2025-04-14 12:31:29,614 - sam-graf-server - INFO -   NEO4J_URI=bolt://172.16.20.137:7687
+2025-04-14 12:31:29,614 - sam-graf-server - INFO -   NEO4J_USER=neo4j
+2025-04-14 12:31:29,614 - sam-graf-server - INFO -   NEO4J_DATABASE=neo4j
+2025-04-14 12:31:29,614 - sam-graf-server - INFO -   FLASK_APP=sam-graf-server.py
+2025-04-14 12:31:29,615 - sam-graf-server - INFO -   FLASK_DEBUG=1
+2025-04-14 12:31:29,615 - sam-graf-server - INFO -   PG_HOST=172.16.20.137
+2025-04-14 12:31:29,615 - sam-graf-server - INFO -   PG_PORT=2285
+2025-04-14 12:31:29,615 - sam-graf-server - INFO -   PG_USER=operator
+2025-04-14 12:31:29,616 - sam-graf-server - INFO -   PG_DATABASE=postgres
+2025-04-14 12:31:29,616 - sam-graf-server - INFO -   PG_SCHEMA=ecommerce_local
+2025-04-14 12:31:29,616 - sam-graf-server - INFO -   FLASK_ENV=development
+2025-04-14 12:31:29,616 - sam-graf-server - INFO -   FLASK_RUN_PORT=5500
+2025-04-14 12:31:29,616 - sam-graf-server - INFO -   OMP_WAIT_POLICY=passive
+2025-04-14 12:31:29,616 - sam-graf-server - INFO -   KMP_DUPLICATE_LIB_OK=True
+2025-04-14 12:31:29,617 - sam-graf-server - INFO -   KMP_INIT_AT_FORK=FALSE
+2025-04-14 12:31:29,617 - sam-graf-server - INFO -   WERKZEUG_SERVER_FD=10
+2025-04-14 12:31:29,617 - sam-graf-server - INFO -   WERKZEUG_RUN_MAIN=true
+2025-04-14 12:31:29,627 - werkzeug - WARNING -  * Debugger is active!
+2025-04-14 12:31:29,628 - werkzeug - INFO -  * Debugger PIN: 867-852-603
+2025-04-14 12:31:39,524 - werkzeug - INFO - 127.0.0.1 - - [14/Apr/2025 12:31:39] "[33mGET /Applications HTTP/1.1[0m" 404 -
+2025-04-14 12:31:39,525 - werkzeug - INFO - 127.0.0.1 - - [14/Apr/2025 12:31:39] "[33mGET /Applications HTTP/1.1[0m" 404 -
+2025-04-14 12:31:39,970 - werkzeug - INFO - 127.0.0.1 - - [14/Apr/2025 12:31:39] "[33mGET /Applications HTTP/1.1[0m" 404 -
+2025-04-14 12:31:39,971 - werkzeug - INFO - 127.0.0.1 - - [14/Apr/2025 12:31:39] "[33mGET /Applications HTTP/1.1[0m" 404 -
+2025-04-14 12:34:13,371 - werkzeug - INFO -  * Detected change in '/home/smm/WebApp/sam-graf-server/sam-graf-server.py', reloading
+2025-04-14 12:34:13,780 - werkzeug - INFO -  * Restarting with stat
+2025-04-14 12:38:07,635 - werkzeug - INFO -  * Restarting with stat
+2025-04-14 12:40:34,646 - werkzeug - INFO -  * Restarting with stat
