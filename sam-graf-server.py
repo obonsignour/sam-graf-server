@@ -301,6 +301,54 @@ def get_nodes_of_interest(app_name, graph_type, graph_id):
         "endNodes": end_nodes
     })
 
+@app.route('/Applications/<app_name>/Models/<graph_id>/<model_name>/NodesOfInterest', methods=['GET'])
+def get_model_nodes_of_interest(app_name, graph_id, model_name):
+    """
+    GET /Applications/<app_name>/Models/<graph_id>/<model_name>/NodesOfInterest
+    Fetches start and end nodes for the specified model graph.
+
+    Args:
+        app_name (str): The name of the application. Case sensitive.
+        graph_id (str): The ID of the base graph.
+        model_name (str): The name of the model.
+
+    Returns:
+        JSON: Object with startNodes and endNodes arrays.
+    """
+    my_query = NeoQuery(URI, AUTH, DATABASE)
+    
+    # Query to find nodes connected by STARTS_WITH and ENDS_WITH relationships
+    # For models, we don't need the graph_type in the query
+    cypher_query = f"""
+        MATCH (n:{app_name})<-[:STARTS_WITH]-(d:{app_name})
+        WHERE id(d) = {graph_id}
+        AND (n:Object OR n:SubObject)
+        RETURN DISTINCT id(n) AS nodeId, 'startNode' AS nodeType
+        UNION
+        MATCH (n:{app_name})<-[:ENDS_WITH]-(d:{app_name})
+        WHERE id(d) = {graph_id}
+        AND (n:Object OR n:SubObject)
+        RETURN DISTINCT id(n) AS nodeId, 'endNode' AS nodeType
+    """
+    
+    # Execute the query
+    result = my_query.execute_query(cypher_query)
+    
+    # Process the result to create startNodes and endNodes arrays
+    start_nodes = []
+    end_nodes = []
+    
+    for item in result:
+        if item['nodeType'] == 'startNode':
+            start_nodes.append(str(item['nodeId']))
+        elif item['nodeType'] == 'endNode':
+            end_nodes.append(str(item['nodeId']))
+    
+    return jsonify({
+        "startNodes": start_nodes,
+        "endNodes": end_nodes
+    })
+
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 import logging
